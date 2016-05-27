@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--
+		Copyright notice:
+		This file and all linked documents are, unless otherwise specified, authored by Marty Stepp and/or Stanford University, and may not be copied, redistributed, or modified without explicit permission of the course instructor.
+		-->
+		<title>CS 193A: Android Application Development - Working at Home</title>
+
+		<meta charset="utf-8" />
+		<meta name="author" content="Marty Stepp" />
+		<meta name="description" content="Course web site for CS 193A, a course on Android app development." />
+		<meta name="keywords" content="Marty Stepp, CS 193A, Stanford University, computer science, Android, Java, app" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
+		
+		<meta id="WEEK1_SUN" name="WEEK1_SUN" content="Jan 4 2015 12:00 AM" />
+
+		<!-- stop the web browser from ever caching this page or its images -->
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+
+		<link href="style.css" tppabs="http://web.stanford.edu/class/cs193a/style.css" type="text/css" rel="stylesheet" />
+		<link href="images/stanford-favicon.png" type="image/png" rel="shortcut icon" />
+		<link href="images/stanford-favicon.png" type="image/png" rel="icon" />
+
+		<script src="../../../ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" tppabs="http://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript"></script>
+		<script src="../../../ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js" tppabs="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js" type="text/javascript"></script>
+		<script src="sorttable.js" tppabs="http://web.stanford.edu/class/cs193a/sorttable.js" type="text/javascript"></script>
+		<script src="cs.js" tppabs="http://web.stanford.edu/class/cs193a/cs.js" type="text/javascript"></script>
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="header" class="contentsection">
+				<div class="titles">
+					<div class="logo">
+						<a href="javascript:if(confirm(%27http://www.cs.stanford.edu/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.cs.stanford.edu/%27" tppabs="http://www.cs.stanford.edu/"><img src="images/stanford-cs-logo.png.jpg" tppabs="http://web.stanford.edu/class/cs193a/images/stanford-cs-logo.png" alt="Stanford CS logo" /></a>
+					</div>
+
+					<h1>
+						CS 193A: Android App Development <br />
+						Winter 2015
+					</h1>
+				</div>
+			</div>
+
+			<hr class="stanfordhr1" />
+			<hr class="stanfordhr2" />
+			
+			<div id="sidebar">
+				<ul>
+					<li><a href="index.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/index.shtml"><img src="images/home_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/home_icon.png" class="sidebaricon" alt="main" /> Home</a></li>
+					<li><a href="handouts/course-information.pdf" tppabs="http://web.stanford.edu/class/cs193a/handouts/course-information.pdf"><img src="images/syllabus_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/syllabus_icon.png" class="icon" alt="icon" /> Course Info</a></li>
+					<li><a href="lectures.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/lectures.shtml"><img src="images/lectures_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/lectures_icon.png" class="sidebaricon" alt="lectures" /> Lectures</a></li>
+					<li><a href="homework.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/homework.shtml"><img src="images/homework_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/homework_icon.png" class="sidebaricon" alt="homework" /> Homework</a></li>
+					<li><a class="popup" href="javascript:if(confirm(%27https://piazza.com/class/i43gbjj4o0w6as  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://piazza.com/class/i43gbjj4o0w6as%27" tppabs="https://piazza.com/class/i43gbjj4o0w6as"><img src="images/piazza-icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/piazza-icon.png" class="sidebaricon" alt="message board" /> Piazza</a></li>
+					<li><a href="working-at-home.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/working-at-home.shtml"><img src="images/working_at_home_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/working_at_home_icon.png" class="sidebaricon" alt="working at home" /> Work@Home</a></li>
+					<li><a href="videos.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/videos.shtml"><img src="images/icon_yt.png" tppabs="http://web.stanford.edu/class/cs193a/images/icon_yt.png" class="sidebaricon" alt="icon" /> Videos</a></li>
+					<li><a href="links.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/links.shtml"><img src="images/links_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/links_icon.png" class="sidebaricon" alt="links" /> Links</a></li>
+					<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/reference/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/reference/%27" tppabs="https://developer.android.com/reference/"><img src="images/icon_android.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_android.gif" class="sidebaricon" alt="api" /> API</a></li>
+				</ul>
+
+				<!--
+					<li><a class="popup" href="http://stanford.edu/~stepp/cppdoc/"><img src="images/stanford-favicon.png" class="icon" alt="icon" /> <strong>Stanford C++ Lib</strong></a></li>
+					<li><a class="popup" href="http://www.cppreference.com/"><img src="images/icon_cppreference.gif" class="icon" alt="icon" /> CppReference.com</a></li>
+					<li><a class="popup" href="http://www.cplusplus.com/reference/"><img src="images/icon_cplusplus.gif" class="icon" alt="icon" /> CPlusPlus.com</a></li>
+					<li><a href="styleguide.shtml"><img src="images/gradeit_icon.gif" class="icon" alt="icon" /> 193A Style Guide</a></li>
+				-->
+				</div>
+			</div>
+			
+			<noscript>
+				<div class="error">
+					<p>
+						ERROR: This site requires JavaScript in order to function properly.
+						You seem to be using a web browser that does not support JavaScript, or you may have a JavaScript blocker such as NoScript installed in your browser.
+						In order to use this course web site, you must enable JavaScript in your browser for this site.
+					</p>
+				</div>
+			</noscript>
+
+			<div class="centerpane">
+
+
+<style type="text/css">
+	div.step {
+		margin-top: 5em;
+	}
+</style>
+
+
+<h2>Working on Android Projects at Home</h2>
+
+<p>
+	<em>last updated Wed 2015/01/07</em>
+</p>
+
+<ul>
+	<li>
+		<strong>UPDATE:</strong> If you want to run your app on your own phone, see our <a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/deploy-to-phone.shtml  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/deploy-to-phone.shtml%27" tppabs="http://web.stanford.edu/class/cs193a/deploy-to-phone.shtml">Deploying an Android App to Your Phone</a> page.
+	</li>
+</ul>
+
+<div>
+	<p>
+		In order to develop Android apps, you will need to install two pieces of software on your computer:
+		<strong>Oracle Java Development Kit ("JDK")</strong> and <strong>Android Studio SDK</strong>.
+	</p>
+	
+	<p>
+		TL;DR really short instructions:
+	</p>
+	
+	<table>
+		<tr>
+			<th>1. Install JDK</th>
+			<th>2. Install Android Studio</th>
+			<th>3. Configure Android Studio</th>
+		</tr>
+		<tr>
+			<td>
+				<a class="popup" href="javascript:if(confirm(%27http://www.oracle.com/technetwork/java/javase/downloads/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.oracle.com/technetwork/java/javase/downloads/%27" tppabs="http://www.oracle.com/technetwork/java/javase/downloads/"><img src="images/java-logo.png" tppabs="http://web.stanford.edu/class/cs193a/images/java-logo.png" alt="screenshot" /><br />Click Here</a>
+			</td>
+			<td>
+				<a class="popup" href="javascript:if(confirm(%27https://developer.android.com/sdk/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/sdk/%27" tppabs="https://developer.android.com/sdk/"><img class="figure" src="images/android-studio-logo.png" tppabs="http://web.stanford.edu/class/cs193a/images/android-studio-logo.png" alt="screenshot" /><br />Click Here</a>
+			</td>
+			<td>
+				<ul>
+					<li>Click <img src="images/icon-sdk-manager.png" tppabs="http://web.stanford.edu/class/cs193a/images/icon-sdk-manager.png" alt="icon" /> in top toolbar.</li>
+					<li>Inside <strong>"Android 5.0.1 (API 21)"</strong> category, <br />check the box for <strong>"Intel X86 Atom System Image"</strong>.</li>
+					<li>Click <strong>Install X packages</strong> button at bottom-right.</li>
+				</ul>
+			</td>
+
+		</tr>
+	</table>
+</div>
+
+<hr />
+
+<div id="installjdk">
+	<h2>
+		Detailed instructions:
+	</h2>
+	
+	<h3>Step 1. Install Oracle Java Development Kit ("JDK")</h3>
+	
+	<p>
+		Since Android apps are written in Java, you will need the Oracle Java compiler and libraries on your system.
+		These are collectively called the Java Development Kit or "JDK" for short.
+		(If you already have JDK 1.6 or higher on your computer from taking CS 106A, you can skip to Step 2.)
+		Download the JDK from the following address:
+	</p>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27http://www.oracle.com/technetwork/java/javase/downloads/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.oracle.com/technetwork/java/javase/downloads/%27" tppabs="http://www.oracle.com/technetwork/java/javase/downloads/">Java SE Downloads</a>
+	</ul>
+	
+	<p>
+		Go to the page and click the DOWNLOAD link for the JDK.
+		Click the radio button to accept the License Agreement, then download the appropriate JDK for your operating system.
+		For example, on Windows, click to download the "Windows x86" installer.
+	</p>
+	
+	<div class="figure">
+		<img class="figure" src="images/install-jdk-1.png" tppabs="http://web.stanford.edu/class/cs193a/images/install-jdk-1.png" alt="screenshot" />
+	</div>
+	
+	<div class="figure">
+		<img class="figure" src="images/install-jdk-2.png" tppabs="http://web.stanford.edu/class/cs193a/images/install-jdk-2.png" alt="screenshot" />
+	</div>
+	
+	<p>
+		(A common mistake here is to accidentally download the Java Runtime Environment, or "JRE", instead of JDK.
+		The JRE is not the right download; JRE enables you to run Java programs but not compile or develop your own.
+		Be careful to download JDK and <em>not</em> JRE.)
+	</p>
+	
+	<p>
+		Once the JDK installer is done downloading, run it to install JDK on your system.
+		You can use all of the default settings.
+	</p>
+</div>
+
+
+<div id="installandroidstudio">
+	<h3>Step 2. Download and Install Android Studio IDE</h3>
+	
+	<p>
+		The next piece of software for you to install is called Android Studio.
+		This is an official text editor and integrated development environment (IDE) for developing Android apps.
+		<strong>You must install Oracle JDK before installing Android Studio</strong>, so please don't start this step until you have completed Step 1 above.
+	</p>
+	
+	<p>
+		Download Android Studio from the following address:
+	</p>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/sdk/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/sdk/%27" tppabs="https://developer.android.com/sdk/">Android Studio Download Page</a>
+	</ul>
+	
+	<div class="figure">
+		<img class="figure" src="images/install-android-studio-1.png" tppabs="http://web.stanford.edu/class/cs193a/images/install-android-studio-1.png" alt="screenshot" />
+	</div>
+	
+	<p>
+		Once you click the Download link, you will be asked to accept a license agreement.
+		Then you will be able to download the software.
+		The download may take a while because the file can be almost 1gb in size.
+	</p>
+	
+	<p>
+		Once you have downloaded the installer, run it to <strong>install Android Studio</strong> on your computer.
+		The installation make take a while because of all the components and libraries included.
+		You can choose all of the default settings during the installation.
+	</p>
+	
+	<p>
+		<em>(Mac OS X only)</em>
+		If you are using a Mac, your computer might try to block the Android Studio installation.
+		You might see a warning that says, "The package is damaged and should be moved to the trash."
+		If your OS is blocking the installation, go to <strong>System Preferences &gt; Security &amp; Privacy</strong> and under "Allow applications downloaded from", select <strong>Anywhere</strong>.
+		Then try to open Android Studio again.
+	</p>
+	
+	<p>
+		<em>(Windows only)</em>
+		If you are using the Windows operating system, you should also download and install the following USB driver pack.
+		These USB drivers will help you to deploy apps to your phone or tablet from your computer.
+	</p>
+
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27http://developer.android.com/tools/extras/oem-usb.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/tools/extras/oem-usb.html%27" tppabs="http://developer.android.com/tools/extras/oem-usb.html">Windows USB driver download page</a>
+	</ul>
+	
+	<p>
+		If you need more information, see Google's Android page on installing Android Studio:
+	</p>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/sdk/installing/index.html?pkg=studio  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/sdk/installing/index.html?pkg=studio%27" tppabs="https://developer.android.com/sdk/installing/index.html?pkg=studio">Android Studio - Installing</a>
+	</ul>
+</div>
+
+
+<div id="installandroidstudio">
+	<h3>Step 3. Configure Android Studio</h3>
+	
+	<p>
+		Once Android Studio is installed, we'll need to configure a few important settings and install a few extra features.
+		First, <strong>launch the Android Studio</strong> application.
+		This may take a while, as the app needs to complete the installation and initial configuration, as well as downloading and applying any updates.
+	</p>
+	
+	<p>
+		<em>(Mac OS X only)</em>
+		If you are using Mac OS X Yosemite and the latest Java v1.8, your computer might be unable to launch Android Studio.
+		If so, open the application package for Android Studio in your Finder, and edit the <strong>Info.plist</strong> file.
+		Change the key JVMversion to store the value <strong>1.6+</strong> instead of <strong>1.6*</strong>.
+		For more info, see <a class="popup" href="javascript:if(confirm(%27http://stackoverflow.com/questions/27369269/android-studio-was-unable-to-find-a-valid-jvm-related-to-mac-os  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://stackoverflow.com/questions/27369269/android-studio-was-unable-to-find-a-valid-jvm-related-to-mac-os%27" tppabs="http://stackoverflow.com/questions/27369269/android-studio-was-unable-to-find-a-valid-jvm-related-to-mac-os">this thread on StackOverflow</a>.
+		
+	</p>
+	
+	<p>
+		Once Android Studio is running, you will need to <strong>load the "SDK Manager"</strong> menu.
+		This is found by clicking the following icon in the top toolbar:
+		<img src="images/icon-sdk-manager.png" tppabs="http://web.stanford.edu/class/cs193a/images/icon-sdk-manager.png" alt="icon" />
+	</p>
+	
+	<p>
+		The SDK Manager window has a series of nested checkboxes to allow you to install various packages and features.
+		The overall list has categories such as Tools, Android 5.0.1, Android 4.4.2, Extras, etc.
+		These represent various versions of Android that could be installed on your system.
+		Click the first of these categories. <em>(As of this writing, that is "Android 5.0.1 (API 21)".</em>
+		Under that category, check the box for <strong>"Intel X86 Atom System Image"</strong>.
+		We will need this in order to run the emulator.
+		(Windows only) Also go to the Extras category and check the box for "Intel x86 Emulator Accelerator (HAXM installer)".
+	</p>
+	
+	<div class="figure">
+		<img class="figure" src="images/android-sdk-manager-1.png" tppabs="http://web.stanford.edu/class/cs193a/images/android-sdk-manager-1.png" alt="screenshot" />
+	</div>
+	
+	<p>
+		Once you've selected all the desired packages, Click the <strong>Install X packages</strong> button at bottom-right.
+		In the next window, you will need to accept the license agreement for each installed package.
+		Once you do so, click Install, and the packages will be downloaded and installed for you.
+		Wait until the packages are finished downloading and installing before proceeding.
+		(Wait for the screen to say "Done loading packages." at the bottom.)
+	</p>
+	
+	
+	<p>
+		If you need more information on this step, see Google's Android page on adding packages:
+	</p>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/sdk/installing/adding-packages.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/sdk/installing/adding-packages.html%27" tppabs="https://developer.android.com/sdk/installing/adding-packages.html">Android Studio - Adding SDK Packages</a>
+	</ul>
+</div>
+
+
+<div id="createvirtualdevice">
+	<h3>Step 4. Create Virtual Device</h3>
+	
+	<p>
+		To run your Android apps on your computer, you can use a "virtual device" which is a software emulation of an Android phone or tablet.
+		In past versions, you needed to set up this virtual device yourself.
+		But if you install the current version of Android Studio with the default settings, it automatically creates a "Nexus X" device for you, so you don't need to do anything here.
+		Hooray!
+	</p>
+	
+	<p>
+		If you need more information on this step, see Google's Android page on virtual devices:
+	</p>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/tools/devices/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/tools/devices/%27" tppabs="https://developer.android.com/tools/devices/">Android Studio - Managing Virtual Devices</a>
+	</ul>
+</div>
+
+
+<div id="helloworld">
+	<h3>Step 5. Make and Run a "Hello World" Project</h3>
+	
+	<p>
+		You're basically done now, but let's make sure everything is running properly by creating and running an empty "Hello World" project.
+		Load up Android Studio and click <strong>"Start a new Android Studio project"</strong>.
+		(If this is your first time ever running Android Studio and creating a project, you may need to Accept the license agreement.)
+		You can use all of the default settings and names for your project.
+		In particular, when you get to the "Add an activity" screen, just choose the default "Blank Activity" option.
+		Click <strong>Next</strong> and <strong>Finish</strong> on each screen until the project is created.
+	</p>
+	
+	<p>
+		Once the project is created, you should see a Design view with a palette of widgets and a preview image that looks like an Android device.
+		You don't need to edit any code or anything yet.
+	</p>
+	
+	<div class="figure">
+		<img class="figure" src="images/android-studio-first-project.png" tppabs="http://web.stanford.edu/class/cs193a/images/android-studio-first-project.png" alt="screenshot" style="max-width: 80%" />
+	</div>
+	
+	<p>
+		Click the "Play" button icon in the top toolbar to run the app: <img src="images/icon-play-button.png" tppabs="http://web.stanford.edu/class/cs193a/images/icon-play-button.png" alt="icon" />
+		Once you do this, it will ask you what virtual device you want to use.
+		You can choose the default virtual device that was created during installation.
+		(Ours is called "Nexus 5 API 21 x86".)
+	</p>
+	
+	<p>
+		If you get the following error at this point:
+	</p>
+
+	<pre>
+emulator: ERROR: x86 emulation currently requires hardware acceleration!
+Please ensure Intel HAXM is properly installed and usable.
+CPU acceleration status: HAX kernel module is not installed!
+</pre>
+
+	<p>
+		There are two ways to fix this error.
+		The first fix is to enable hardware acceleration by following <a class="popup" href="javascript:if(confirm(%27http://developer.android.com/tools/devices/emulator.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/tools/devices/emulator.html#vm-windows%27" tppabs="http://developer.android.com/tools/devices/emulator.html#vm-windows">Google's instructions for configuring VM acceleration</a>.
+		This is the preferred fix if possible.
+		If that fix does not work, you can instead change your VM to use the ARM CPU mode rather than x86.
+		Unfortunately, changing your VM to ARM mode will make the VM run very slowly because it is not hardware accelerated.
+	</p>
+	
+	<p>
+		To change your VM to ARM mode, click the AVD Manager icon at the top of Android Studio: <img src="images/icon-avd-manager.png" tppabs="http://web.stanford.edu/class/cs193a/images/icon-avd-manager.png" alt="icon" />
+		Then you should see your default Nexus device.
+		Press the "pencil" icon on the right side to edit the device's configuration.
+		In the configuration screen, in the area for the android version Lollipop, at right click <strong>Change</strong>.
+		In the window that appears, select a row where the "ABI" starts with "arm", such as "armeabi-v7a".
+		Then click Next/Finish to get back to Android Studio.
+	</p>
+
+	<div class="figure">
+		<img class="figure" src="images/android-studio-choose-device.png" tppabs="http://web.stanford.edu/class/cs193a/images/android-studio-choose-device.png" alt="screenshot" />
+	</div class="figure">
+
+	<div class="figure">
+		<img class="figure" src="images/avd-manager-lollipop-change.png" tppabs="http://web.stanford.edu/class/cs193a/images/avd-manager-lollipop-change.png" alt="screenshot" />
+	</div>
+	
+	<div class="figure">
+		<img class="figure" src="images/avd-virtual-device-config.png" tppabs="http://web.stanford.edu/class/cs193a/images/avd-virtual-device-config.png" alt="screenshot" />
+	</div>
+	
+	
+	<p>
+		When you try to run the app on your virtual device, sometimes the device just sits at the device's home screen rather than automatically running your app.
+		If this happens, click the bottom-right button in the virtual device, the one that looks like a 3x3 phone keypad.
+		This should pop up a list of all apps available.
+		Find your app in the list and click it to run it.
+	</p>
+	
+	<p>
+		If you need more information on this step, see Google's Android page on creating a first project:
+	</p>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/sdk/installing/create-project.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/sdk/installing/create-project.html%27" tppabs="https://developer.android.com/sdk/installing/create-project.html">Android Studio - Managing Projects</a>
+	</ul>
+</div>
+
+				<div id="w3c">
+					<div class="copyrightnotice">
+						This document and its content are copyright &copy; Marty Stepp, 2015.
+						All rights reserved.
+						Any redistribution, reproduction, transmission, or storage of part or all of the contents in any form is prohibited without the authors' expressed written permission.
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			// Google Analytics
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','../../../www.google-analytics.com/analytics.js'/*tpa=http://www.google-analytics.com/analytics.js*/,'ga');
+
+			ga('create', 'UA-2729135-9', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</body>
+</html>
+

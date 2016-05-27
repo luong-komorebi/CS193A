@@ -1,0 +1,1106 @@
+a {
+	/* color: #CC3300; UW color 1 */
+	/* color: #343078; UW color 2 */
+	/* text-decoration: none; */
+	color: #8C1515;
+}
+
+a:hover {
+	background-color: #FFFF99;
+	text-decoration: underline;
+}
+
+a img {
+	border-width: 0;
+}
+
+.activerow {
+	background-color: white;
+	color: #008;
+	font-size: larger;
+	font-weight: bold;
+}
+
+.announcement {
+	font-weight: bold;
+}
+
+.announcements > li {
+	padding-bottom: 1em;
+	padding-left: 3.5em;
+	text-indent: -3.5em;
+}
+
+.announcements > li > ul > li {
+	padding-bottom: 0.2em;
+	padding-top: 0.2em;
+	text-indent: 0em;
+}
+
+.announcements > li > ul > li > p {
+	margin-top: 0em;
+}
+
+.aside {
+	font-size: small;
+}
+
+.assignment {
+	border-top: 1px solid #dddddd;
+	border-left: 1px solid #dddddd;
+	border-right: 1px solid #dddddd;
+}
+
+.assignmentbottom {
+	border-bottom: 2px solid #dddddd;
+	border-left: 1px solid #dddddd;
+	border-right: 1px solid #dddddd;
+	padding-bottom: 1em;
+}
+
+.assignment td,
+.assignment th,
+.assignmentbottom td,
+.assignmentbottom th {
+	padding: 0.4em;
+}
+
+.homeworktable {
+	border-bottom: 2px solid #dddddd;
+}
+
+.assignmentarea {
+	background-color: #F8F8F8;
+	border-top:    2px solid #CCCCCC;
+	border-left:   2px solid #CCCCCC;
+	border-bottom: 2px solid #888888;
+	border-right:  2px solid #888888;
+	border-radius: 10px;
+	margin: 1em;
+	max-width: 60em;
+	padding: 0.5em;
+}
+
+.assignmentarea h3 {
+	margin-top: 0.5em;
+}
+
+.backlink {
+	font-size: small;
+}
+
+.biglist {
+	font-size: small;
+}
+
+body {
+	background-color: #ffffff;
+	color: #000000;
+	/* font-size: 11pt; */
+	/* line-height: 14pt; */
+	margin: 0px;
+}
+
+body, button, input, select, option {
+	font-family: Calibri, "Lucida Sans Unicode", Geneva, Verdana, Arial, Helvetica, sans-serif;
+}
+
+.bugfixes ul li {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.centerpane {
+	margin-left: 40px;
+	margin-right: 40px;
+	padding: 0em 1em 1em 1.5em;
+	max-width: 60em;
+}
+
+.closedipl {
+	background-color: #BBB;
+	color: white;
+}
+
+.color_alternating_rows tbody tr:nth-child(2n), .color_alternating_rows tbody tr.gray, .gradestable th {
+	background-color: #F8F8F8;
+}
+
+.comment {
+	color: #007700;
+}
+
+#commonerrors dt {
+	margin-top: 2em;
+}
+
+.contactlist li {
+	margin-bottom: 0.5em;
+}
+
+#container {
+	background-color: #ffffff;
+	width: 100%;
+}
+
+.copyrightnotice {
+	color: #555;
+	font-size: 9px;
+	font-style: italic;
+	line-height: 1em;
+}
+
+#coursedescriptionarea p {
+	margin-top: 0px;
+}
+
+dd {
+	margin-bottom: 2.5em;
+}
+
+dd, dt {
+	margin-left: 1.5em;
+/*
+	text-indent: -1.5em;
+*/
+}
+
+dt {
+	font-weight: bold;
+}
+
+div.figure {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+div.section {
+	background-color: #f8f8f8;
+	border: thin solid #dddddd;
+	margin-bottom: 2em;
+	overflow: hidden;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+div.section h3 {
+	margin-top: 0.5em;
+}
+
+div.section p {
+	padding-left: 1em;
+}
+
+.emphasized {
+	font-weight: bold;
+}
+
+.error, .errorfixed {
+	background-color: #FFFFDD;
+	border: thin solid gray;
+	font-weight: bold;
+}
+
+.error {
+	color: red;
+}
+
+div.error {
+	margin: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.errorfixed {
+	color: #000099;
+}
+
+.examgradestatstable {
+	border-collapse: collapse;
+	margin-left: 2em;
+	margin-bottom: 1em;
+}
+
+.examgradestatstable td, .examgradestatstable th {
+	border: thin solid gray;
+	padding: 2px 10px;
+}
+
+.excitingnews {
+	background-color: #FFFFDD;
+	border: 2px dashed #AA2222;
+	border-radius: 12px;
+	font-size: larger;
+	overflow: hidden;
+	padding: 1em;
+	margin: 1em;
+	margin-bottom: 2em;
+}
+
+.faqarea {
+	
+}
+
+.filename {
+	text-decoration: none;
+}
+
+.filelist {
+	list-style-type: none;
+}
+
+.finalday {
+	color: #bb0000;
+}
+
+.first {
+	margin-top: 0em !important;
+}
+
+.future {
+	background-color: #eee;
+	color: #666;
+}
+
+.future a {
+	color: #CC5555;  /* #8C1515 */
+	text-decoration: none;
+}
+
+.future strong {
+	/* font-weight: normal; */
+}
+
+.gradestable {
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	background-color: white;
+	border-collapse: collapse;
+	clear: right;
+	/* position: absolute; */
+	font-size: small;
+	z-index: 9999;
+}
+
+.gradestable td, .gradestable th {
+	border: 1px solid gray;
+	padding: 1px 4px;
+	white-space: nowrap;
+}
+
+.gradestable tr:hover {
+	background-color: #FFB;
+}
+
+.groupbyname {
+	width: 12em;
+}
+
+h2 {
+	line-height: 16pt;
+}
+
+h3 {
+	line-height: 16pt;
+	margin-top: 2em;
+	margin-bottom: 0.5em;
+}
+
+h4 {
+	/*margin-top: 3em; */
+	margin-bottom: 0.5em;
+}
+
+.handoutlink {
+	font-size: larger;
+	font-weight: bold;
+	margin-left: 1em;
+	margin-bottom: 1.5em;
+}
+
+#header {
+	
+}
+
+#header .logo img {
+	float: left;
+	margin-right: 2em;
+	margin-bottom: 10px;
+}
+
+#header .titles h1 {
+	margin: 0;
+	margin-left: 285px;
+	/* font-size: 16pt; */
+}
+
+#header .titles h2 {
+	float: left;
+	font-size: small;
+	font-weight: normal;
+	margin: 0.25em 0em 0em 1em;
+	width: 50%;
+}
+
+.lefthoverimage {
+	float: left;
+	margin-right: 1em;
+	margin-bottom: 0.25em;
+}
+
+.stanfordhr1, .stanfordhr2 {
+	border: 0em;
+	height: 20px;
+	margin: 0em;
+	width: 100%;
+}
+
+.stanfordhr1 {
+	background-color: #8C1515;
+}
+
+.stanfordhr2 {
+	background-color: #D5C590;
+	box-shadow: 0px 8px 20px #999;
+}
+
+#header .titles > img {
+	margin: 1em 0em 0.5em 0.5em;
+}
+
+.highlight {
+	background-color: yellow;
+}
+
+.holiday {
+	color: #888;
+}
+
+#homework_files {
+	max-width: 1000px;
+}
+
+#homework_files h3 {
+	margin-top: 0em;
+	margin-bottom: 0.5em;
+}
+
+#homework_files h4 {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+#homework_files td {
+	padding-bottom: 0.5em;
+}
+
+#homework_files > ul.filefolder {
+	border: thin solid #CCCCCC;
+	padding-bottom: 1em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+hr {
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+}
+
+img {
+	vertical-align: bottom;
+}
+
+img.icon {
+	height: 16px;
+	width: 16px;
+	vertical-align: middle;
+}
+
+img.imageicon, img.sidebaricon {
+	border: none;
+	height: 16px;
+	width: 16px;
+	vertical-align: middle;
+}
+
+img.stafficon {
+	border: none;
+	height: 48px;
+	width: 48px;
+}
+
+#ineedhelp ol {
+	padding-left: 3em;
+}
+
+#ineedhelp ol li {
+	margin-bottom: 0.25em;
+}
+
+.interpreter {
+	background-color: #ffd;
+	font-weight: bold;
+}
+
+.lectureday {
+	color: #dd00dd;
+}
+
+.leftcolumn {
+	padding-right: 20px;
+	text-align: left;
+	vertical-align: top;
+	width: 150px;
+}
+
+li.filefolder {
+	  /*
+	  padding-top: 6px;
+	  padding-bottom; 6px;
+	  */
+	  line-height: 1.5em;
+}
+
+li.filefolder table {
+	border-bottom: 1px solid gray;
+	margin-bottom: 1em;
+}
+
+li.folder {
+	list-style-type: none;
+	margin-top: 1em;
+}
+
+li.folder p {
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 0.5em;
+/*  margin-left: */
+	line-height: 1.2em;
+}
+
+li.folder li.folder ul {
+	padding-left: 1em;
+}
+
+.new {
+	color: #c00;
+	font-weight: bold;
+}
+
+/*
+ol {
+	padding-left: 1em;
+}
+
+ol li {
+	margin-bottom: 1em;
+}
+*/
+
+ol.installsteps li {
+	margin-bottom: 1.5em;
+}
+
+ol.installsteps li img {
+	padding-top: 8px;
+}
+
+ol li div {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+p.filefolder {
+	  padding: 0px;
+	  margin: 6px 0px;
+	  /* line-height: 1em; */
+}
+
+.pageheader {
+	font-size: large;
+	font-weight: bold;
+}
+
+.plusicon {
+	display: none;
+}
+
+.prefilelist {
+	margin-bottom: 2em;
+}
+
+pre.html, pre.css, pre.js, pre.php, pre.xml, pre.sql {
+	border: 1px dashed #aaaaff;
+	background-color: #f8f8ff;
+	padding: 0.2em;
+	margin: 1em;
+}
+
+pre var {
+	font-weight: bold;
+	font-style: italic;
+}
+
+.popupwindow {
+	background-color: rgba(230, 230, 230, 0.88);
+	padding: 2%;
+	position: fixed;
+	width: 96%;
+	height: 96%;
+	left: 0;
+	top: 0;
+}
+
+.popupwindowbody {
+	background-color: white;
+	border: 1px solid #cccccc;
+	border-radius: 20px;
+	box-shadow: 0px 0px 50px gray;
+	padding: 1em;
+	opacity: 1.0;
+}
+
+.popupwindowbody .popupwindowbuttons {
+	text-align: center;
+}
+
+.popupwindowbody button {
+	font-size: larger;
+}
+
+.popupwindowbody button img {
+	vertical-align: baseline;
+}
+
+pre, code, samp, tt, textarea {
+	font-family: Consolas, "Courier New", monospace;
+}
+
+#preassignmentarea {
+	margin-bottom: 2em;
+}
+
+.quote {
+	font-style: italic;
+}
+
+div.contentsection {
+	margin-left: 2em;
+	margin-right: 2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.section_a {
+	color: #990000;
+}
+
+.section_b {
+	color: #000099;
+}
+
+.separated {
+	padding-bottom: 2em;
+}
+
+.separatedtop {
+	padding-top: 2em;
+}
+
+.showdatevisible {
+	background: #ffffdd;
+	border-radius: 5px;
+	float: right;
+	margin-left: 1em;
+	margin-bottom: 0.5em;
+	opacity: 0.6;
+	padding: 0.3em;
+	text-indent: 0;
+}
+
+#sidebar {
+	font-weight: bold;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1.5em;
+	margin-top: 1.5em;
+	max-width: 90%;
+	overflow: hidden;
+	padding: 0px 25px 15px 20px;
+	/* border-bottom: 2px solid #F59075; */
+	border-bottom: 4px solid #E6E4E2;
+}
+
+#sidebar a, .buttonlink {
+	background-color: #eee;
+	border-top: 2px solid #f8f8f8;
+	border-left: 2px solid #f8f8f8;
+	border-bottom: 2px solid #ddd;
+	border-right: 2px solid #ddd;
+	border-radius: 4px;
+	padding: 0.3em 0.5em;
+	text-decoration: none;
+}
+
+#sidebar a:hover {
+	background-color: #ff8;
+	border-top: 2px solid #ffffc8;
+	border-left: 2px solid #ffffc8;
+	border-bottom: 2px solid #aa4;
+	border-right: 2px solid #aa4;
+	text-decoration: underline;
+}
+
+#sidebar div {
+	float: left;
+	width: 11em;
+	margin-left: 0.25em;
+	margin-right: 0.25em;
+}
+
+#sidebar h2 {
+	font-size: 110%;
+	margin-bottom: 0em;
+	margin-top: 0.25em;
+}
+
+#sidebar ul {
+	line-height: 2.5em;
+	list-style-type: none;
+	margin: 0em;
+	padding: 0em;
+}
+
+#sidebar li {
+	display: inline;
+	margin-left: 0.2em;
+	white-space: nowrap;
+}
+
+/*
+#sidebar li:nth-child(2n) {
+	background-color: #f6f6f6;
+}
+*/
+
+.spacer {
+	clear: both;
+	height: 1px;
+}
+
+.staff {
+	
+}
+
+.studententry {
+	border-bottom: 2px solid #bbbbbb;
+}
+
+.subheading {
+	/* font-style: italic; */
+}
+
+.surveyresults {
+	padding-left: 4em;
+}
+
+table {
+	margin: 0px;
+	padding: 0px;
+	border-width: 0px;
+	color: #000000;
+}
+
+table.calendar {
+	border-collapse: collapse;
+	font-size: smaller;
+	width: 100%;
+	max-width: 1400px;
+}
+
+table.calendar td {
+	border: thin solid gray;
+	padding-left: 10px;
+	padding-right: 10px;
+	vertical-align: top;
+}
+
+table.calendar th {
+/*
+	width: 30%;
+*/
+}
+
+table.calendar th.week {
+	width: 10%;
+}
+
+table.calendar tr:hover,
+table.calendar tr:hover td.future,
+table.calendar td.future:hover {
+	background-color: #F8F8F0;
+}
+
+table.calendar .datelabel {
+	border: 1px dotted gray;
+	box-shadow: 2px 2px 8px gray;
+	padding: 3px;
+	position: relative;
+	top: -0.2em;
+	left: -0.2em;
+}
+
+table.calendar td.future .datelabel {
+	box-shadow: 1px 1px 5px lightgray;
+}
+
+
+table.calendar .datelabel img {
+	display: none;
+}
+
+table.hwoutputtable td {
+	padding-bottom: 0em !important;
+}
+
+table.homeworktable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.homeworktable th {
+	text-align: center;
+	padding-right: 1em;
+	white-space: nowrap;
+}
+
+table.homeworktable td > ul {
+	list-style-type: none;
+	margin: 0em;
+	padding-left: 0em;
+}
+
+table.homeworktable td > ul ul {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+table.labhourstable {
+	border: thin solid black;
+	border-collapse: collapse;
+	padding: 2px;
+	margin: 2px;
+	width: 100%;
+}
+
+table.labhourstable td, table.labhourstable th {
+	border: thin solid black;
+	font-size: 80%;
+	margin: 2px;
+	padding: 2px;
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+	text-align: center;
+	white-space: nowrap;
+	width: 12%;
+}
+
+table.labhourstable th {
+	background-color: #ccffcc;
+}
+
+
+table.stafftable {
+	border: none;
+	border-collapse: collapse;
+}
+
+table.stafftable td, table.stafftable th {
+	font-size: 90%;
+	padding-right: 1em;
+	vertical-align: top;
+}
+
+td, th {
+	vertical-align: top;
+}
+
+td.calendar {
+	position: relative;
+}
+
+td.calendar span.cynthia,
+td.calendar span.marty {
+	position: absolute;
+	top: .5em;
+	right: .5em;
+	min-width: 48px;
+	min-height: 48px;
+	background-repeat: no-repeat;
+	padding-top: 50px;
+}
+
+td.calendar span.cynthia {
+	background-image: url(images/cynthia-lee.jpg)/*tpa=http://web.stanford.edu/class/cs193a/images/cynthia-lee.jpg*/;
+}
+
+td.calendar span.marty {
+	background-image: url(images/marty-stepp.jpg)/*tpa=http://web.stanford.edu/class/cs193a/images/marty-stepp.jpg*/;
+}
+
+td.calendar ul {
+/*
+	white-space: nowrap;
+*/
+}
+
+td.extra, th.extra {
+	border: none !important;
+}
+
+td.spaced {
+	padding-right: 20px;
+}
+
+.today {
+	background-color: #ffb;
+}
+
+.topspaced td, .topspaced th {
+	padding-top: 1.25em;
+	vertical-align: middle;
+}
+
+.turninlink {
+	background-color: #DDDDDD;
+	border-left:   3px solid #CCCCCC;
+	border-top:    3px solid #CCCCCC;
+	border-right:  3px solid #888888;
+	border-bottom: 3px solid #888888;
+	border-radius: 6px;
+	float: right;
+	margin-right: 1em;
+	padding: 0.5em;
+}
+
+ul.filefolder {
+	  /*
+	  padding-top: 6px;
+	  padding-bottom; 6px;
+	  */
+	  list-style-type: none;
+	  line-height: 1.5em;
+	  padding-right: 1em;
+}
+
+ul.filefolder, ul.filefolder p {
+	padding-left: 0em;
+	padding-right: 0em;
+}
+
+ul.folder0 > li.folder {
+	margin-bottom: 50px;
+}
+
+ul.imagelist {
+	list-style-type: none;
+	margin-bottom: 1.5em;
+	padding-left: 1em;
+}
+
+ul.imagelist img {
+	vertical-align: top;
+}
+
+ul.imagelist li {
+	margin-bottom: 1em;
+}
+
+.update {
+	background-color: yellow;
+	text-decoration: underline;
+}
+
+.urgent {
+	color: #990000;
+	font-weight: bold;
+}
+
+.userinput {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#w3c {
+	margin-top: 4em;
+	text-align: left;
+	max-width: 320px;
+}
+
+#wallofshame {
+	background-color: #FFEEEE;
+	border: 3px dashed #BB2222;
+	margin: 0.5em auto;
+	padding: 0em 0.5em;
+	width: 80%;
+}
+
+#wallofshame img {
+	float: right;
+	margin-left: 1em;
+}
+
+.week {
+	border: 2px solid #eee;
+	background-color: #f8f8f8;
+	margin-bottom: 3em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.week h3 {
+	margin-top: 0.5em;
+}
+
+.pass {
+	background-color: #bfb;
+}
+
+.fail {
+	background-color: #fbb;
+}
+
+.largefileboxrow {
+	text-align: center;
+	vertical-align: top;
+	background-color: #f0f0f0;
+	border: 2px dotted #dddddd;
+	border-radius: 20px;
+	padding: 0.5em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.largefilebox {
+	display: inline-block;
+	margin-right: 1em;
+	text-align: center;
+	vertical-align: top;
+}
+
+.largefilebox a {
+	text-decoration: none;
+}
+
+.largefilebox a:hover {
+	background-color: transparent;
+	color: #CC8585;
+	text-decoration: none;
+}
+
+.largefilebox img.largeicon {
+	/* width: 48px; */
+	height: 48px;
+	margin: 5px;
+}
+
+#homework_files .assignmentarea div h4,
+.assignmentarea div h4 {
+	margin-top: 0;
+	text-align: center;
+}
+
+#homework_files .assignmentarea > div:nth-child(2N+1) {
+	background-color: #f0f0f0;
+	border: 2px dotted #dddddd;
+	border-radius: 20px;
+	padding: 0.5em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+
+table.calltable {
+	border-collapse: collapse;
+	margin-bottom: 0.5em;
+}
+
+table.calltable th a img {
+	vertical-align: middle;
+}
+
+table.calltable pre {
+	margin: 0em;
+}
+
+table.calltable td, table.calltable th {
+	border: 1px solid gray;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+table.calltable td code, table.calltable th code {
+	white-space: nowrap;
+}
+
+table.calltablewide {
+	width: 100%;
+}
+
+@media only screen and (max-device-width: 800px) {
+	body {
+		margin: 0;
+		padding: 2px;
+	}
+	
+	#container {
+		width: 100%;
+	}
+	
+	#header {
+		margin: 0.5em;
+	}
+	
+	#header .logo img {
+		float: none;
+	}
+	
+	#header .titles h1 {
+		margin-left: 0;
+	}
+	
+	.centerpane {
+		margin: 2px;
+		padding: 0.25em;
+	}
+	
+	.sidebar div {
+		float: left;
+		margin-left: 0.25em;
+		margin-right: 0.25em;
+		width: 45%;
+	}
+	
+	.sidebar ul li, .sidebar ul li a {
+		padding-top: 0.25em;
+		padding-bottom: 0.25em;
+	}
+
+	ul.announcements {
+		margin: 0;
+		padding: 0;
+		padding-left: 1em;
+	}
+	
+	.announcements > li {
+		padding-bottom: 0.5em;
+		padding-left: 0.5em;
+		text-indent: -0.5em;
+	}
+	
+	
+	.homeworktable th {
+		display: none;
+	}
+}

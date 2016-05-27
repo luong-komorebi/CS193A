@@ -1,0 +1,580 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--
+		Copyright notice:
+		This file and all linked documents are, unless otherwise specified, authored by Marty Stepp and/or Stanford University, and may not be copied, redistributed, or modified without explicit permission of the course instructor.
+		-->
+		<title>CS 193A: Android Application Development - Lectures</title>
+
+		<meta charset="utf-8" />
+		<meta name="author" content="Marty Stepp" />
+		<meta name="description" content="Course web site for CS 193A, a course on Android app development." />
+		<meta name="keywords" content="Marty Stepp, CS 193A, Stanford University, computer science, Android, Java, app" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
+		
+		<meta id="WEEK1_SUN" name="WEEK1_SUN" content="Jan 4 2015 12:00 AM" />
+
+		<!-- stop the web browser from ever caching this page or its images -->
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+
+		<link href="style.css" tppabs="http://web.stanford.edu/class/cs193a/style.css" type="text/css" rel="stylesheet" />
+		<link href="images/stanford-favicon.png" type="image/png" rel="shortcut icon" />
+		<link href="images/stanford-favicon.png" type="image/png" rel="icon" />
+
+		<script src="../../../ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" tppabs="http://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript"></script>
+		<script src="../../../ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js" tppabs="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js" type="text/javascript"></script>
+		<script src="sorttable.js" tppabs="http://web.stanford.edu/class/cs193a/sorttable.js" type="text/javascript"></script>
+		<script src="cs.js" tppabs="http://web.stanford.edu/class/cs193a/cs.js" type="text/javascript"></script>
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="header" class="contentsection">
+				<div class="titles">
+					<div class="logo">
+						<a href="javascript:if(confirm(%27http://www.cs.stanford.edu/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.cs.stanford.edu/%27" tppabs="http://www.cs.stanford.edu/"><img src="images/stanford-cs-logo.png.jpg" tppabs="http://web.stanford.edu/class/cs193a/images/stanford-cs-logo.png" alt="Stanford CS logo" /></a>
+					</div>
+
+					<h1>
+						CS 193A: Android App Development <br />
+						Winter 2015
+					</h1>
+				</div>
+			</div>
+
+			<hr class="stanfordhr1" />
+			<hr class="stanfordhr2" />
+			
+			<div id="sidebar">
+				<ul>
+					<li><a href="index.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/index.shtml"><img src="images/home_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/home_icon.png" class="sidebaricon" alt="main" /> Home</a></li>
+					<li><a href="handouts/course-information.pdf" tppabs="http://web.stanford.edu/class/cs193a/handouts/course-information.pdf"><img src="images/syllabus_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/syllabus_icon.png" class="icon" alt="icon" /> Course Info</a></li>
+					<li><a href="lectures.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/lectures.shtml"><img src="images/lectures_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/lectures_icon.png" class="sidebaricon" alt="lectures" /> Lectures</a></li>
+					<li><a href="homework.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/homework.shtml"><img src="images/homework_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/homework_icon.png" class="sidebaricon" alt="homework" /> Homework</a></li>
+					<li><a class="popup" href="javascript:if(confirm(%27https://piazza.com/class/i43gbjj4o0w6as  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://piazza.com/class/i43gbjj4o0w6as%27" tppabs="https://piazza.com/class/i43gbjj4o0w6as"><img src="images/piazza-icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/piazza-icon.png" class="sidebaricon" alt="message board" /> Piazza</a></li>
+					<li><a href="working-at-home.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/working-at-home.shtml"><img src="images/working_at_home_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/working_at_home_icon.png" class="sidebaricon" alt="working at home" /> Work@Home</a></li>
+					<li><a href="videos.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/videos.shtml"><img src="images/icon_yt.png" tppabs="http://web.stanford.edu/class/cs193a/images/icon_yt.png" class="sidebaricon" alt="icon" /> Videos</a></li>
+					<li><a href="links.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/links.shtml"><img src="images/links_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/links_icon.png" class="sidebaricon" alt="links" /> Links</a></li>
+					<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/reference/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/reference/%27" tppabs="https://developer.android.com/reference/"><img src="images/icon_android.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_android.gif" class="sidebaricon" alt="api" /> API</a></li>
+				</ul>
+
+				<!--
+					<li><a class="popup" href="http://stanford.edu/~stepp/cppdoc/"><img src="images/stanford-favicon.png" class="icon" alt="icon" /> <strong>Stanford C++ Lib</strong></a></li>
+					<li><a class="popup" href="http://www.cppreference.com/"><img src="images/icon_cppreference.gif" class="icon" alt="icon" /> CppReference.com</a></li>
+					<li><a class="popup" href="http://www.cplusplus.com/reference/"><img src="images/icon_cplusplus.gif" class="icon" alt="icon" /> CPlusPlus.com</a></li>
+					<li><a href="styleguide.shtml"><img src="images/gradeit_icon.gif" class="icon" alt="icon" /> 193A Style Guide</a></li>
+				-->
+				</div>
+			</div>
+			
+			<noscript>
+				<div class="error">
+					<p>
+						ERROR: This site requires JavaScript in order to function properly.
+						You seem to be using a web browser that does not support JavaScript, or you may have a JavaScript blocker such as NoScript installed in your browser.
+						In order to use this course web site, you must enable JavaScript in your browser for this site.
+					</p>
+				</div>
+			</noscript>
+
+			<div class="centerpane">
+
+
+<style type="text/css">
+	.centerpane {
+		max-width: 90em !important;
+	}
+</style>
+
+<h2>
+	Lectures
+</h2>
+
+<div id="lecture_files">
+	<p>
+		This page displays what we have covered each week, with slides, lecture code, and relevant links.
+		NOTE: Lectures will <em>not</em> be video recorded; sorry for the inconvenience.
+	</p>
+
+	<div class="week" id="week10">
+		<h3>Week 10 (<span class="date insertdate" rel="Week10 Tue"></span>)</h3>
+		
+		<p>
+			This week we will talk about creating and querying databases in an Android app.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/databases.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/databases.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					databases</a>
+				(PDF)
+			</li>
+			<!--
+			<li>
+				lecture code (ZIP):
+				<a href="lectures/08/lecture-code-08-Jukebox.zip">
+					<img class="icon" src="images/icon_zip.gif" alt="icon" />
+					Jukebox</a>,
+				<a href="lectures/08/lecture-code-08-Downloader.zip">
+					<img class="icon" src="images/icon_zip.gif" alt="icon" />
+					Downloader</a>
+				<ul>
+					<li>
+						Jukebox:
+						<a href="lectures/08/Jukebox/JukeboxActivity.java">JukeboxActivity.java</a>,
+						<a href="lectures/08/Jukebox/activity_jukebox.xml">activity_jukebox.xml</a>,
+						<a href="lectures/08/Jukebox/JukeboxService.java">JukeboxService.java</a>
+					</li>
+					<li>
+						Downloader:
+						<a href="lectures/08/Downloader/DownloaderActivity.java">DownloaderActivity.java</a>,
+						<a href="lectures/08/Downloader/activity_downloader.xml">activity_downloader.xml</a>,
+						<a href="lectures/08/Downloader/DownloaderService.java">DownloaderService.java</a>,
+						<a href="lectures/08/Downloader/Downloader.java">Downloader.java</a>,
+						<a href="lectures/08/Downloader/AndroidManifest.xml">AndroidManifest.xml</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				Links:
+				<a class="popup" href="http://developer.android.com/guide/components/services.html">Services tutorial</a>,
+				<a class="popup" href="http://developer.android.com/reference/android/app/Service.html">Service</a>,
+				<a class="popup" href="http://developer.android.com/reference/android/content/BroadcastReceiver.html">BroadcastReceiver</a>,
+				<a class="popup" href="http://developer.android.com/reference/android/content/IntentFilter.html">IntentFilter</a>,
+				<a class="popup" href="http://developer.android.com/reference/android/os/HandlerThread.html">HandlerThread</a>,
+				<a class="popup" href="http://developer.android.com/reference/android/os/Looper.html">Looper</a>,
+				<a class="popup" href="http://developer.android.com/reference/android/os/Handler.html">Handler</a>,
+				
+				<a class="popup" href="http://developer.android.com/guide/topics/ui/notifiers/notifications.html">Notifications tutorial</a>,
+				<a class="popup" href="http://developer.android.com/reference/android/app/Notification.html">Notification</a>,
+				<a class="popup" href="http://developer.android.com/reference/android/app/PendingIntent.html">PendingIntent</a>
+			</li>
+			-->
+		</ul>
+	</div>
+
+
+	<div class="week" id="week9">
+		<h3>Week 9 (<span class="date insertdate" rel="Week9 Tue"></span>)</h3>
+		
+		<p>
+			This week we will talk about services and notifications.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/services.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/services.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					services</a>,
+				<a class="popup" href="lectures/notifications.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/notifications.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					notifications</a>
+				(PDF)
+			</li>
+			<li>
+				lecture code (ZIP):
+				<a href="lectures/08/lecture-code-08-Jukebox.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/lecture-code-08-Jukebox.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					Jukebox</a>,
+				<a href="lectures/08/lecture-code-08-Downloader.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/lecture-code-08-Downloader.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					Downloader</a>
+				<ul>
+					<li>
+						Jukebox:
+						<a href="lectures/08/Jukebox/JukeboxActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/Jukebox/JukeboxActivity.java">JukeboxActivity.java</a>,
+						<a href="lectures/08/Jukebox/activity_jukebox.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/Jukebox/activity_jukebox.xml">activity_jukebox.xml</a>,
+						<a href="lectures/08/Jukebox/JukeboxService.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/Jukebox/JukeboxService.java">JukeboxService.java</a>
+					</li>
+					<li>
+						Downloader:
+						<a href="lectures/08/Downloader/DownloaderActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/Downloader/DownloaderActivity.java">DownloaderActivity.java</a>,
+						<a href="lectures/08/Downloader/activity_downloader.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/Downloader/activity_downloader.xml">activity_downloader.xml</a>,
+						<a href="lectures/08/Downloader/DownloaderService.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/Downloader/DownloaderService.java">DownloaderService.java</a>,
+						<a href="lectures/08/Downloader/Downloader.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/Downloader/Downloader.java">Downloader.java</a>,
+						<a href="lectures/08/Downloader/AndroidManifest.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/08/Downloader/AndroidManifest.xml">AndroidManifest.xml</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				Links:
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/components/services.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/components/services.html%27" tppabs="http://developer.android.com/guide/components/services.html">Services tutorial</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/app/Service.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/app/Service.html%27" tppabs="http://developer.android.com/reference/android/app/Service.html">Service</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/content/BroadcastReceiver.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/content/BroadcastReceiver.html%27" tppabs="http://developer.android.com/reference/android/content/BroadcastReceiver.html">BroadcastReceiver</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/content/IntentFilter.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/content/IntentFilter.html%27" tppabs="http://developer.android.com/reference/android/content/IntentFilter.html">IntentFilter</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/os/HandlerThread.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/os/HandlerThread.html%27" tppabs="http://developer.android.com/reference/android/os/HandlerThread.html">HandlerThread</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/os/Looper.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/os/Looper.html%27" tppabs="http://developer.android.com/reference/android/os/Looper.html">Looper</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/os/Handler.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/os/Handler.html%27" tppabs="http://developer.android.com/reference/android/os/Handler.html">Handler</a>,
+				
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/topics/ui/notifiers/notifications.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/topics/ui/notifiers/notifications.html%27" tppabs="http://developer.android.com/guide/topics/ui/notifiers/notifications.html">Notifications tutorial</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/app/Notification.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/app/Notification.html%27" tppabs="http://developer.android.com/reference/android/app/Notification.html">Notification</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/app/PendingIntent.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/app/PendingIntent.html%27" tppabs="http://developer.android.com/reference/android/app/PendingIntent.html">PendingIntent</a>
+			</li>
+		</ul>
+	</div>
+
+
+	<div class="week" id="week8">
+		<h3>Week 8 (<span class="date insertdate" rel="Week8 Tue"></span>)</h3>
+		
+		<p>
+			This week we will talk about maps and location-based apps.
+			We will also talk about "swiping" and finger/mouse gestures.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/maps.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/maps.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					maps</a>,
+				<a class="popup" href="lectures/swipe.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/swipe.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					swiping</a>
+				(PDF)
+			</li>
+			<li>
+				lecture code (ZIP):
+				<a href="lectures/07/lecture-code-07-SwipeDemo.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/07/lecture-code-07-SwipeDemo.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					SwipeDemo</a>,
+				<a href="lectures/07/lecture-code-07-CityFinder.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/07/lecture-code-07-CityFinder.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					CityFinder</a>
+				<ul>
+					<li>
+						SwipeDemo:
+						<a href="lectures/07/OnSwipeListener.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/07/OnSwipeListener.java">OnSwipeListener.java</a>,
+						<a href="lectures/07/SwipeDemoActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/07/SwipeDemoActivity.java">SwipeDemoActivity.java</a>
+					</li>
+					<li>
+						CityFinder:
+						<a href="lectures/07/AndroidManifest.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/07/AndroidManifest.xml">AndroidManifest.xml</a>,
+						<a href="lectures/07/CityFinderActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/07/CityFinderActivity.java">CityFinderActivity.java</a>,
+						<a href="lectures/07/activity_city_finder.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/07/activity_city_finder.xml">activity_city_finder.xml</a>
+					</li>
+				</ul>
+			</li>
+			<!--
+			<li>
+				<a href="homework.shtml#hw5">
+					<img class="icon" src="images/icon_html.gif" alt="icon" />
+					assigned: homework assignment 5</a>
+			</li>
+			-->
+			
+			<li>
+				Links:
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/com/google/android/gms/maps/GoogleMap.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/com/google/android/gms/maps/GoogleMap.html%27" tppabs="http://developer.android.com/reference/com/google/android/gms/maps/GoogleMap.html">GoogleMap</a>,
+				<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/com/google/android/gms/maps/MapFragment.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/com/google/android/gms/maps/MapFragment.html%27" tppabs="http://developer.android.com/reference/com/google/android/gms/maps/MapFragment.html">MapFragment</a>
+			</li>
+
+			
+		</ul>
+	</div>
+
+
+	<div class="week" id="week7">
+		<h3>Week 7 (<span class="date insertdate" rel="Week7 Tue"></span>)</h3>
+		
+		<p>
+			This week we will talk about basic 2D graphics and animation, such as for making a simple game.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/2d-graphics.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/2d-graphics.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					2D graphics</a>
+				(PDF)
+			</li>
+			<li>
+				lecture code (ZIP):
+				<a href="lectures/06/lecture-code-06-Targets.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/06/lecture-code-06-Targets.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					Targets</a>,
+				<a href="lectures/06/lecture-code-06-BouncingBall.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/06/lecture-code-06-BouncingBall.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					BouncingBall</a>
+				<ul>
+					<li>
+						Targets:
+						<a href="lectures/06/ExampleView.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/06/ExampleView.java">ExampleView.java</a>,
+						<a href="lectures/06/TargetsView.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/06/TargetsView.java">TargetsView.java</a>
+					</li>
+					<li>
+						BouncingBall:
+						<a href="lectures/06/BouncingBallView.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/06/BouncingBallView.java">BouncingBallView.java</a>,
+						<a href="lectures/06/DrawingThread.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/06/DrawingThread.java">DrawingThread.java</a>,
+						<a href="lectures/06/Sprite.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/06/Sprite.java">Sprite.java</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+
+	<div class="week" id="week6">
+		<h3>Week 6 (<span class="date insertdate" rel="Week6 Tue"></span>)</h3>
+		
+		<p>
+			This week we will talk about:
+			text-to-speech and speech-to-text in an app;
+			lists and more advanced GUI widgets;
+			designing for different device sizes and features;
+			and fragments.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/text-to-speech.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/text-to-speech.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					text to speech</a>,
+				<a class="popup" href="lectures/lists.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/lists.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					lists</a>,
+				<a class="popup" href="lectures/fragments.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/fragments.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					fragments</a>
+				(PDF)
+			</li>
+			<li>
+				lecture code (ZIP):
+				<a href="lectures/05/lecture-code-05-InsultList.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/lecture-code-05-InsultList.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					InsultList</a>,
+				<a href="lectures/05/lecture-code-05-FragmentFun.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/lecture-code-05-FragmentFun.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					FragmentFun</a>
+				<ul>
+					<li>InsultList: 
+						<a href="lectures/05/InsultList/InsultListActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/InsultList/InsultListActivity.java">InsultListActivity.java</a>, 
+						<a href="lectures/05/InsultList/activity_insult_list.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/InsultList/activity_insult_list.xml">activity_insult_list.xml</a>
+						<a href="lectures/05/InsultList/phrases.txt" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/InsultList/phrases.txt">phrases.txt</a>
+					</li>
+					<li>FragmentFun:
+						<a href="lectures/05/FragmentFun/MainFragment.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/MainFragment.java">MainFragment.java</a>, 
+						<a href="lectures/05/FragmentFun/fragment_main.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/fragment_main.xml">fragment_main.xml</a>,
+						<a href="lectures/05/FragmentFun/MainActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/MainActivity.java">MainActivity.java</a>, 
+						<a href="lectures/05/FragmentFun/activity_main.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/activity_main.xml">activity_main.xml</a>,
+						<a href="lectures/05/FragmentFun/activity_main_landscape.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/activity_main_landscape.xml">activity_main.xml (landscape)</a>,
+
+						<a href="lectures/05/FragmentFun/DetailsFragment.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/DetailsFragment.java">DetailsFragment.java</a>, 
+						<a href="lectures/05/FragmentFun/fragment_details.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/fragment_details.xml">fragment_details.xml</a>,
+						<a href="lectures/05/FragmentFun/DetailsActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/DetailsActivity.java">DetailsActivity.java</a>, 
+						<a href="lectures/05/FragmentFun/activity_details.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/05/FragmentFun/activity_details.xml">activity_details.xml</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="homework.shtml.htm#hw4" tppabs="http://web.stanford.edu/class/cs193a/homework.shtml#hw4">
+					<img class="icon" src="images/icon_html.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_html.gif" alt="icon" />
+					assigned: homework assignment 4</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="week" id="week5">
+		<h3>Week 5 (<span class="date insertdate" rel="Week5 Tue"></span>)</h3>
+		
+		<p>
+			We canceled class this week because the instructor was sick.
+		</p>
+	</div>
+
+	<div class="week" id="week4">
+		<h3>Week 4 (<span class="date insertdate" rel="Week4 Tue"></span>)</h3>
+		
+		<p>
+			This week we will talk about activity state and Bundles, as well as application-level preferences.
+			We will also learn how to make an app that interacts with data files,
+			and learn how to capture photos using the Android device's camera.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/camera.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/camera.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					camera</a>,
+				<a class="popup" href="lectures/state-preferences.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/state-preferences.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					state/preferences</a>,
+				<a class="popup" href="lectures/files-storage.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/files-storage.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					files/storage</a>
+				(PDF)
+			</li>
+			<li>
+				<a href="lectures/04/lecture-code-04.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/04/lecture-code-04.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					lecture code</a> (ZIP);
+				<a href="lectures/04/MainActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/04/MainActivity.java">MainActivity.java</a>, 
+				<a href="lectures/04/activity_main.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/04/activity_main.xml">activity_main.xml</a>,
+				<a href="lectures/04/DetailsActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/04/DetailsActivity.java">DetailsActivity.java</a>, 
+				<a href="lectures/04/activity_details.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/04/activity_details.xml">activity_details.xml</a>,
+				<a href="lectures/04/dict.txt" tppabs="http://web.stanford.edu/class/cs193a/lectures/04/dict.txt">dict.txt</a>,
+				<a href="lectures/04/AndroidManifest.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/04/AndroidManifest.xml">AndroidManifest.xml</a>
+				(TMNT image chooser v3)
+			</li>
+			<!--
+			<li>
+				<a href="homework.shtml#hw3">
+					<img class="icon" src="images/icon_html.gif" alt="icon" />
+					assigned: homework assignment 3</a>
+			</li>
+			-->
+		</ul>
+	</div>
+
+	<div class="week" id="week3">
+		<h3>Week 3 (<span class="date insertdate" rel="Week3 Tue"></span>)</h3>
+		
+		<p>
+			This week we will talk about the lifecycle of an activity in Android as it is created, paused, destroyed, etc.
+			We will learn how to create an app with more than one activity and launch one activity from another using Intents.
+			We also learned about how to play music and audio clips using the <code>MediaPlayer</code> class.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/mediaplayer.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/mediaplayer.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					MediaPlayer</a>,
+				<a class="popup" href="lectures/activity-lifecycle.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/activity-lifecycle.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					activity lifecycle</a>,
+				<a class="popup" href="lectures/intents.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/intents.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					intents</a>
+				(PDF)
+			</li>
+			<li>
+				<a href="lectures/03/lecture-code-03.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/03/lecture-code-03.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					lecture code</a> (ZIP);
+				<a href="lectures/03/MainActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/03/MainActivity.java">MainActivity.java</a>, 
+				<a href="lectures/03/activity_main.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/03/activity_main.xml">activity_main.xml</a>,
+				<a href="lectures/03/DetailsActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/03/DetailsActivity.java">DetailsActivity.java</a>, 
+				<a href="lectures/03/activity_details.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/03/activity_details.xml">activity_details.xml</a> (TMNT image chooser v2)
+			</li>
+			<li>
+				<a class="popup" href="javascript:if(confirm(%27http://rg3.github.io/youtube-dl/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://rg3.github.io/youtube-dl/%27" tppabs="http://rg3.github.io/youtube-dl/">youtube-dl</a> and <a class="popup" href="javascript:if(confirm(%27https://www.ffmpeg.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://www.ffmpeg.org/%27" tppabs="https://www.ffmpeg.org/">ffmpeg</a> (software for downloading/converting media)
+			</li>
+		</ul>
+	</div>
+
+	<div class="week" id="week2">
+		<h3>Week 2 (<span class="date insertdate" rel="Week2 Tue"></span>)</h3>
+		
+		<p>
+			This week we will cover how to lay out a GUI in Android,
+			as well as much more about many GUI widgets and events that they can handle.
+			We will also briefly touch on the Android action bar.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/gui-widgets.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/gui-widgets.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					GUI widgets</a>,
+				<a class="popup" href="lectures/layout.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/layout.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					layout</a>,
+				<a class="popup" href="lectures/action-bar.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/action-bar.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					action bar</a>
+				(PDF)
+			</li>
+			<li>
+				<a href="lectures/02/lecture-code-02.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/02/lecture-code-02.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					lecture code</a> (ZIP);
+				<a href="lectures/02/MainActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/02/MainActivity.java">MainActivity.java</a>, 
+				<a href="lectures/02/activity_main.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/02/activity_main.xml">activity_main.xml</a> (TMNT image chooser)
+			</li>
+			<li>
+				<a href="homework.shtml.htm#hw2" tppabs="http://web.stanford.edu/class/cs193a/homework.shtml#hw2">
+					<img class="icon" src="images/icon_html.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_html.gif" alt="icon" />
+					assigned: homework assignment 2</a>
+			</li>
+			<li>
+				related link: <a class="popup" href="javascript:if(confirm(%27http://www.gimp.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.gimp.org/%27" tppabs="http://www.gimp.org/">GIMP</a> free image editor
+			</li>
+		</ul>
+	</div>
+
+	<div class="week" id="week1">
+		<h3>Week 1 (<span class="date insertdate" rel="Week1 Tue"></span>)</h3>
+		
+		<p>
+			This week we will cover some general information about the course,
+			background information about the Android platform,
+			and learn enough basics to create our first simple app.
+		</p>
+		
+		<ul>
+			<li>
+				slides:
+				<a class="popup" href="lectures/introduction.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/introduction.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					creating a simple app</a>;
+				<a class="popup" href="lectures/java-review.pdf" tppabs="http://web.stanford.edu/class/cs193a/lectures/java-review.pdf">
+					<img class="icon" src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" alt="icon" />
+					Java review</a>
+				(PDF)
+			</li>
+			<li>
+			</li>
+			<li>
+				<a href="lectures/01/lecture-code-01.zip" tppabs="http://web.stanford.edu/class/cs193a/lectures/01/lecture-code-01.zip">
+					<img class="icon" src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" alt="icon" />
+					lecture code</a> (ZIP);
+				<a href="lectures/01/MainActivity.java" tppabs="http://web.stanford.edu/class/cs193a/lectures/01/MainActivity.java">MainActivity.java</a>, 
+				<a href="lectures/01/activity_main.xml" tppabs="http://web.stanford.edu/class/cs193a/lectures/01/activity_main.xml">activity_main.xml</a> (Berkeley number guessing game)
+			</li>
+			<li>
+				<a href="homework.shtml.htm#hw1" tppabs="http://web.stanford.edu/class/cs193a/homework.shtml#hw1">
+					<img class="icon" src="images/icon_html.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_html.gif" alt="icon" />
+					assigned: homework assignment 1</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="bottom"></div>
+
+				<div id="w3c">
+					<div class="copyrightnotice">
+						This document and its content are copyright &copy; Marty Stepp, 2015.
+						All rights reserved.
+						Any redistribution, reproduction, transmission, or storage of part or all of the contents in any form is prohibited without the authors' expressed written permission.
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			// Google Analytics
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','../../../www.google-analytics.com/analytics.js'/*tpa=http://www.google-analytics.com/analytics.js*/,'ga');
+
+			ga('create', 'UA-2729135-9', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</body>
+</html>
+

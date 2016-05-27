@@ -1,0 +1,425 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--
+		Copyright notice:
+		This file and all linked documents are, unless otherwise specified, authored by Marty Stepp and/or Stanford University, and may not be copied, redistributed, or modified without explicit permission of the course instructor.
+		-->
+		<title>CS 193A: Android Application Development - Homework</title>
+
+		<meta charset="utf-8" />
+		<meta name="author" content="Marty Stepp" />
+		<meta name="description" content="Course web site for CS 193A, a course on Android app development." />
+		<meta name="keywords" content="Marty Stepp, CS 193A, Stanford University, computer science, Android, Java, app" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
+		
+		<meta id="WEEK1_SUN" name="WEEK1_SUN" content="Jan 4 2015 12:00 AM" />
+
+		<!-- stop the web browser from ever caching this page or its images -->
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+
+		<link href="style.css" tppabs="http://web.stanford.edu/class/cs193a/style.css" type="text/css" rel="stylesheet" />
+		<link href="images/stanford-favicon.png" type="image/png" rel="shortcut icon" />
+		<link href="images/stanford-favicon.png" type="image/png" rel="icon" />
+
+		<script src="../../../ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" tppabs="http://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript"></script>
+		<script src="../../../ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js" tppabs="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js" type="text/javascript"></script>
+		<script src="sorttable.js" tppabs="http://web.stanford.edu/class/cs193a/sorttable.js" type="text/javascript"></script>
+		<script src="cs.js" tppabs="http://web.stanford.edu/class/cs193a/cs.js" type="text/javascript"></script>
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="header" class="contentsection">
+				<div class="titles">
+					<div class="logo">
+						<a href="javascript:if(confirm(%27http://www.cs.stanford.edu/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.cs.stanford.edu/%27" tppabs="http://www.cs.stanford.edu/"><img src="images/stanford-cs-logo.png.jpg" tppabs="http://web.stanford.edu/class/cs193a/images/stanford-cs-logo.png" alt="Stanford CS logo" /></a>
+					</div>
+
+					<h1>
+						CS 193A: Android App Development <br />
+						Winter 2015
+					</h1>
+				</div>
+			</div>
+
+			<hr class="stanfordhr1" />
+			<hr class="stanfordhr2" />
+			
+			<div id="sidebar">
+				<ul>
+					<li><a href="index.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/index.shtml"><img src="images/home_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/home_icon.png" class="sidebaricon" alt="main" /> Home</a></li>
+					<li><a href="handouts/course-information.pdf" tppabs="http://web.stanford.edu/class/cs193a/handouts/course-information.pdf"><img src="images/syllabus_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/syllabus_icon.png" class="icon" alt="icon" /> Course Info</a></li>
+					<li><a href="lectures.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/lectures.shtml"><img src="images/lectures_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/lectures_icon.png" class="sidebaricon" alt="lectures" /> Lectures</a></li>
+					<li><a href="homework.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/homework.shtml"><img src="images/homework_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/homework_icon.png" class="sidebaricon" alt="homework" /> Homework</a></li>
+					<li><a class="popup" href="javascript:if(confirm(%27https://piazza.com/class/i43gbjj4o0w6as  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://piazza.com/class/i43gbjj4o0w6as%27" tppabs="https://piazza.com/class/i43gbjj4o0w6as"><img src="images/piazza-icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/piazza-icon.png" class="sidebaricon" alt="message board" /> Piazza</a></li>
+					<li><a href="working-at-home.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/working-at-home.shtml"><img src="images/working_at_home_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/working_at_home_icon.png" class="sidebaricon" alt="working at home" /> Work@Home</a></li>
+					<li><a href="videos.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/videos.shtml"><img src="images/icon_yt.png" tppabs="http://web.stanford.edu/class/cs193a/images/icon_yt.png" class="sidebaricon" alt="icon" /> Videos</a></li>
+					<li><a href="links.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/links.shtml"><img src="images/links_icon.png" tppabs="http://web.stanford.edu/class/cs193a/images/links_icon.png" class="sidebaricon" alt="links" /> Links</a></li>
+					<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/reference/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/reference/%27" tppabs="https://developer.android.com/reference/"><img src="images/icon_android.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_android.gif" class="sidebaricon" alt="api" /> API</a></li>
+				</ul>
+
+				<!--
+					<li><a class="popup" href="http://stanford.edu/~stepp/cppdoc/"><img src="images/stanford-favicon.png" class="icon" alt="icon" /> <strong>Stanford C++ Lib</strong></a></li>
+					<li><a class="popup" href="http://www.cppreference.com/"><img src="images/icon_cppreference.gif" class="icon" alt="icon" /> CppReference.com</a></li>
+					<li><a class="popup" href="http://www.cplusplus.com/reference/"><img src="images/icon_cplusplus.gif" class="icon" alt="icon" /> CPlusPlus.com</a></li>
+					<li><a href="styleguide.shtml"><img src="images/gradeit_icon.gif" class="icon" alt="icon" /> 193A Style Guide</a></li>
+				-->
+				</div>
+			</div>
+			
+			<noscript>
+				<div class="error">
+					<p>
+						ERROR: This site requires JavaScript in order to function properly.
+						You seem to be using a web browser that does not support JavaScript, or you may have a JavaScript blocker such as NoScript installed in your browser.
+						In order to use this course web site, you must enable JavaScript in your browser for this site.
+					</p>
+				</div>
+			</noscript>
+
+			<div class="centerpane">
+
+
+<h2>Homework</h2>
+
+<!--
+<div class="excitingnews" style="font-size: inherit">
+	<strong>Honor Code:</strong> You must work individually on all homework assignments.  We check against all students from this quarter and from past quarters going back many years.  This can lead to reduced grades or hearings with a misconduct committee.  Please be careful.
+</div>
+-->
+
+<div>
+	<p style="font-size: larger; text-align: center;">
+		<a class="buttonlink popup" href="javascript:if(confirm(%27https://coursework.stanford.edu/portal/site/W15-CS-193A-01/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://coursework.stanford.edu/portal/site/W15-CS-193A-01/%27" tppabs="https://coursework.stanford.edu/portal/site/W15-CS-193A-01/"><img class="icon" src="images/icon_turnin.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_turnin.gif" alt="icon" /> Turn in Homework</a>
+		<a class="buttonlink" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/peer-evaluation.shtml  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/peer-evaluation.shtml%27" tppabs="http://web.stanford.edu/class/cs193a/peer-evaluation.shtml"><img class="icon" src="images/icon48-criteria.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon48-criteria.gif" alt="icon" /> Peer Evaluation</a>
+	</p>
+	
+	<p>
+		To turn in an assignment, click the link at right to go to our "CourseWork" site,
+		then click <strong>Dropbox</strong> from the menu at left.
+		Find your name in the list, then click <strong>Add</strong>, then <strong>Upload Files</strong>, and follow the instructions.
+	</p>
+	
+	<p>
+		Please upload a <strong>.ZIP archive</strong> containing your entire project so that it can be downloaded and run in Android Studio by the instructor or another student.
+		Please give your file a descriptive name including your name and the assignment name; something like "JohnSmith-hw2-MrPotatoHead.zip".
+		Please do <em>NOT</em> use other compression formats such as .GZ, .7Z, .RAR, etc.
+		(If you don't know how to make a ZIP file, please see the instructions here:
+		<a class="popup" href="javascript:if(confirm(%27https://condor.depaul.edu/slytinen/instructions/zip.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://condor.depaul.edu/slytinen/instructions/zip.html%27" tppabs="https://condor.depaul.edu/slytinen/instructions/zip.html">Windows</a>,
+		<a class="popup" href="javascript:if(confirm(%27http://osxdaily.com/2012/01/10/how-to-zip-files-in-mac-os-x/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://osxdaily.com/2012/01/10/how-to-zip-files-in-mac-os-x/%27" tppabs="http://osxdaily.com/2012/01/10/how-to-zip-files-in-mac-os-x/">Mac</a>,
+		<a class="popup" href="javascript:if(confirm(%27https://www.youtube.com/watch?v=2Z4m4lnjxkY  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://www.youtube.com/watch?v=2Z4m4lnjxkY%27" tppabs="https://www.youtube.com/watch?v=2Z4m4lnjxkY">Linux</a>.)
+	</p>
+</div>
+
+<hr />
+
+<div id="homework_files">
+	<!--
+	<p>
+		No information provided yet.
+	</p>
+	-->
+
+	<!-- table of all homework assignments -->
+	<table class="homeworktable">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Due</th>
+				<th>Spec</th>
+				<th>Files</th>
+				<th>Demo</th>
+			</tr>
+
+			<!-- this temporary row shows until HW1 is posted, then hides itself -->
+			<!--
+			<tr id="hw0" class="delayed">
+				<td colspan="7" style="text-align: center">
+					<span class="hidedate" style="display: none">Week1 Thu 10:00 AM</span>
+					No assignments have been posted yet.
+					Please check back again later.
+					There will be an announcement on the main course web page when each assignment is posted.
+				</td>
+			</tr>
+			-->
+		<thead>
+
+		<tbody>
+			<!-- HW5: 2D graphics, swiping, maps -->
+			<tr id="hw5" class="assignment delayed" style="display: none">
+				<td>
+					<span class="showdate" style="display: none">Week8 Thu 12:00 PM</span>
+					5
+				</td>
+				<td>
+					<div>
+						<strong>2D graphics; <br />Swiping; Maps</strong>
+					</div>
+					
+					<p>
+						<img src="homework/hw5.png" tppabs="http://web.stanford.edu/class/cs193a/homework/hw5.png" alt="hw image" />
+					</p>
+				</td>
+				<td>
+					<div>
+						<span class="insertdate insertdateshort" rel="Week10 Mon"></span>, 11:59pm
+					</div>
+				</td>
+				<td>
+					<a class="popup" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/hw5-spec.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/hw5-spec.pdf%27" tppabs="http://web.stanford.edu/class/cs193a/homework/hw5-spec.pdf">
+						<img src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" class="largeicon" alt="icon" /> spec
+					</a>
+				</td>
+				<td>
+					see <a href="lectures.shtml.htm" tppabs="http://web.stanford.edu/class/cs193a/lectures.shtml">Lectures page</a>
+				</td>
+				<td>
+					<ul>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/Pong1P.apk  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/Pong1P.apk%27" tppabs="http://web.stanford.edu/class/cs193a/homework/Pong1P.apk">
+								<img src="images/icon_apk.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_apk.gif" class="largeicon" alt="icon" /> Pong1P.apk
+							</a>
+						</li>
+					</ul>
+					
+					<p>
+						(<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/deploy-apk.shtml  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/deploy-apk.shtml%27" tppabs="http://web.stanford.edu/class/cs193a/deploy-apk.shtml">how to install the demo APKs)
+					</p>
+				</td>
+			</tr>
+			<!-- /HW5 -->
+
+			<!-- HW4: fragments, text-to-speech, lists, data files -->
+			<tr id="hw4" class="assignment delayed" style="display: none">
+				<td>
+					<span class="showdate" style="display: none">Week6 Thu 12:00 PM</span>
+					4
+				</td>
+				<td>
+					<div>
+						<strong>Lists; Fragments</strong>
+					</div>
+					
+					<p>
+						<img src="homework/hw4.png" tppabs="http://web.stanford.edu/class/cs193a/homework/hw4.png" alt="hw image" />
+					</p>
+				</td>
+				<td>
+					<div>
+						<span class="insertdate insertdateshort" rel="Week8 Mon"></span>, 11:59pm
+					</div>
+				</td>
+				<td>
+					<a class="popup" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/hw4-spec.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/hw4-spec.pdf%27" tppabs="http://web.stanford.edu/class/cs193a/homework/hw4-spec.pdf">
+						<img src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" class="largeicon" alt="icon" /> spec
+					</a>
+				</td>
+				<td>
+				</td>
+				<td>
+					<ul>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/TodoList.apk  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/TodoList.apk%27" tppabs="http://web.stanford.edu/class/cs193a/homework/TodoList.apk">
+								<img src="images/icon_apk.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_apk.gif" class="largeicon" alt="icon" /> TodoList.apk
+							</a>
+						</li>
+					</ul>
+					
+					<p>
+						(<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/deploy-apk.shtml  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/deploy-apk.shtml%27" tppabs="http://web.stanford.edu/class/cs193a/deploy-apk.shtml">how to install the demo APKs)
+					</p>
+				</td>
+			</tr>
+			<!-- /HW4 -->
+
+			<!-- HW3: multiple activities, state, data files -->
+			<tr id="hw3" class="assignment delayed" style="display: none">
+				<td>
+					<span class="showdate" style="display: none">Week4 Tue 12:00 PM</span>
+					3
+				</td>
+				<td>
+					<div>
+						<strong>Multiple Activities</strong>
+					</div>
+					
+					<p>
+						<img src="homework/hw3.png" tppabs="http://web.stanford.edu/class/cs193a/homework/hw3.png" alt="hw image" />
+					</p>
+				</td>
+				<td>
+					<div>
+						<span class="insertdate insertdateshort" rel="Week5 Sat"></span>, 11:59pm
+					</div>
+				</td>
+				<td>
+					<a class="popup" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/hw3-spec.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/hw3-spec.pdf%27" tppabs="http://web.stanford.edu/class/cs193a/homework/hw3-spec.pdf">
+						<img src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" class="largeicon" alt="icon" /> spec
+					</a>
+				</td>
+				<td>
+					<ul>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/madlibs-files.zip  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/madlibs-files.zip%27" tppabs="http://web.stanford.edu/class/cs193a/homework/madlibs-files.zip">
+								<img src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" class="largeicon" alt="icon" /> madlibs-files.zip
+							</a>
+						</li>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/friendsr-files.zip  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/friendsr-files.zip%27" tppabs="http://web.stanford.edu/class/cs193a/homework/friendsr-files.zip">
+								<img src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" class="largeicon" alt="icon" /> friendsr-files.zip
+							</a>
+						</li>
+					</ul>
+				</td>
+				<td>
+					<ul>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/MadLibs.apk  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/MadLibs.apk%27" tppabs="http://web.stanford.edu/class/cs193a/homework/MadLibs.apk">
+								<img src="images/icon_apk.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_apk.gif" class="largeicon" alt="icon" /> MadLibs.apk
+							</a>
+						</li>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/Friendsr.apk  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/Friendsr.apk%27" tppabs="http://web.stanford.edu/class/cs193a/homework/Friendsr.apk">
+								<img src="images/icon_apk.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_apk.gif" class="largeicon" alt="icon" /> Friendsr.apk
+							</a>
+						</li>
+					</ul>
+					
+					<p>
+						(<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/deploy-apk.shtml  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/deploy-apk.shtml%27" tppabs="http://web.stanford.edu/class/cs193a/deploy-apk.shtml">how to install the demo APKs)
+					</p>
+				</td>
+			</tr>
+			<!-- /HW3 -->
+
+			<!-- HW2: Layout -->
+			<tr id="hw2" class="assignment delayed" style="display: none">
+				<td>
+					<span class="showdate" style="display: none">Week2 Tue 12:00 PM</span>
+					2
+				</td>
+				<td>
+					<div>
+						<strong>Layout</strong>
+					</div>
+					
+					<p>
+						<img src="homework/hw2.png" tppabs="http://web.stanford.edu/class/cs193a/homework/hw2.png" alt="hw image" />
+					</p>
+				</td>
+				<td>
+					<div>
+						<span class="insertdate insertdateshort" rel="Week3 Thu"></span>, 11:59pm
+					</div>
+				</td>
+				<td>
+					<a class="popup" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/hw2-spec.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/hw2-spec.pdf%27" tppabs="http://web.stanford.edu/class/cs193a/homework/hw2-spec.pdf">
+						<img src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" class="largeicon" alt="icon" /> spec
+					</a>
+				</td>
+				<td>
+					<ul>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/mr-potato-head-images.zip  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/mr-potato-head-images.zip%27" tppabs="http://web.stanford.edu/class/cs193a/homework/mr-potato-head-images.zip">
+								<img src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" class="largeicon" alt="icon" /> mr-potato-head-images.zip
+							</a>
+						</li>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/hangman-files.zip  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/hangman-files.zip%27" tppabs="http://web.stanford.edu/class/cs193a/homework/hangman-files.zip">
+								<img src="images/icon_zip.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_zip.gif" class="largeicon" alt="icon" /> hangman-files.zip
+							</a>
+						</li>
+					</ul>
+				</td>
+				<td>
+					<ul>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/MrPotatoHead.apk  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/MrPotatoHead.apk%27" tppabs="http://web.stanford.edu/class/cs193a/homework/MrPotatoHead.apk">
+								<img src="images/icon_apk.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_apk.gif" class="largeicon" alt="icon" /> MrPotatoHead.apk
+							</a>
+						</li>
+						<li>
+							<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/Hangman.apk  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/Hangman.apk%27" tppabs="http://web.stanford.edu/class/cs193a/homework/Hangman.apk">
+								<img src="images/icon_apk.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_apk.gif" class="largeicon" alt="icon" /> Hangman.apk
+							</a>
+						</li>
+					</ul>
+					
+					<p>
+						(<a href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/deploy-apk.shtml  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/deploy-apk.shtml%27" tppabs="http://web.stanford.edu/class/cs193a/deploy-apk.shtml">how to install the demo APKs)
+					</p>
+				</td>
+			</tr>
+			<!-- /HW2 -->
+
+			<!-- HW1: First Android App -->
+			<tr id="hw1" class="assignment delayed" style="display: none">
+				<td>
+					<span class="showdate" style="display: none">Week1 Tue 12:00 PM</span>
+					1
+				</td>
+				<td>
+					<div>
+						<strong>First App</strong>
+					</div>
+					
+					<p>
+						<img src="homework/hw1.png" tppabs="http://web.stanford.edu/class/cs193a/homework/hw1.png" alt="hw image" />
+					</p>
+				</td>
+				<td>
+					<div>
+						<span class="insertdate insertdateshort" rel="Week2 Wed"></span>, 11:59pm
+					</div>
+				</td>
+				<td>
+					<a class="popup" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/homework/hw1-spec.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is linked too far away from its Starting Address. If you increase the in-domain depth setting for the Starting Address, this file will be queued for retrieval.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/homework/hw1-spec.pdf%27" tppabs="http://web.stanford.edu/class/cs193a/homework/hw1-spec.pdf">
+						<img src="images/icon_pdf.gif" tppabs="http://web.stanford.edu/class/cs193a/images/icon_pdf.gif" class="largeicon" alt="icon" /> spec
+					</a>
+				</td>
+				<td>
+					<!--
+					<a href="homework/7-trailblazer/cs106b-hw7-trailblazer-starter-files.zip">
+						<img src="images/icon_zip.gif" class="largeicon" alt="icon" /> starter ZIP
+					</a>
+					-->
+					none
+				</td>
+				<td>
+					none
+				</td>
+			</tr>
+			<!-- /HW1 -->
+		</tbody>
+	</table>
+</div>
+
+				<div id="w3c">
+					<div class="copyrightnotice">
+						This document and its content are copyright &copy; Marty Stepp, 2015.
+						All rights reserved.
+						Any redistribution, reproduction, transmission, or storage of part or all of the contents in any form is prohibited without the authors' expressed written permission.
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			// Google Analytics
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','../../../www.google-analytics.com/analytics.js'/*tpa=http://www.google-analytics.com/analytics.js*/,'ga');
+
+			ga('create', 'UA-2729135-9', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</body>
+</html>
+
