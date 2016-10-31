@@ -1,4 +1,4 @@
-# Materials-CS193A-Android-App-Development-Standford
+# Materials for CS193A Android App Development Standford
 
 ![](http://tchidital.com.ng/wp-content/uploads/2016/01/androidlogo1.jpg)
 
