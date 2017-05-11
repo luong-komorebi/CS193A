@@ -1,0 +1,415 @@
+<html>
+	<head>
+		<title>CS 193A - Dynamic UI</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Generating a Dynamic UI</p>
+</section>
+
+<section>
+	<h1>Generating a UI at runtime</h1>
+	
+	<ul>
+		<li>Sometimes your app's UI cannot be fully specified in XML.
+			<ul>
+				<li>Example: You don't know how many widgets you will need until the user gives input or until a file is downloaded.
+			</ul>
+		
+		<li>In these cases, your app needs to be able to generate UI widgets dynamically in Java code.
+	</ul>
+
+	<div class="figureshorizontal">
+		<img src="images/twitter-android.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/twitter-android.png" alt="figure" />
+		<img src="images/hello-grid-view.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/hello-grid-view.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>UI Widget objects</h1>
+	
+	<ul>
+		<li>Any UI widget class from XML has a corresponding Java class.
+		<li>You already used these when you find a view by ID.
+	</ul>
+	
+	<pre><code class="java">
+// inside an activity class
+<var>WidgetType</var> <var>name</var> = new <var>WidgetType</var>(this);
+</code></pre>
+
+	<ul>
+		<li>Example:
+	</ul>
+
+	<pre><code class="java">
+TextView tv = new TextView(this);
+</code></pre>
+</section>
+
+<section>
+	<h1>Adding widget to layout</h1>
+	
+	<ul>
+		<li>You can add a widget to an onscreen container (<code class="androidapi" data-class="android.view.ViewGroup">ViewGroup</code>) such as a layout.
+			<ul>
+				<li>Add a widget to a container using the <code>addView</code> method.
+				<li>You must give the container an ID.
+			</ul>
+	</ul>
+	
+<pre><code class="xml">
+&lt;!-- activity_main.xml --&gt;
+&lt;LinearLayout <em>android:id=&quot;@+id/mainlayout&quot;</em> ...&gt;
+</code></pre>
+
+
+	<pre><code class="java">
+// MainActivity.java
+TextView tv = new TextView(this);
+LinearLayout layout = (LinearLayout) findViewById(R.id.mainlayout);
+layout.<em>addView</em>(tv);
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		<code class="androidapi" data-class="android.view.ViewGroup">ViewGroup</code> methods
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>addView(<var>view</var>); <br />
+				addView(view, <var>index</var>); <br />
+				addView(view, <var>params</var>);</code>
+			</td>
+			<td>add a view to this container</td>
+		</tr>
+		
+		<tr>
+			<td><code>bringChildToFront(<var>view</var>);</code></td>
+			<td>move view to top of Z-order</td>
+		</tr>
+		
+		<tr>
+			<td><code>getChildAt(<var>index</var>)</code></td>
+			<td>return a view</td>
+		</tr>
+		
+		<tr>
+			<td><code>getChildCount()</code></td>
+			<td>return number of children</td>
+		</tr>
+		
+		<tr>
+			<td><code>removeAllViews();</code></td>
+			<td>remove all children</td>
+		</tr>
+		
+		<tr>
+			<td><code>removeView(<var>view</var>);</code></td>
+			<td>remove a particular child</td>
+		</tr>
+		
+		<tr>
+			<td><code>removeViewAt(<var>index</var>);</code></td>
+			<td>remove child at given index</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Widget parameters</h1>
+	
+	<ul>
+		<li>What about setting attributes that would have been inside the XML tag?
+		<li>Some are just <code>set</code> methods on the widget object itself.
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- activity_main.xml --&gt;
+&lt;TextView
+	<em>android:id=&quot;@+id/mymessage&quot;
+	android:text=&quot;Hello there!&quot;
+	android:textSize=&quot;20dp&quot;
+	android:textStyle=&quot;bold&quot;</em>
+	android:layout_width=&quot;wrap_content&quot;
+	android:layout_height=&quot;wrap_content&quot; /&gt;
+</code></pre>
+
+	<pre><code class="java">
+// MainActivity.java
+TextView tv = new TextView(this);
+tv.<em>setId</em>(R.id.mymessage);   // or use your own number
+tv.<em>setText</em>("Hello there!");
+tv.<em>setTextSize</em>(20);
+...
+</code></pre>
+</section>
+
+<section>
+	<h1>Layout parameters</h1>
+	
+	<ul>
+		<li>Attributes that start with <code>layout_</code> are for the layout.
+		<li>These are packaged into an internal <code>LayoutParams</code> object.
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- activity_main.xml --&gt;
+&lt;TextView
+	android:id=&quot;@+id/mymessage&quot;
+	android:text=&quot;Hello there!&quot;
+	android:textSize=&quot;20dp&quot;
+	android:textStyle=&quot;bold&quot;
+	<em>android:layout_width=&quot;wrap_content&quot;
+	android:layout_height=&quot;wrap_content&quot;</em> /&gt;
+</code></pre>
+
+	<pre><code class="java">
+// MainActivity.java
+TextView tv = new TextView(this);
+ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+		ViewGroup.LayoutParams.WRAP_CONTENT,   // width
+		ViewGroup.LayoutParams.WRAP_CONTENT);  // height
+tv.<em>setLayoutParams</em>(params);
+</code></pre>
+</section>
+
+<section>
+	<h1>Layout-specific params</h1>
+	
+	<ul>
+		<li>Each layout type has its own <code>LayoutParams</code> inner class.
+			<ul>
+				<li>Contains attributes and methods used by that kind of layout.
+			</ul>
+		<li>Example for <code>LinearLayout</code>:
+	</ul>
+	
+	<pre><code class="java">
+LinearLayout.LayoutParams params =
+	new LinearLayout.LayoutParams(
+		ViewGroup.LayoutParams.MATCH_PARENT,     // width
+		ViewGroup.LayoutParams.WRAP_CONTENT);    // height
+params.weight  = 1;
+params.gravity = Gravity.TOP | Gravity.CENTER;
+</code></pre>
+</section>
+
+<section>
+	<h1>Setting widget size</h1>
+	
+	<ul>
+		<li>Most common sizes are <code>wrap_content</code> and <code>match_parent</code>.
+		<ul>
+			<li class="subbullet"><code>ViewGroup.LayoutParams.WRAP_CONTENT</code>
+			<li class="subbullet"><code>ViewGroup.LayoutParams.MATCH_PARENT</code>
+		</ul>
+		
+		<li>If you want to set width that is relative to the screen size:
+	</ul>
+	
+	<pre><code class="java">
+// or use Stanford lib's getScreenWidth/Height methods
+Display display = getWindowManager().getDefaultDisplay();
+Point size = new Point();
+display.getSize(size);
+int screenWidth  = size.x;
+int screenHeight = size.y;
+LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+		screenWidth / 2,      // width = half of screen
+		screenHeight / 2);    // height = half of screen
+</code></pre>
+</section>
+
+<section>
+	<h1>Layout inflater</h1>
+	
+	<ul>
+		<li><strong>layout inflater</strong>: Converts layout XML into Java widget objects.
+			<ul>
+				<li>Manual creation of widgets works, but it is pretty painful if you are creating a lot of them, or a complex nested structure of widgets.
+				<li>A layout inflater lets you specify an entire chunk of layout, perhaps a complex subcomponent, as XML and then load it in Java as needed.
+				<li>Similar to a fragment but without its own events and lifecycle.
+			</ul>
+	</ul>
+	
+	<div class="figure">
+		<img src="images/layout-inflater.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/layout-inflater.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Using the layout inflater</h1>
+	
+	<ul>
+		<li>Inside an activity:
+		
+		<pre><code class="java">
+View <var>name</var> = getLayoutInflater()
+		.inflate(R.layout.<var>name</var>, <var>parent</var>);
+</code></pre>
+
+		<li>When not in an activity:
+
+		<pre><code class="java">
+LayoutInflater inflater = (LayoutInflater) 
+		context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+View <var>name</var> = inflater.inflate(R.layout.<var>name</var>, <var>parent</var>);
+</code></pre>
+
+		<li>in both cases, parent can be <code>null</code>
+		<li>if parent is non-<code>null</code>, new view is automatically added to parent
+	</ul>
+</section>
+
+<section>
+	<h1>Example layout XML</h1>
+	
+	<div class="figuresright">
+		<img src="images/flag-usa.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/flag-usa.png" alt="figure" style="width: 200px" />
+	</div>
+	
+	<pre class="longcode"><code class="xml">
+&lt;!-- res/layout/flag.xml --&gt;
+&lt;LinearLayout ...
+		android:orientation=&quot;vertical&quot;
+		android:gravity=&quot;top|center&quot;&gt;
+	&lt;ImageView
+		android:id=&quot;@+id/flagimage&quot;
+		android:src=&quot;@drawable/unitedstates&quot;
+		android:layout_width=&quot;wrap_content&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+	&lt;TextView
+		android:id=&quot;@+id/countryname&quot;
+		android:text=&quot;example&quot;
+		android:layout_width=&quot;wrap_content&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+	&lt;CheckBox
+		android:id=&quot;@+id/beenthere&quot;
+		android:text=&quot;visited?&quot;
+		android:layout_width=&quot;wrap_content&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Main layout XML</h1>
+
+	<div class="figuresright">
+		<img src="images/customlayout-2.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/customlayout-2.png" alt="figure" />
+	</div>
+	
+	<pre><code class="xml">
+&lt;!-- res/layout/activity_main.xml --&gt;
+&lt;LinearLayout ...
+	android:orientation=&quot;vertical&quot;&gt;
+	&lt;TextView
+		android:layout_width=&quot;wrap_content&quot;
+		android:layout_height=&quot;wrap_content&quot;
+		android:text=&quot;Hello World!&quot; /&gt;
+
+	&lt;!-- a container in which we'll put flags --&gt;
+	&lt;LinearLayout
+		android:id=&quot;@+id/flagsarea&quot;
+		android:orientation=&quot;horizontal&quot;
+		android:layout_width=&quot;match_parent&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Using our flag layout</h1>
+	
+	<pre class="longcode"><code class="java">
+public class MainActivity extends Activity {
+	protected void onCreate(Bundle savedInstanceState) {
+		...
+		LinearLayout layout = (LinearLayout) findViewById(R.id.flagsarea);
+		createFlag(layout, "USA", R.drawable.unitedstates, true);
+		createFlag(layout, "UK", R.drawable.unitedkingdom, false);
+		createFlag(layout, "France", R.drawable.france, true);
+		createFlag(layout, "Brazil", R.drawable.brazil, false);
+	}
+
+	private void createFlag(ViewGroup layout, String name,
+							int imgID, boolean visited) {
+		View flag = <em>getLayoutInflater().inflate</em>(R.layout.flag, null);
+		TextView text = (TextView) flag.findViewById(R.id.countryname);
+		text.setText(name);
+		ImageView img = (ImageView) flag.findViewById(R.id.flagimage);
+		img.setImageResource(imgID);
+		CheckBox check = (CheckBox) flag.findViewById(R.id.beenthere);
+		check.setChecked(visited);
+		layout.addView(flag);
+	}
+}
+</code></pre>
+
+	<div class="figureshorizontal">
+		<img src="images/customlayout-3.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/customlayout-3.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Layout inflater or fragment?</h1>
+	
+	<div class="figuresright">
+		<img src="images/customlayout-3.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/customlayout-3.png" alt="figure" />
+		<img src="images/fragment-2-tablet.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/fragment-2-tablet.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li><strong>inflated views</strong>: tend to be <strong>simpler</strong>
+			<ul>
+				<li>maybe you'll have many of them on screen
+				<li>they do not respond to many events
+			</ul>
+
+		<li><strong>fragments</strong>: larger, more <strong>complex</strong>
+			<ul>
+				<li>almost big enough to be an activity by itself
+				<li>have their own lifecycle methods
+				<li>save/restore state, handle many events, etc.
+				<li>more self-contained; better decomposition
+			</ul>
+		
+		<li>How to choose between them?
+			<ul>
+				<li>If handling lot of <strong>events</strong>, use a fragment. Else use an inflated view.
+				<li>Some companies have particular guidelines. (Square: <em>Never</em> uses fragments.)
+			</ul>
+	</ul>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

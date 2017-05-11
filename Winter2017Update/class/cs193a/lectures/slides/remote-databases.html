@@ -1,0 +1,1076 @@
+<html>
+	<head>
+		<title>CS 193A - Remote Databases and Firebase</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Remote Databases and Firebase</p>
+</section>
+
+<section>
+	<h1>Where is the data?</h1>
+	
+	<ul>
+		<li>A database can be located in many places.
+			<ul>
+				<li>within your Android device  (a "local database")
+				<li>on a remote web server
+				<li>spread throughout many remote servers  ("in the cloud")
+			</ul>
+		
+		<li>Today we will learn to create and use <strong>remote databases</strong>.
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/database-local.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/database-local.png" alt="figure" />
+		<img src="images/database-server.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/database-server.jpg" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Setting up remote database</h1>
+	
+	<ul>
+		<li>A remote database is hosted on a <strong>web server</strong>.
+			<ul>
+				<li>Server is often called the app's "<strong>back-end</strong>".
+			</ul>
+		
+			<div class="figuresright">
+				<img src="images/remote-database-server.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/remote-database-server.png" alt="figure" />
+			</div>
+		
+		<li>One option: Do-it-yourself
+			<ul>
+				<li>buy web <strong>hosting</strong>  (e.g. DreamHost;  GoDaddy)
+				<li>use their tools to create/add a <strong>database</strong>
+					<ul>
+						<li>DreamHost:  MySQL  (create using web panel)
+					</ul>
+				<li>populate the database
+					<ul>
+						<li>import .sql file, etc.
+					</ul>
+				<li>set up <strong>permissions</strong> and authentication
+					<ul>
+						<li>create user account(s), passwords
+					</ul>
+				<li>modify your <strong>app</strong> to connect to remote database
+					<ul>
+						<li>use JDBC (Java Database Connectivity) connector
+					</ul>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Problems with remote server</h1>
+	
+	<ul>
+		<li>While running your own remote database can work well, it also has potential drawbacks:
+			<ul>
+				<li><strong class="column">cost:</strong> have to pay to get hosting from DreamHost etc.
+				<li><strong class="column">administration:</strong> must set up/maintain database, server yourself
+				<li><strong class="column">security:</strong> attacker with password can connect to database
+				<li><strong class="column">privacy:</strong> must block user from seeing other users' info
+				<li><strong class="column">robustness:</strong> database isn't automatically backed up, protected
+				<li><strong class="column">scaling:</strong> too many users querying server will slow it down
+				<li>...
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>BaaS web platforms</h1>
+	
+	<div class="figuresright">
+		<img src="images/parse.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/parse.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>BaaS</strong> (Backend as a Service): Platforms for database/service hosting, management, deployment, etc.
+			<ul>
+				<li>examples:  <strike class="aside">Parse</strike> (RIP), <strong>Firebase</strong>, Google App Engine, Amazon Web Services Mobile, Azure, Kinvey, Kumulos, Backendless, ...
+			</ul>
+		
+		<li>Features of BaaS platforms:
+			<ul>
+				<li>web UI for creating accounts, databases, users, etc. as needed
+				<li>API of classes and objects to query the data in many platforms
+					<ul>
+						<li>web app,  Android,  iOS,  ...
+					</ul>
+				<li>saves the developer from having to buy and manage servers/DBs
+				<li>often built to scale up to very large sizes / traffic loads if needed
+
+				<li>many BaaS platforms do not explicitly use SQL and instead have the user perform queries using various methods and parameters
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>NoSQL databases</h1>
+	
+	<div class="figuresright">
+		<img src="images/nosql-circle-slash.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/nosql-circle-slash.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li><strong>NoSQL database:</strong> Does not store data into tables and does not use SQL.
+			<ul>
+				<li>became popular in mid-2000s
+				<li><em>benefits:</em>  simplicity; flexibility;  "horizontal" scalability to many servers
+				<li><em>drawbacks:</em>  less standardized; data inconsistency/loss; lack "ACID"
+			</ul>
+		
+		<li>Types of NoSQL databases
+			<ul>
+				<li><span class="column">column stores</span>	(<strong>Cassandra</strong>, Vertica, Druid, Accumulo)
+				<li><span class="column">document stores</span>	(<strong>MongoDB</strong>, CouchDB, Qizx, MarkLogic, Hyperdex)
+				<li><span class="column">key/value stores</span>	(Memcached, Scalaris, Voldemort, Dynamo)
+				<li><span class="column">data structure servers</span>	(<strong>Redis</strong>)
+				<li><span class="column">graph stores</span>	(Allegro, Neo4J, Virtuoso, MarkLogic)
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Firebase</h1>
+	
+	<div class="figuresright">
+		<img src="images/firebase-logo.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/firebase-logo.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li><strong><a class="popup" href="javascript:if(confirm(%27http://firebase.google.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://firebase.google.com/%27" tppabs="http://firebase.google.com/">Firebase</a>:</strong> BaaS / remote database management platform built by SF-based Google subsidiary.
+			<ul>
+				<li>a "real-time synchronized cloud database"
+				<li>one of the strongest successors / replacements for now-dead <strong>Parse</strong>
+			</ul>
+		
+		<li>Key features
+			<ul>
+				<li><strong>API</strong> to access data from Android, iOS, Java, JavaScript, Obj-C, Node.js
+				<li><strong>REST API</strong> with libraries for many common web JS frameworks
+				<li>ability to keep data in <strong>sync</strong>, receive <strong>notifications</strong> on data changes
+				<li>cloud <strong>scaling</strong>, can handle tons of requests if needed
+				<li>other features:  web hosting, login/<strong>auth</strong>, ...
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>How Firebase stores data</h1>
+	
+	<div class="figuresright">
+		<img src="images/firebase-data.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/firebase-data.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li>The database is a giant nested <strong>map</strong> of string keys to values.
+			<ul>
+				<li>text, numbers, boolean, lists, or maps
+				<li>object: {"key" => value} map
+				<li>list: {index => value} map
+				<li>overall database is tree-like map structure you can view on the web
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		Set up Firebase
+		(<a class="popup" href="javascript:if(confirm(%27https://firebase.google.com/docs/android/setup  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://firebase.google.com/docs/android/setup%27" tppabs="https://firebase.google.com/docs/android/setup">link</a>)
+	</h1>
+	
+	<ul>
+		<li><strong>sign up</strong> for free user account
+			<ul>
+				<li><a class="popup"href="javascript:if(confirm(%27https://firebase.google.com/login/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://firebase.google.com/login/%27" tppabs="https://firebase.google.com/login/">https://firebase.google.com/login/</a>
+			</ul>
+		
+		<li><strong>install</strong> Firebase into Android Studio project
+			<ul>
+				<li>option 1: use UI: Tools &rarr; FireBase &rarr; Realtime Database &rarr; ...
+				<li>option 2: do it yourself (next slide)
+	</ul>
+	
+	<div class="figures">
+		<img src="images/firebase-android-studio.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/firebase-android-studio.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>DIY Firebase setup</h1>
+	
+	<ul>
+		<li>modify app <span class="filename">build.gradle</span>
+			
+			<pre class="longcode nolinenumbers"><code class="groovy">
+dependencies {
+	...
+	<em>compile 'com.google.android.gms:play-services:10.0.1'</em>  // add this line
+	<em>compile 'com.google.firebase:firebase-database:10.0.1'</em> // add this line
+	<em>compile 'com.google.firebase:firebase-auth:10.0.1'</em>     // add this line
+}
+
+<em>apply plugin: 'com.google.gms.google-services'</em>             // add this line (at end!)
+</code></pre>
+		
+			
+		<li>modify module <span class="filename">build.gradle</span>
+
+			<pre class="longcode nolinenumbers"><code class="java">
+buildscript {
+	...
+	dependencies {
+		...
+		<em>classpath 'com.google.gms:google-services:3.0.0'</em>   // add this line
+</code></pre>
+
+		<li>get <span class="filename">google-services.json</span> file from Google Firebase web site
+			<ul>
+				<li>Sign in to Firebase; open project; Click Project settings; In Your apps card, select package name of app; Click google-services.json.
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Writing Firebase data</h1>
+	
+	<pre><code class="java">
+// create a key/value pairing
+DatabaseReference fb = FirebaseDatabase.getInstance().getReference();
+fb.child("<var>name</var>").setValue(<var>value</var>);
+</code></pre>
+		
+	<ul>
+		<li>Firebase stores data as key/value pairs
+			<ul>
+				<li>the keys are strings representing data object names
+				<li>the values can be one of many types:
+				<li><code>Boolean</code>,  <code>Long</code>,  <code>Double</code>,  <code>List</code>,  <code>Map&lt;String, Object&gt;</code>
+				<li>think of Firebase as a <code>HashMap</code> on steroids in the cloud
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		<code class="firebaseapi" data-class="com.google.firebase.database.DatabaseReference">DatabaseReference</code> methods
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.<em>child</em>("<var>name</var>")</code></td>
+			<td>return child object with given name (creates if missing)</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.getKey()</code></td>
+			<td>return key for a given data value</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.getParent()</code></td>
+			<td>return data one level up in the map</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.getRoot()</code></td>
+			<td>return data at top of map</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.push()</code></td>
+			<td>create/return an auto-created new child</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.<em>removeValue</em>();</code> <br />
+				<code><var>dbr</var>.removeValue(<var>handler</var>);</code></td>
+			<td>delete value associated with this key</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.runTransaction(<var>handler</var>);</code></td>
+			<td>run multiple queries in sequence</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.setPriority(<var>priority</var>);</code></td>
+			<td>gives this data a 'priority' rating for sorting</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.<em>setValue</em>(<var>value</var>);</code> <br />
+				<code><var>dbr</var>.setValue(<var>value</var>, <var>handler</var>);</code> <br />
+				<code><var>dbr</var>.setValue(<var>value</var>, <br /> &nbsp; <var>priority</var>, <var>handler</var>);</code></td>
+			<td>sets new data value, with optional listener to be notified when sync is complete</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>dbr</var>.updateChildren(<var>map</var>);</code> <br />
+				<code><var>dbr</var>.updateChildren(<var>map</var>, <br /> &nbsp; <var>handler</var>);</code></td>
+			<td>updates some of object's fields ("children") using the key/value data in the given map</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>SQL &rarr; Firebase mapping</h1>
+	
+	<div class="figuresright">
+		<img src="images/simpsons-table-sql.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/simpsons-table-sql.png" alt="figure" />
+		<img src="images/simpsons-data-firebase.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/simpsons-data-firebase.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>Recall the <strong>simpsons</strong> database's <strong>students</strong> table.
+			<ul>
+				<li>Firebase key/value data might look like this:
+			</ul>
+	</ul>
+	
+	<pre class="longcode"><code class="java">
+DatabaseReference fb = FirebaseDatabase
+		.getInstance().getReference();
+DatabaseReference table = fb.child("simpsons/students");
+DatabaseReference bart = table.child("123");
+bart.child("id").setValue(123);
+bart.child("name").setValue("Bart");
+bart.child("email").setValue("bart@fox.com");
+
+Firebase milhouse = table.child("456");
+milhouse.child("id").setValue(456);
+milhouse.child("name").setValue("Milhouse");
+milhouse.child("email").setValue("milhouse@fox.com");
+</code></pre>
+</section>
+
+<section>
+	<h1>Set value with callback</h1>
+	
+	<div class="figuresright">
+		<img src="images/simpsons-data-firebase-bart.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/simpsons-data-firebase-bart.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>When you call <code>setValue</code>, the data may not update immediately on the server.
+			<ul>
+				<li>Your data might be distributed across many servers; it takes time to sync them.
+				<li>To be notified when the data is fully written:
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+DatabaseReference fb = ...;
+DatabaseReference bart = fb.child("simpsons/students/123");
+bart.child("name").setValue("Bart");
+
+// or, if you want to be notified when it completes
+bart.child("name").setValue("Bart", 
+	<em>new DatabaseReference.CompletionListener()</em> {
+		public void onComplete(DatabaseError err, DatabaseReference ref) {
+			if (err == null) { ... }
+		}
+	});
+</code></pre>
+</section>
+
+<section>
+	<h1>Auto-generated keys</h1>
+	
+	<div class="figuresright">
+		<img src="images/grades-table-sql.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/grades-table-sql.png" alt="figure" />
+		<img src="images/firebase-simpsons-grades.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/firebase-simpsons-grades.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li>Some tables don't have an "<strong>id</strong>" column.
+			<ul>
+				<li>Firebase can make up IDs with <code>push()</code>.
+				<li>Also useful in highly parallel situations where many users modify the data at once.
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+DatabaseReference fb = ...;
+DatabaseReference table = fb.child("simpsons/grades");
+DatabaseReference newGrade = <em>table.push();</em>
+newGrade.child("student_id").setValue(123);
+newGrade.child("course_id").setValue(10001);
+newGrade.child("grade").setValue("B-");
+</code></pre>
+</section>
+
+<section>
+	<h1>Save/load your own classes</h1>
+	
+	<div class="figuresright">
+		<img src="images/simpsons-data-firebase-bart.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/simpsons-data-firebase-bart.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li>If you write your own Java classes, you can store their objects in Firebase as long as:
+			<ol>
+				<li>class has a no-params () constructor
+				<li>every field has a <code>get<var>FieldName</var>()</code> method
+			</ol>
+	</ul>
+	
+	<pre class="longcode"><code class="java">
+public class Student {
+	private int id;
+	private String name;
+	private String email;
+
+	public Student() {}
+	public Student(int id, String name, String email) { ... }
+	public int <em>getID</em>()       { return id; }
+	public String <em>getName</em>()  { return name; }
+	public String <em>getEmail</em>() { return email; }
+}
+...
+DatabaseReference fb = ...;
+DatabaseReference table = fb.child("simpsons/students");
+<em>Student bart = new Student(123, "Bart", "bart@fox.com");
+table.child("123").setValue(bart);</em>
+</code></pre>
+</section>
+
+<section>
+	<h1>Retrieving data</h1>
+	
+	<div class="figuresright">
+		<img src="images/simpsons-data-firebase-bart.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/simpsons-data-firebase-bart.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li>Getting data is more complex than setting it.
+			<ul>
+				<li>Must grab the Firebase object for that data, and <strong>bind</strong> an event handler to it.
+				<li>Will be <strong>notified</strong> initially and on state changes.
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+DatabaseReference fb = ...;
+DatabaseReference bart = fb.child("simpsons/students/123");
+bart.<em>addValueEventListener</em>(new ValueEventListener() {
+	@Override
+	public void onDataChange(DataSnapshot data) {
+		// do something with data
+		Log.v("fb", data.getKey() + ": " + data.<em>getValue</em>());
+	}
+
+	@Override
+	public void onCancelled(DatabaseError databaseError) {
+		// report/log the error
+	}
+});
+// Bart's email: bart@fox.com,  Bart's id: 123,   ...
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		<code class="firebaseapi" data-class="com.google.firebase.database.DataSnapshot">DataSnapshot</code> methods
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.child("<var>path</var>")</code></td>
+			<td>returns child for given key</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.exists()</code></td>
+			<td>true if this data value is non-null</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.getChildren()</code></td>
+			<td>returns iterable list of children (use with for-each loop)</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.getKey()</code></td>
+			<td>returns key used to fetch this data snapshot</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.getPriority()</code></td>
+			<td>priority of this data's root node</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.getRef()</code></td>
+			<td>returns reference to <code>Firebase</code> object</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.getValue()</code></td>
+			<td>returns data associated with this snapshot's key</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.getValue(<var>class</var>)</code></td>
+			<td>returns data, converted into the given class
+				(must have a <code>()</code> constructor and public <code>get</code> methods)</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.hasChild("<var>path</var>")</code></td>
+			<td>true if the given child node/path exists in this data</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.hasChildren()</code></td>
+			<td>true if this snapshot contains any data</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>ds</var>.toString()</code></td>
+			<td>text representation of all the data</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Types of data events</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code><var>fb</var>.addValueListener(<var>ValueEventListener</var>);</code></td>
+			<td>listen to changes in a data value</td>
+		</tr>
+		
+		<tr>
+			<td>- <code>onDataChange(<var>snapshot</var>)</code></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td>- <code>onCancelled(<var>error</var>)</code></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>fb</var>.addListenerForSingleValueEvent( <br />
+	&nbsp; <var>ValueEventListener</var>);</code></td>
+			<td>get initial data and then stop</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>fb</var>.addChildListener(<var>ChildEventListener</var>);</code></td>
+			<td>listen to changes to the children of a given data value</td>
+		</tr>
+		
+		<tr>
+			<td>- <code>onChildAdded(<var>snapshot</var>, <var>name</var>)</code></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td>- <code>onChildChanged(<var>snapshot</var>, <var>oldName</var>)</code></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td>- <code>onChildRemoved(<var>snapshot</var>, <var>oldName</var>)</code></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td>- <code>onChildMoved(<var>snapshot</var>, <var>oldName</var>)</code></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td>- <code>onCancelled(<var>error</var>)</code></td>
+			<td></td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>View data as a class</h1>
+	
+	<div class="figuresright">
+		<img src="images/simpsons-data-firebase-bart.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/simpsons-data-firebase-bart.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li>examine the data value as an object rather than each piece separately
+	</ul>
+	
+	<pre class="longcode"><code class="java">
+DatabaseReference fb = ...;
+DatabaseReference bart = fb.child("simpsons/students/123");
+bart.<em>addValueEventListener</em>(new ValueEventListener() {
+	@Override
+	public void onDataChange(DataSnapshot data) {
+		<em>Student stu = data.getValue(Student.class);</em>
+		Log.v("fb", stu.name + ", " + stu.email);
+	}
+	...
+});
+
+<em>public class Student</em> {
+	String email;
+	int id;
+	String name;
+	String password;
+	public Student() {}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Viewing changes to data</h1>
+	
+	<div class="figuresright">
+		<img src="images/firebase-view-data-changes-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/firebase-view-data-changes-1.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>When your app binds to a piece of data, it will be notified any time that data is changed from anywhere in the world.
+			<ul>
+				<li>This is extremely powerful!
+				<li>Keep all users in sync on changes to an important piece of data in your db.
+				<li>Can change the data from your app, another user's copy of the app, from the Firebase web console, ...
+			</ul>
+	</ul>
+
+	<div class="figureshorizontal">
+		<img src="images/firebase-view-data-changes-2.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/firebase-view-data-changes-2.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Querying data</h1>
+	
+	<div class="figuresright">
+		<img src="images/simpsons-data-firebase.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/simpsons-data-firebase.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li>How do we do queries like we can in SQL?
+			<ul>
+				<li>Done using <code class="firebaseapi" data-class="com.google.firebase.database.Query">Query</code>, ordering, ranges, etc.
+				<li>Best illustrated by examples:
+			</ul>
+	</ul>
+	
+	<pre class="longcode"><code class="java">
+DatabaseReference fb = ...;
+DatabaseReference students = fb.child("simpsons/students");
+
+// SQL: SELECT * FROM students WHERE id >= 500;
+<em>Query query1 = students.orderByKey().startAt(500);</em>
+query1.addListenerForSingleValueEvent(
+		new ValueEventListener() {...});
+
+// SQL: SELECT * FROM students WHERE name LIKE "B%";
+<em>Query query2 = students.orderByChild("name")
+		.startAt("B").endAt("Bz");</em>
+query2.addListenerForSingleValueEvent(
+		new ValueEventListener() {...});
+</code></pre>
+</section>
+
+<section>
+	<h1>Querying data, more detail</h1>
+	
+	<div class="figuresright" style="max-width: 20%; overflow: hidden">
+		<img src="images/simpsons-data-firebase.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/simpsons-data-firebase.png" alt="figure" />
+	</div>
+
+	<pre class="longcode"><code class="java">
+DatabaseReference fb = ...;
+DatabaseReference students = fb.child("simpsons/students");
+
+// SQL: SELECT * FROM students WHERE id >= 500;
+Query query1 = students.orderByKey().startAt(500);
+query1.addListenerForSingleValueEvent(new ValueEventListener() {
+	public void onDataChange(DataSnapshot dataSnapshot) {
+		// print each k/v pair as a log message
+		for (DataSnapshot student : dataSnapshot.getChildren()) {
+			Log.v("fb", "student " + student.getKey() + " => "
+					+ student.getValue());
+		}
+	}
+});
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		<code class="firebaseapi" data-class="com.google.firebase.database.Query">Query</code> methods
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+			<th>SQL</th>
+		</tr>
+		
+		<tr>
+			<td><code><var>q</var>.endAt(<var>value</var>)</code> <br />
+				<code><var>q</var>.endAt(<var>value</var>, "<var>key</var>")</code></td>
+			<td>specify last value to include, or last value for a given key to include</td>
+			<td><code>&lt;=</code></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>q</var>.equalTo(<var>value</var>)</code>
+				<code><var>q</var>.equalTo(<var>value</var>, "<var>key</var>")</code></td>
+			<td>specify only value to include</td>
+			<td><code>=</code></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>q</var>.limitToFirst(<var>count</var>)</code>
+				<code><var>q</var>.limitToLast(<var>count</var>)</code></td>
+			<td>only show first/last <var>N</var> results</td>
+			<td><code>LIMIT <var>N</var></code></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>q</var>.orderByChild("<var>name</var>")</code></td>
+			<td>sort/filter results by given child key</td>
+			<td style="white-space: nowrap"><code>ORDER BY</code></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>q</var>.orderByKey()</code></td>
+			<td>sort/filter results by their key</td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>q</var>.orderByPriority()</code></td>
+			<td>sort/filter by priorities set manually</td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>q</var>.orderByValue()</code></td>
+			<td>sort/filter by their own values</td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>q</var>.startAt(<var>value</var>)</code>
+				<code><var>q</var>.startAt(<var>value</var>, "<var>key</var>")</code></td>
+			<td>specify last value to include, or last value for a given key to include</td>
+			<td><code>&gt;=</code></td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Security and authentication</h1>
+	
+	<ul>
+		<li>There are several ways to allow/deny access to your database
+			<ul>
+				<li>Firebase-specific accounts; Google accounts; etc.
+				<li>Use <strong>Firebase web UI</strong> to add email/password user accounts
+				<li>Modify code to <strong>sign in</strong> with email and password:
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+private FirebaseAuth mAuth;
+
+mAuth = FirebaseAuth.getInstance();
+mAuth.signInWithEmailAndPassword("username", "password");
+// optional: addOnCompleteListener, addAuthStateListener
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		<code class="firebaseapi" data-class="com.google.firebase.auth.FirebaseAuth">FirebaseAuth</code> methods
+	</h1>
+	
+	<table>
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>createUserWithEmailAndPassword("<var>email</var>", "<var>pw</var>")</code></td>
+			<td>create new account</td>
+		</tr>
+		
+		<tr>
+			<td><code>signInWithEmailAndPassword("<var>email</var>", "<var>pw</var>")</code></td>
+			<td>log in a standard user</td>
+		</tr>
+		
+		<tr>
+			<td><code>signInWithCredential(<var>auth</var>)</code></td>
+			<td>log in using access creds</td>
+		</tr>
+		
+		<tr>
+			<td><code>signInAnonymously()</code></td>
+			<td>log in as anon. user</td>
+		</tr>
+		
+		<tr>
+			<td><code>signInWithCustomToken("<var>token</var>")</code></td>
+			<td>log in with an auth token</td>
+		</tr>
+		
+		<tr>
+			<td><code>signOut()</code></td>
+			<td>disconnect</td>
+		</tr>
+		
+		<tr>
+			<td><code>getCurrentUser()</code></td>
+			<td>return active user account</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		Lib: <a class="popup" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/lib/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/lib/%27" tppabs="http://web.stanford.edu/class/cs193a/lib/">SimpleFirebase</a>
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable compacttable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td>
+				<code>get("<var>path</var>")</code> <br />
+				<code>get("<var>path</var>", <var>listener</var>)</code> <br />
+				<code>get(<var>query</var>, <var>listener</var>)</code>
+			</td>
+			<td>retrieve data at given DB path</td>
+		</tr>
+		
+		<tr>
+			<td><code>isSignedIn()</code></td>
+			<td>returns true if logged in</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<code>push("<var>path</var>")</code>
+			</td>
+			<td>adds new child by unique random ID</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<code>pushById("<var>path</var>", <var>value</var>)</code> <br />
+				<code>pushById("<var>path</var>", <var>value</var>, <var>listener</var>)</code>
+			</td>
+			<td>adds new child by sequential numeric ID</td>
+		</tr>
+		
+		<tr>
+			<td><code>query("<var>path</var>")</code></td>
+			<td>return child of query on given path</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<code>set("<var>path</var>", <var>value</var>)</code> <br />
+				<code>set("<var>path</var>", <var>value</var>, <var>listener</var>)</code>
+			</td>
+			<td>modify data at given DB path</td>
+		</tr>
+		
+		<tr>
+			<td><code>setLogging(<var>bool</var>)</code></td>
+			<td>enable/disable log statements</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<code>signIn("<var>email</var>", "<var>pw</var>")</code> <br />
+				<code>signIn("<var>email</var>", "<var>pw</var>", <var>listener</var>)</code>
+			</td>
+			<td>log in to Firebase</td>
+		</tr>
+		
+		<tr>
+			<td><code>signOut()</code></td>
+			<td>log out</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<code>transaction("<var>path</var>")</code> <br />
+				<code>transaction("<var>path</var>", <var>listener</var>)</code> <br />
+			</td>
+			<td>perform a locked transaction on the data</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<code>watch("<var>path</var>")</code> <br />
+				<code>watch("<var>path</var>", <var>listener</var>)</code> <br />
+				<code>watch(<var>query</var>, <var>listener</var>)</code>
+			</td>
+			<td>retrieve and watch data at given DB path; updates when data on server changes</td>
+		</tr>
+		
+		<tr>
+			<td><code>with(<var>activity</var>)</code></td>
+			<td>get a <code>SimpleFirebase</code> object</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		SimpleFirebase listeners
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<ul>
+		<li>pass a listener to respond to completion of any call
+			<ul>
+				<li>or make your activity implement <code>___Listener</code>
+			</ul>
+	</ul>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Interface</th>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+
+		<tr>
+			<td><code>GetListener</code></td>
+			<td><code>onGet</code></td>
+			<td>called when <code>get</code>/<code>watch</code> data arrives</td>
+		</tr>
+
+		<tr>
+			<td><code>SignInListener</code></td>
+			<td><code>onSignIn</code></td>
+			<td>called when <code>signIn</code> completed</td>
+		</tr>
+
+		<tr>
+			<td><code>SetListener</code></td>
+			<td><code>onSet</code></td>
+			<td>called when <code>set</code> is complete</td>
+		</tr>
+
+		<tr>
+			<td><code>ErrorListener</code></td>
+			<td><code>onError</code></td>
+			<td>called when db operations fail</td>
+		</tr>
+	</table>
+	
+	<pre class="longcode"><code class="java">
+	// style 1: make activity implement listener
+	SimpleFirebase.with(this).get("foo/bar/baz/42");
+	...
+	public void onGet(String path, DataSnapshot data) {
+		// do something with the data
+	}
+</code></pre>
+	
+	<hr />
+	
+	<pre class="longcode"><code class="java">
+	// style 2: pass inner anon. listener
+	SimpleFirebase.with(this).get("foo/bar/baz/42",
+		new SimpleFirebase.GetListener() {
+			public void onGet(String path, DataSnapshot data) {
+				// do something with the data
+			}
+		});
+</code></pre>
+
+</section>
+
+<section>
+	<h1>
+		SimpleFirebase examples
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<pre><code class="java">
+public class MyActivity <em>implements SimpleFirebase.GetListener</em> {
+	...
+	SimpleFirebase.with(this)
+			.signIn("email", "password");   // log in to db
+</pre>
+
+	<hr />
+
+	<pre><code class="java">
+	SimpleFirebase.with(this)
+			.get("foo/bar/baz/42");   // get node at path "foo/bar/baz/42"
+	...
+	public void onGet(String path, <em>DataSnapshot data</em>) {
+		// do something with the data
+	}
+</code></pre>
+
+	<hr />
+
+	<pre><code class="java">
+	SimpleFirebase.with(this)   // set path "foo/bar/baz/42" to "abc"
+			.set("foo/bar/baz/42", "abc");
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

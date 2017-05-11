@@ -1,0 +1,635 @@
+<html>
+	<head>
+		<title>CS 193A - Lists</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Lists</p>
+</section>
+
+<section>
+	<h1>
+		ListView
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/topics/ui/layout/listview.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/topics/ui/layout/listview.html%27" tppabs="http://developer.android.com/guide/topics/ui/layout/listview.html">link</a>)
+
+		<span class="figuresright">
+			<img src="images/widget-listview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-listview.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		An ordered collection of selectable choices
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:clickable="<var>bool</var>"</code></td>
+			<td>set to <code>false</code> to disable the button</td>
+		</tr>
+		<tr>
+			<td><code>android:entries="@array/<var>array</var>"</code></td>
+			<td>set of options to appear in the list
+				(must match an array in <span class="filename">strings.xml</span>)</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		Spinner
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/topics/ui/controls/spinner.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/topics/ui/controls/spinner.html%27" tppabs="http://developer.android.com/guide/topics/ui/controls/spinner.html">link</a>)
+
+		<span class="figuresright">
+			<img src="images/widget-spinner.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-spinner.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		A drop-down menu of selectable choices
+	</p>
+
+	<pre><code class="java">
+// to handle events in Java code
+Spinner spin = (Spinner) findViewById(R.id.<var>theID</var>);
+spin.setOnItemSelectedListener(this);
+...
+</code></pre>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:clickable="bool"</code></td>
+			<td>
+				set to <code>false</code> to disable the spinner
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:entries="@array/<var>array</var>"</code></td>
+			<td>
+				set of options to appear in spinner <br />
+				(must match an array in <span class="filename">strings.xml</span>)
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:prompt="@string/<var>text</var>"</code></td>
+			<td>
+				title text when dialog of choices pops up
+			</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Static lists</h1>
+	
+	<div class="figuresright">
+		<img src="images/list-display.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/list-display.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>static list</strong>: Content is fixed and known before the app runs.
+		<ul><li>Declare the list elements in the strings.xml resource file.</li></ul>
+	</ul>
+	
+	<ul>
+		<li><strong>dynamic list</strong>: Content is read or generated as the program runs.
+		<ul><li>Comes from a data file, or from the internet, etc.
+			<li>Must be set in the Java code.
+	</ul>
+	
+	<!--
+	<pre><code class="xml">
+&lt;!-- res/values/strings.xml --&gt;
+&lt;resources&gt;
+	&lt;string-array name=&quot;oses&quot;&gt;
+		&lt;item&gt;Android&lt;/item&gt;
+		&lt;item&gt;iPhone&lt;/item&gt;
+		...
+		&lt;item&gt;Max OS X&lt;/item&gt;
+	&lt;/string-array&gt;
+&lt;/resources&gt;
+</code></pre>
+
+	<pre><code class="xml">
+&lt;!-- res/layout/activity_main.xml --&gt;
+&lt;ListView ... android:id=&quot;@+id/mylist&quot;
+		android:entries=&quot;@array/oses&quot; /&gt;
+</code></pre>
+	-->
+
+</section>
+
+<section>
+	<h1>String resources</h1>
+	
+	<ul>
+		<li>Declare constant strings and arrays in <span class="filename">res/values/strings.xml</span>:</li>
+	</ul>
+	
+	<pre class=""><code class="xml">
+&lt;resources&gt;
+	&lt;string name=&quot;<var>name</var>&quot;&gt;<var>value</var>&lt;/string&gt;
+	&lt;string name=&quot;<var>name</var>&quot;&gt;<var>value</var>&lt;/string&gt;
+
+	&lt;string-array <var>name</var>=&quot;<var>arrayname</var>&quot;&gt;
+		&lt;item&gt;<var>value</var>&lt;/item&gt;
+		&lt;item&gt;<var>value</var>&lt;/item&gt;   &lt;!-- must escape ' as \' in values --&gt;
+		...
+		&lt;item&gt;<var>value</var>&lt;/item&gt;
+	&lt;/string-array&gt;
+&lt;/resources&gt;
+</code></pre>
+
+	<ul>
+		<li>Refer to them in Java code:
+			<ul>
+				<li>as a resource:	    <code>R.string.<var>name</var></code>,  <code>R.array.<var>name</var></code></li>
+				<li>as a string or array:  <code>getResources().getString(R.string.<var>name</var>)</code>,
+					<code>getResources().getStringArray(R.array.<var>name</var>)</code>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Spinner example</h1>
+	
+	<div class="figuresright">
+		<img src="images/spinner-turtles.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/spinner-turtles.png" alt="figure" />
+	</div>
+
+	<pre class=""><code class="xml">
+&lt;!-- in res/values/strings.xml: --&gt;
+&lt;resources&gt;
+	&lt;string name=&quot;choose_turtle&quot;&gt;Choose a turtle:&lt;/string&gt;
+	&lt;string-array name=&quot;turtles&quot;&gt;
+		&lt;item&gt;Leonardo&lt;/item&gt;
+		&lt;item&gt;Michelangelo&lt;/item&gt;
+		&lt;item&gt;Donatello&lt;/item&gt;
+		&lt;item&gt;Raphael&lt;/item&gt;
+	&lt;/string-array&gt;
+&lt;/resources&gt;
+</code></pre>
+	
+	<pre class=""><code class="xml">
+&lt;!-- in layout XML --&gt;
+&lt;LinearLayout ...&gt;
+	&lt;Spinner ... android:id=&quot;@+id/tmnt&quot;
+		android:entries=&quot;@array/turtles&quot;
+		android:prompt=&quot;@string/choose_turtle&quot; /&gt;
+	&lt;TextView ... android:id=&quot;@+id/result&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>List adapters</h1>
+	
+	<p>
+		<strong>adapter</strong>: Helps turn list data into list view items.
+	</p>
+
+	<ul>
+		<li>common adapters:
+		<ul>
+			<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/reference/android/widget/ArrayAdapter.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/reference/android/widget/ArrayAdapter.html%27" tppabs="https://developer.android.com/reference/android/widget/ArrayAdapter.html"><code>ArrayAdapter</code></a>: items come from an array or list
+			<li><a class="popup" href="javascript:if(confirm(%27https://developer.android.com/reference/android/widget/CursorAdapter.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/reference/android/widget/CursorAdapter.html%27" tppabs="https://developer.android.com/reference/android/widget/CursorAdapter.html"><code>CursorAdapter</code></a>: items come from a database query
+		</ul>
+		
+		<li>Syntax for creating an adapter:
+			<pre><code class="java">ArrayAdapter&lt;String&gt; <var>name</var> =
+		new ArrayAdapter&lt;&gt;(<var>activity</var>, <var>layout</var>, <var>array</var>);</code></pre>
+			<ul>
+				<li>the activity is usually this</li>
+				<li>the default layout for lists is  <code>android.R.layout.simple_list_item_1</code></li>
+				<li>get the array/list by reading your file or data source of choice</li>
+			</ul>
+		<li>attach it by calling <code>setAdapter</code> method of <code>ListView</code></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Adapter example</h1>
+	
+	<pre><code class="java">
+// create an adapter based on a list
+ArrayList&lt;String&gt; myArray = new ArrayList&lt;&gt;();
+myArray.add("Windows");
+myArray.add("Linux");
+myArray.add("Mac OS X");
+
+ArrayAdapter&lt;String&gt; adapter = new ArrayAdapter&lt;&gt;(
+		this, android.R.layout.simple_list_item_1, myArray);
+
+ListView list = (ListView) findViewById(R.id.mylist);
+list.setAdapter(myAdapter);
+</code></pre>
+
+</section>
+
+<section>
+	<h1>Handling list events</h1>
+	
+	<div class="figuresright">
+		<img src="images/event.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/event.png" alt="image" />
+	</div>
+
+	<ul>
+		<li>Lists don't use the <code>onClick</code> event.</li>
+		<li>Event listeners must be attached in Java, not XML.</li>
+		<li>We must use Java anonymous inner classes.</li>
+	</ul>
+	<ul>
+		<li><strong>anonymous inner class</strong>: A shorthand syntax for declaring a small class without giving it an explicit name.</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Event listener in Java</h1>
+	
+	<pre><code class="xml">
+&lt;!-- activity_main.xml --&gt;
+<strike>&lt;Button ... android:onClick=&quot;mybuttonOnClick&quot; /&gt;</strike>
+&lt;Button ... android:id=&quot;@+id/mybutton&quot; /&gt;
+</code></pre>
+
+	<pre><code class="java">
+// MainActivity.java
+<strike>public void mybuttonOnClick() { ... }</strike>
+Button button = (Button) findViewById(R.id.mybutton);
+button.setOnClickListener(<em>new View.OnClickListener() {
+    public void onClick(View v) {
+        // code to run when the button gets clicked
+    }
+}</em>);
+
+// this was the required style for event listeners
+// in older versions of Android :-/
+</code></pre>
+</section>
+
+<section>
+	<h1>List events</h1>
+	
+	<ul>
+		<li>List views respond to the following events:
+		<ul>
+			<li><code>setOnItemClickListener(AdapterView.OnItemClickListener)</code>
+			<li class="subbullet">Listener for when an item in the list has been clicked.
+
+			<li><code>setOnItemLongClickListener(AdapterView.OnItemLongClickListener)</code>
+			<li class="subbullet">Listener for when an item in the list has been clicked and held.
+
+			<li><code>setOnItemSelectedListener(AdapterView.OnItemSelectedListener)</code>
+			<li class="subbullet">Listener for when an item in the list has been selected.
+
+			<li>Others: <code>onDrag</code>, <code>onFocusChanged</code>, <code>onHover</code> <code>onKey</code>, <code>onScroll</code>, <code>onTouch</code>, ...
+		</ul>
+</section>
+
+<section data-transition="fade-out">
+	<h1>List event example</h1>
+	
+	<pre class="longcode"><code class="java">
+public class MyActivity extends Activity {
+
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		...
+		ListView list = (ListView) findViewById(R.id.id);
+		list.setOnItemClickListener(
+			<em>new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView&lt;?&gt; list,
+										View row, int index, long rowID) {
+					// code to run when user clicks that item
+					...
+				}
+			}</em>
+		);
+	}
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-out">
+	<h1>Item long click example</h1>
+	
+	<pre class="longcode"><code class="java">
+public class MyActivity extends Activity {
+
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		...
+		ListView list = (ListView) findViewById(R.id.id);
+		list.setOnItem<em>Long</em>ClickListener(
+			new AdapterView.OnItem<em>Long</em>ClickListener() {
+				@Override
+				public void onItem<em>Long</em>Click(AdapterView&lt;?&gt; list,
+										View row, int index, long rowID) {
+					// code to run when user clicks that item
+					...
+				}
+			}
+		);
+	}
+}
+</code></pre>
+	
+	<ul>
+		<li>Notice that the code must change in all 3 places above!
+	</ul>
+</section>
+
+<section data-transition="fade-in">
+	<h1>List event alt. style</h1>
+	
+	<pre class="longcode"><code class="java">
+// you can make your activity itself be the listener
+public class MyActivity extends Activity
+		<em>implements AdapterView.OnItemClickListener</em> {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		...
+		ListView list = (ListView) findViewById(R.id.id);
+		list.setOnItemClickListener(<em>this</em>);
+	}
+
+	@Override
+	public void onItemClick(AdapterView&lt;?&gt; list,
+							View row, int index, long rowID) {
+		// code to run when user clicks that item
+		...
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>List event lambda with Java 8</h1>
+	
+	<ul>
+		<li><strong>lambda</strong>: An anonymous "function" used as a parameter.
+			<ul>
+				<li>New feature of Java 8.
+			</ul>
+	</ul>
+	
+	<pre class="longcode"><code class="java">
+public class MyActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		...
+		ListView list = (ListView) findViewById(R.id.id);
+		list.setOnItemClickListener(<em>(list, row, index, rowID) -> {</em>
+			// code to run when user clicks that item
+			...
+		<em>}</em>);
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Enabling Java 8 in your project</h1>
+	
+	<ul>
+		<li>in your Module (not Project)'s <span class="filename">build.gradle</span> file, add these (bold) lines, then click <strong>Sync Now</strong> to rebuild your project.
+	</ul>
+	
+	<pre><code class="groovy">
+android {
+	...
+	defaultConfig {
+		...
+		<em>jackOptions {</em>
+			<em>enabled true</em>
+		<em>}</em>
+	}
+	buildTypes {
+		...
+	}
+	<em>compileOptions {</em>
+		<em>sourceCompatibility JavaVersion.VERSION_1_8</em>
+		<em>targetCompatibility JavaVersion.VERSION_1_8</em>
+	<em>}</em>
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Changes to list data</h1>
+	
+	<p>
+		If the data in the list changes, you must notify the list.
+	</p>
+	
+	<pre><code class="java">
+ArrayList&lt;String&gt; myArray = ...;
+ArrayAdapter&lt;String&gt; adapter = ...;
+ListView list = (ListView) findViewById(R.id.mylist);
+list.setAdapter(myAdapter);
+
+// data changes in some way
+myArray.remove(0);
+...
+
+// need to notify the ListView of the change!
+myAdapter.notifyDataSetChanged();
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		ListView methods
+		(<a href="javascript:if(confirm(%27https://developer.android.com/reference/android/widget/ListView.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/reference/android/widget/ListView.html%27" tppabs="https://developer.android.com/reference/android/widget/ListView.html">link</a>)
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>getAdapter()</code></td>
+			<td>returns array adapter</td>
+		</tr>
+		
+		<tr>
+			<td><code>getCount()</code></td>
+			<td># of items in list</td>
+		</tr>
+		
+		<tr>
+			<td><code>getItemAtPosition(<var>index</var>)</code></td>
+			<td>return item at a given index</td>
+		</tr>
+		
+		<tr>
+			<td><code>getSelectedItem()</code></td>
+			<td>item currently selected, if any</td>
+		</tr>
+		
+		<tr>
+			<td><code>getSelectedItemIndex()</code></td>
+			<td>currently selected item's index</td>
+		</tr>
+		
+		<tr>
+			<td><code>performItemClick(<var>view</var>, <var>index</var>, <var>id</var>)</code></td>
+			<td>simulate a click</td>
+		</tr>
+		
+		<tr>
+			<td><code>setAdapter(<var>adapter</var>)</code></td>
+			<td>sets array adapter</td>
+		</tr>
+		
+		<tr>
+			<td><code>setFocusable(<var>bool</var>)</code></td>
+			<td>whether items can be focused on</td>
+		</tr>
+		
+		<tr>
+			<td><code>setOnItemClickListener(<var>L</var>)</code></td>
+			<td>attaching event listeners</td>
+		</tr>
+		
+		<tr>
+			<td><code>setOnItemLongClickListener(<var>L</var>)</code></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><code>setOnItemSelectedListener(<var>L</var>)</code></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><code>setSelection(<var>index</var>)</code></td>
+			<td>sets which element is selected</td>
+		</tr>
+	</table>
+</section>
+
+<!--
+TODO: SimpleList
+-->
+
+<section>
+	<h1>Custom list layout</h1>
+	
+	<div class="figuresright">
+		<img src="images/list-custom-layout.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/list-custom-layout.jpg" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>If you want your list to look different than the default appearance (of just a text string for each line), you must:
+			<ul>
+				<li>Write a short <strong>layout XML file</strong> describing the layout for each row.
+				<li>Tell your <code>ArrayAdapter</code> how to supply the item text to each item.
+	</ul>
+</section>
+
+<section>
+	<h1>Custom list layout XML</h1>
+	
+	<pre><code class="xml">
+&lt;!-- res/layout/mylistlayout.xml --&gt;
+&lt;LinearLayout ... android:orientation=&quot;horizontal&quot;&gt;
+	&lt;!-- an icon on each list item --&gt;
+	&lt;ImageView ... <em>android:id=&quot;@+id/list_row_image&quot;</em>
+		android:layout_width=&quot;100dp&quot;
+		android:layout_height=&quot;100dp&quot;
+		android:src=&quot;@drawable/smiley&quot; /&gt;
+
+	&lt;!-- the text of each list item --&gt;
+	&lt;TextView ... <em>android:id=&quot;@+id/list_row_text&quot;</em>
+		android:textStyle=&quot;bold&quot;
+		android:textSize=&quot;22dp&quot;
+		android:text=&quot;&quot;
+		android:background=&quot;#336699&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Custom list adapter code</h1>
+	
+	<pre><code class="java">
+ArrayList&lt;String&gt; myArray = ...;  // load data from file
+
+ArrayAdapter&lt;String&gt; adapter =
+  new ArrayAdapter&lt;&gt;(this, 
+		R.layout.mylistlayout,   // layout XML id
+		R.id.list_row_text,      // item text id
+		myArray);
+
+ListView list = (ListView) findViewById(R.id.mylist);
+list.setAdapter(myAdapter);
+</code></pre>
+</section>
+
+<section>
+	<h1>Spinner event example</h1>
+	
+	<pre class=""><code class="java">
+public class MainActivity extends Activity {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		Spinner spin = (Spinner) findViewById(R.id.<var>theID</var>);
+		spin.setOnItemSelectedListener(
+			new AdapterView.OnItemSelectedListener() {
+				public void onItemSelected(AdapterView&lt;?&gt; spin,
+						View v, int i, long id) {
+					// code to run when an item is selected
+				}
+
+				public void onNothingSelected(AdapterView&lt;?&gt; parent) {
+					// empty
+				}
+			}
+		);
+	}
+}
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

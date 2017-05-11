@@ -1,0 +1,1054 @@
+<html>
+	<head>
+		<title>CS 193A - 2D Graphics</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>2D Graphics and Animation</p>
+</section>
+
+<section>
+	<h1>Drawing 2D graphics</h1>
+	
+	<ul>
+		<li>To draw our own custom 2D graphics on screen,
+			we'll make a <strong>custom View subclass</strong> with the drawing code.
+		
+		<li>If the app is animated (such as a game), we'll also use a <strong>thread</strong> to periodically update the graphics and redraw them.
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/graphics-1.png.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/graphics-1.png" alt="figure" />
+		<img src="images/graphics-2.png.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/graphics-2.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Custom View template</h1>
+	
+	<pre><code class="java">
+public class <var>ClassName</var> extends View {
+	// required constructor
+	public <var>ClassName</var>(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	// this method draws on the view
+	@Override
+	protected void <em>onDraw</em>(Canvas canvas) {
+		super.onDraw(canvas);
+
+		<var>drawing code;</var>
+	}
+}
+	// recall: y-axis increases downward!
+</code></pre>
+
+	<div class="figuresright">
+		<img src="images/y-axis.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/y-axis.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Using your custom view</h1>
+	
+	<ul>
+		<li>You can insert your custom view into an activity's layout XML:
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- res/layout/activity_main.xml --&gt;
+&lt;RelativeLayout ...
+	tools:context=&quot;.MainActivity&quot;&gt;
+
+	<em>&lt;<var>your.package.name.MyViewClassName</var>
+		android:layout_width=&quot;match_parent&quot;
+		android:layout_height=&quot;match_parent&quot;
+		...
+	/&gt;</em>
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Another way to use custom view</h1>
+	
+	<ul>
+		<li>If your custom view takes up 100% of the activity screen,
+			you can just add it to the activity in the Java code:
+	</ul>
+	
+	<pre><code class="java">
+// MainActivity.java
+public class MyActivity extends Activity {
+	...
+	@Override
+	public void onCreate(Bundle bundle) {
+		super.onCreate(bundle);
+		<em>View myView = new <var>MyViewClassName</var>(this, null);
+		setContentView(myView);</em>
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Canvas object methods
+		(<a class="popup" href="javascript:if(confirm(%27https://developer.android.com/reference/android/graphics/Canvas.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/reference/android/graphics/Canvas.html%27" tppabs="https://developer.android.com/reference/android/graphics/Canvas.html">link</a>)
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>drawARGB(<var>alpha</var>, <var>r</var>, <var>g</var>, <var>b</var>);</code></td>
+			<td>fill window with color (rgb=0-255)</td>
+		</tr>
+		
+		<tr>
+			<td><code>drawArc(...);</code></td>
+			<td>draw a partial ellipse</td>
+		</tr>
+		
+		<tr>
+			<td><code>drawBitmap(<var>bmp</var>, <var>x</var>, <var>y</var>, null);</code></td>
+			<td>draw an image</td>
+		</tr>
+		
+		<tr>
+			<td><code>drawCircle(<var>centerX</var>, <var>centerY</var>, <var>r</var>, <var>paint</var>);</code></td>
+			<td>draw a circle</td>
+		</tr>
+		
+		<tr>
+			<td><code>drawLine(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>, <var>paint</var>);</code></td>
+			<td>draw a line segment</td>
+		</tr>
+		
+		<tr>
+			<td><code>drawOval(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>, <var>paint</var>);</code> * <br />
+				<code>drawOval(new RectF(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>), <var>paint</var>);</code></td>
+			<td>draw oval/circle</td>
+		</tr>
+		
+		<tr>
+			<td><code>drawPoint(<var>x</var>, <var>y</var>, <var>paint</var>);</code></td>
+			<td>color a single pixel</td>
+		</tr>
+		
+		<tr>
+			<td><code>drawRect(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>, <var>paint</var>);</code> * <br />
+				<code>drawRect(new RectF(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>), <var>paint</var>);</code></td>
+			<td>draw rectangle</td>
+		</tr>
+		
+		<tr>
+			<td style="white-space: nowrap"><code>drawRoundRect(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>, <var>rx</var>, <var>ry</var>, <var>paint</var>);</code>*<br />
+				<code>drawRoundRect(new RectF(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>), <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<var>rx</var>, <var>ry</var>, <var>paint</var>);</code></td>
+			<td>rounded rectangle</td>
+		</tr>
+		
+		<tr>
+			<td><code>drawText("<var>str</var>", <var>x</var>, <var>y</var>, <var>paint</var>);</code></td>
+			<td>draw a text string</td>
+		</tr>
+		
+		<tr>
+			<td><code>getWidth()</code>, <br />
+				<code>getHeight()</code></td>
+			<td>dimensions of view</td>
+		</tr>
+	</table>
+	
+	<ul>
+		<li class="aside">* = requires Android 5.0+
+	</ul>
+</section>
+
+<section>
+	<h1>
+		Paint
+	</h1>
+	
+	<ul>
+		<li>Many methods accept a <strong><code>Paint</code></strong>, a color to use for drawing.
+			<ul>
+				<li>Create a <code class="androidapi" data-class="android.graphics.Paint">Paint</code> by specifying an alpha (opacity) value, and red/green/blue (RGB) integer values, from 0 (none) to 255 (full).
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+Paint name = new Paint();
+name.setARGB(alpha, red, green, blue);
+
+// example
+Paint purple = new Paint();
+purple.setARGB(255, 255, 0, 255);
+purple.setStyle(Paint.Style.FILL_AND_STROKE);
+             // or FILL, STROKE
+</code></pre>
+
+</section>
+
+<section>
+	<h1>
+		Paint methods
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/graphics/Paint.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/graphics/Paint.html%27" tppabs="http://developer.android.com/reference/android/graphics/Paint.html">link</a>)
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>getTextBounds("<var>text</var>", <br />
+				&nbsp; <var>start</var>, <var>end</var>, <var>Rect</var>)</code></td>
+			<td>fill Rect with bounding rectangle that surrounds text</td>
+		</tr>
+		
+		<tr>
+			<td><code>getTextSize()</code></td>
+			<td>returns text size in px</td>
+		</tr>
+		
+		<tr>
+			<td><code>getTypeface()</code></td>
+			<td>returns font used</td>
+		</tr>
+		
+		<tr>
+			<td><code>measureText("<var>text</var>", <var>start</var>, <var>end</var>)</code></td>
+			<td>returns string width</td>
+		</tr>
+		
+		<tr>
+			<td><code>setAlpha(<var>alpha</var>);</code></td>
+			<td>set color transparency</td>
+		</tr>
+		
+		<tr>
+			<td><code>setAntiAlias(<var>bool</var>);</code></td>
+			<td>whether to smooth pixels</td>
+		</tr>
+		
+		<tr>
+			<td><code>setColor(<var>color</var>);</code></td>
+			<td>set paint color as RGB <code>int</code></td>
+		</tr>
+		
+		<tr>
+			<td><code>setStrokeWidth(<var>width</var>);</code></td>
+			<td>set line thickness</td>
+		</tr>
+		
+		<tr>
+			<td><code>setStyle(<var>style</var>);</code></td>
+			<td>set paint styles</td>
+		</tr>
+		
+		<tr>
+			<td><code>setTextAlign(<var>align</var>);</code></td>
+			<td>sets text alignment</td>
+		</tr>
+		
+		<tr>
+			<td><code>setTextSize(<var>size</var>);</code></td>
+			<td>sets font size</td>
+		</tr>
+		
+		<tr>
+			<td><code>setTypeface(<var>typeface</var>);</code></td>
+			<td>sets font</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Some common colors</h1>
+	
+	<div class="figuresright">
+		<img src="images/colors-table.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/colors-table.png" alt="figure" />
+	</div>
+	
+	<table class="methodtable">
+		<tr>
+			<th>name</th>
+			<th>red</th>
+			<th>green</th>
+			<th>blue</th>
+		</tr>
+		<tr>
+			<td>black</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>blue</td>
+			<td>0</td>
+			<td>0</td>
+			<td>255</td>
+		</tr>
+		<tr>
+			<td>brown</td>
+			<td>139</td>
+			<td>69</td>
+			<td>19</td>
+		</tr>
+		<tr>
+			<td>cyan</td>
+			<td>0</td>
+			<td>255</td>
+			<td>255</td>
+		</tr>
+		<tr>
+			<td>dark gray</td>
+			<td>64</td>
+			<td>64</td>
+			<td>64</td>
+		</tr>
+		<tr>
+			<td>gray</td>
+			<td>128</td>
+			<td>128</td>
+			<td>128</td>
+		</tr>
+		<tr>
+			<td>light gray</td>
+			<td>192</td>
+			<td>192</td>
+			<td>192</td>
+		</tr>
+		<tr>
+			<td>green</td>
+			<td>0</td>
+			<td>255</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>orange</td>
+			<td>255</td>
+			<td>200</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>pink</td>
+			<td>255</td>
+			<td>175</td>
+			<td>175</td>
+		</tr>
+		<tr>
+			<td>purple</td>
+			<td>255</td>
+			<td>0</td>
+			<td>255</td>
+		</tr>
+		<tr>
+			<td>red</td>
+			<td>255</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>white</td>
+			<td>255</td>
+			<td>255</td>
+			<td>255</td>
+		</tr>
+		<tr>
+			<td>yellow</td>
+			<td>255</td>
+			<td>255</td>
+			<td>0</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		Typeface
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/graphics/Typeface.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/graphics/Typeface.html%27" tppabs="http://developer.android.com/reference/android/graphics/Typeface.html">link</a>)
+	</h1>
+	
+	<ul>
+		<li>In Android, a font is called a <strong><code class="androidapi" data-class="android.graphics.Typeface">Typeface</code></strong>.
+		
+			<ul>
+				<li>Set a font inside a <code>Paint</code>.
+				<li>(1) You can create a <code>Typeface</code> based on a specific font name.
+					<ul>
+						<li>styles:  <code>NORMAL</code>, <code>BOLD</code>, <code>ITALIC</code>, <code>BOLD_ITALIC</code>
+					</ul>
+				<li>(2) Or based on a general "font family" (recommended).
+					<ul>
+						<li>family names:  <code>DEFAULT</code>, <code>MONOSPACE</code>, <code>SERIF</code>, <code>SANS_SERIF</code>
+					</ul>
+				<li>(3) Or from a file in your <span class="filename">src/main/assets/</span> directory:
+			
+					<pre><code class="java">
+Typeface.create("<var>font name</var>", Typeface.<var>STYLE</var>)
+Typeface.create(Typeface.<var>FAMILY_NAME</var>, Typeface.<var>STYLE</var>)
+Typeface.createFromAsset(getAssets(), "<var>filename</var>")
+</code></pre>
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+// example: use a 40-point monospaced blue font
+Paint p = new Paint();
+p.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
+p.setTextSize(40);
+p.setARGB(255, 0, 0, 255);
+</code></pre>
+
+</section>
+
+<section data-transition="fade-out">
+	<h1>Smiley face exercise</h1>
+	
+	<div class="figuresright">
+		<img src="images/smileyface.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/smileyface.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>Write a custom view that draws a "smiley face" figure.
+			<ul>
+				<li>face:	(100, 100), size 200, yellow
+				<li>eyes:	(140, 140) and (230, 140), size 30, blue
+				<li>nose:	(190, 180), size 20, black
+				<li>mouth:	(170, 230), size 60x20, red
+				<li>text:	(100, 400), monospaced bold font, size 40
+			</ul>
+	</ul>
+</section>
+
+<section data-transition="fade-in">
+	<h1>Smiley face solution</h1>
+	
+	<div class="figuresright">
+		<img src="images/smileyface.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/smileyface.png" alt="figure" />
+	</div>
+	
+	<pre class="longcode"><code class="java">
+public class FaceView extends View { ...
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+
+		Paint yellow = new Paint();          // face
+		yellow.setARGB(255, 255, 255, 0);
+		yellow.setStyle(Paint.Style.FILL_AND_STROKE);
+		canvas.drawOval(new RectF(100, 100, 300, 300), yellow);
+
+		Paint blue = new Paint();            // eyes
+		blue.setARGB(255, 0, 0, 255);
+		blue.setStyle(Paint.Style.FILL_AND_STROKE);
+		canvas.drawOval(new RectF(140, 140, 170, 170), blue);
+		canvas.drawOval(new RectF(230, 140, 260, 170), blue);
+
+		Paint black = new Paint();           // nose
+		black.setARGB(255, 0, 0, 0);
+		black.setStyle(Paint.Style.FILL_AND_STROKE);
+		canvas.drawOval(new RectF(190, 180, 210, 200), black);
+
+		Paint red = new Paint();             // mouth
+		red.setARGB(255, 255, 0, 0);
+		red.setStyle(Paint.Style.FILL_AND_STROKE);
+		canvas.drawRect(170, 230, 230, 250, red);
+
+		black.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
+		black.setTextSize(40f);              // text
+		canvas.drawText("CS 193A is awesome", 100, 400, black);
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Targets exercise</h1>
+	
+	<div class="figuresright">
+		<img src="images/targets.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/targets.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>Write an app whose main activity displays a custom view that draws a "target" figure.
+			<ul>
+				<li>Outer red circle fills 100% of view's width/height.
+				<li>5 total circles, all centered; 3 red, 2 white.
+				<li>Each circle is 20% smaller than the last:
+					<ul>
+						<li>the first (red) is 100% of the window size,
+						<li>the second (white) is 80% of the window size,
+						<li>the third (red) is 60% of the window size,
+						<li>the fourth (white) is 40% of the window size,
+						<li>the fifth (white) is 20% of the window size.
+					</ul>
+				<li><em>(Challenge: Use a constant for # of ovals.)</em>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Targets solution</h1>
+	
+	<pre><code class="java">
+public class TargetView extends View {
+	public TargetView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+
+		Paint red = new Paint();
+		red.setARGB(255, 255, 0, 0);
+		Paint white = new Paint();
+		white.setARGB(255, 255, 255, 255);
+
+		int w = canvas.getWidth(), h = canvas.getHeight();
+		for (int i = 0; i &lt; 5; i++) {
+			canvas.drawOval(new RectF(/*x*/ w*i/10,       /*y*/ h*i/10,
+									  /*w*/ w*(10-i)/10,  /*h*/ h*(10-i)/10),
+							/*paint*/ i % 2 == 0 ? red : white);
+		}
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Bitmap images
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/graphics/Bitmap.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/graphics/Bitmap.html%27" tppabs="http://developer.android.com/reference/android/graphics/Bitmap.html">link</a>)
+	</h1>
+	
+	<ul>
+		<li>Draw an image (such as <span class="filename">.png</span> or <span class="filename">.jpg</span>) using the <code class="androidapi" data-class="android.graphics.Bitmap">Bitmap</code> class.
+			<pre><code class="java">
+Bitmap name = BitmapFactory.decodeResource(getResources(), R.drawable.<var>ID</var>);
+</code></pre>
+	</ul>
+	
+	<div class="figuresright">
+		<img src="images/heart.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/heart.png" alt="figure" />
+	</div>
+
+	<pre><code class="java">
+  // example: draw heart.png on screen at (0, 0)
+  Bitmap bmp = BitmapFactory.decodeResource(
+                   getResources(), R.drawable.heart);
+  canvas.drawBitmap(bmp, 0, 0, /* paint */ null);
+
+  // you can also scale a Bitmap to a given size
+  Bitmap bmp2 = Bitmap.createScaledBitmap(bmp,
+                   <var>newWidth</var>, <var>newHeight</var>);
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Lib: GCanvas
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<ul>
+		<li>The Stanford Android library contains a <code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GCanvas">GCanvas</code> class that more easily handles drawing and animation.
+			<ul>
+				<li>Replicates functionality of <a class="popup" href="javascript:if(confirm(%27http://cs.stanford.edu/people/eroberts/jtf/javadoc/student/index.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://cs.stanford.edu/people/eroberts/jtf/javadoc/student/index.html%27" tppabs="http://cs.stanford.edu/people/eroberts/jtf/javadoc/student/index.html">CS 106A Java library</a> <small class="aside">(by Prof. Eric Roberts)</small>
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public class MyCanvas <em>extends GCanvas</em> { ...
+</code></pre>
+
+	<ul>
+		<li>The model for <code>GCanvas</code> is different from a regular <code>View</code>:
+			<ul>
+				<li><del><code class="column">c.drawRect()</code></del> &rarr; <code>GRect</code>, <code>GOval</code>, <code>GLabel</code>
+				<li><del><code class="column">onDraw</code></del> &rarr; <code>init</code>
+				<li><span class="column">animation</span> &rarr; <code>animate</code>, <code>onAnimateTick</code>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		GCanvas methods
+		(<a class="popup" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/lib/javadoc/stanford/androidlib/graphics/GCanvas.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/lib/javadoc/stanford/androidlib/graphics/GCanvas.html%27" tppabs="http://web.stanford.edu/class/cs193a/lib/javadoc/stanford/androidlib/graphics/GCanvas.html">link</a>)
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable compacttable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>add(<var>gobject</var>);</code> <br />
+				<code>add(<var>gobject</var>, <var>x</var>, <var>y</var>);</code></td>
+			<td>add graphical object to canvas at top of z-order</td>
+		</tr>
+		
+		<tr>
+			<td><code>contains(<var>gobject</var>)</code></td>
+			<td>true if this graphical object is in canvas</td>
+		</tr>
+		
+		<tr>
+			<td><code>getElement(<var>index</var>)</code></td>
+			<td>returns graphical object at given index in list</td>
+		</tr>
+		
+		<tr>
+			<td><code>getElementAt(<var>x</var>, <var>y</var>)</code></td>
+			<td>top object at given pixel, or <code>null</code> if none</td>
+		</tr>
+		
+		<tr>
+			<td><code>getElementCount()</code></td>
+			<td>returns number of graphical objects</td>
+		</tr>
+		
+		<tr>
+			<td><strong><code>init()</code></strong></td>
+			<td>override this to write initialization code</td>
+		</tr>
+		
+		<tr>
+			<td><code>remove(<var>gobject</var>);</code></td>
+			<td>remove graphical object from canvas</td>
+		</tr>
+		
+		<tr>
+			<td><code>removeAll();</code></td>
+			<td>removes all graphical objects from canvas</td>
+		</tr>
+		
+		<tr>
+			<td><code>sendBackward(<var>gobject</var>);</code> <br />
+				<code>sendForward(<var>gobject</var>);</code> <br />
+				<code>sendToBack(<var>gobject</var>);</code> <br />
+				<code>sendToFront(<var>gobject</var>);</code></td>
+			<td>adjust object's position in Z-ordering</td>
+		</tr>
+		
+		<tr>
+			<td><code>animate(<var>framesPerSec</var>);</code> <br />
+				<code>animationPause();</code> <br />
+				<code>animationResume();</code> <br />
+				<code>animationStop();</code> <br />
+				<code>isAnimated()</code></td>
+			<td>animation methods</td>
+		</tr>
+		
+		<tr>
+			<td><code>onAnimationTick()</code></td>
+			<td>override for code to run on each anim. frame</td>
+		</tr>
+		
+		<tr>
+			<td><code>createFont(<var>name</var>, <var>style</var>)</code></td>
+			<td>create a <code>Typeface</code></td>
+		</tr>
+		
+		<tr>
+			<td><code>createPaint(<var>red</var>, <var>green</var>, <var>blue</var>)</code></td>
+			<td>create a <code>Paint</code></td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		Types of GObjects
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Class</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GColor">GColor</code></td>
+			<td>class with many <code>Paint</code> constants including <code>BLACK</code>, <code>BLUE</code>, <code>RED</code>, <code>WHITE</code>, etc.</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GCompound">GCompound</code></td>
+			<td>container for treating other objects as a group</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GImage">GImage</code></td>
+			<td>represents a bitmap image</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GLabel">GLabel</code></td>
+			<td>a text string drawn in a given font</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GLine">GLine</code></td>
+			<td>connection between two points</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GObject">GObject</code></td>
+			<td>superclass for other graphical object classes</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GOval">GOval</code></td>
+			<td>a circle or ellipse</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GPolygon">GPolygon</code></td>
+			<td>connects arbitrary points to form a polygon</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GRect">GRect</code></td>
+			<td>a square or rectangle</td>
+		</tr>
+		
+		<tr>
+			<td><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GSprite">GSprite</code></td>
+			<td>wraps a <code>GObject</code> and adds methods useful for games</td>
+		</tr>
+	</table>
+	
+	<ul>
+		<li>For details on each type of GObject, visit the <a class="popup" href="javascript:if(confirm(%27http://web.stanford.edu/class/cs193a/lib/javadoc/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://web.stanford.edu/class/cs193a/lib/javadoc/%27" tppabs="http://web.stanford.edu/class/cs193a/lib/javadoc/">library Javadoc page</a>.
+		<li>Many methods and behaviors match the <a class="popup" href="javascript:if(confirm(%27http://cs.stanford.edu/people/eroberts/jtf/javadoc/student/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://cs.stanford.edu/people/eroberts/jtf/javadoc/student/%27" tppabs="http://cs.stanford.edu/people/eroberts/jtf/javadoc/student/">Stanford 106A library</a>.
+	</ul>
+</section>
+
+<section>
+	<h1>
+		Smiley face with GCanvas
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<div class="figuresright">
+		<img src="images/smileyface.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/smileyface.png" alt="figure" />
+	</div>
+
+	<pre><code class="java">
+public class FaceView <em>extends GCanvas</em> { ...
+	<em>public void init()</em> {
+		GOval face = new GOval(100, 100, 200, 200);   // face
+		face.setColor(GColor.BLACK);
+		face.setFillColor(GColor.YELLOW);
+		add(face);
+
+		GOval eye1 = new GOval(140, 140, 30, 30);     // eyes
+		eye1.setFillColor(GColor.BLUE);
+		GOval eye2 = new GOval(230, 140, 30, 30);
+		eye2.setFillColor(GColor.BLUE);
+		add(eye1);
+		add(eye2);
+
+		GOval nose = new GOval(190, 180, 20, 20);     // nose
+		nose.setFillColor(GColor.BLACK);
+		add(nose);
+
+		GRect mouth = new GRect(170, 230, 60, 20);    // mouth
+		mouth.setFillColor(GColor.RED);
+		add(mouth);
+
+		GLabel label = new GLabel("CS 193A is awesome", 100, 400);
+		label.setFont(Typeface.MONOSPACE, Typeface.BOLD, 40f);
+		add(label);
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Animation via redrawing</h1>
+	
+	<ul>
+		<li>To animate a view, you must <strong>redraw</strong> it at regular intervals.
+			<ul>
+				<li>On each redraw, change variables/positions of shapes.
+			</ul>
+		
+		<li>Force a view to redraw by calling its <code>postInvalidate</code> method.
+			<ul>
+				<li>But you can't just do this in a loop; this will lock up the app's UI and lead to poor performance.
+				<li>You must instead do it in another thread of execution.
+			</ul>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/animation-ball.png.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/animation-ball.png" alt="figure" />
+		<img src="images/bouncing-ball-animation.gif" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/bouncing-ball-animation.gif" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>A basic animation loop</h1>
+	
+	<ul>
+		<li>The code to animate a view must do the following in a loop:
+			<ol>
+				<li>process any <strong>user input</strong>  (mouse touch events, key presses, etc.)
+				<li><strong>update</strong> the view state  (move any moving objects, handle collisions, etc.)
+				<li>tell the view to <strong>redraw</strong> itself  (which happens on the main UI thread)
+				<li><strong>pause</strong> for some number of milliseconds
+			</ol>
+	</ul>
+	
+	<pre class="longcode"><code class="java">
+// in MyView.java
+public void myAnimationLoop() {
+	while (true) {
+		// 1) process user input
+		// 2) update your game's state
+		<var>my game update code goes here;</var>
+
+		// 3) tell view to redraw self on main UI thread
+		postInvalidate();
+
+		// 4) pause
+		try {
+			Thread.sleep(50);  // 50ms = 20fps
+		} catch (InterruptedException ie) { break; }
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Threads</h1>
+	
+	<ul>
+		<li><strong>thread:</strong> A "lightweight process"; a single sequential flow of execution or isolated sub-task within one program.
+			<ul>
+				<li>A means to implement programs that seem to perform multiple tasks simultaneously (a.k.a. <em>concurrency</em>).
+				<li>Threads within the same process share data with each other.
+					<ul>
+						<li>"shared-memory concurrency"
+						<li>i.e., Variables created in one thread can be seen by others.
+					</ul>
+				<li>a thread is sometimes called a <em>lightweight process</em>
+			</ul>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/threads-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/threads-1.png" alt="figure" />
+		<img src="images/threads-2.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/threads-2.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Using a Thread</h1>
+	
+	<ul>
+		<li>Your animation loop must run in a thread to work properly.
+		<li>You can create a <code class="javaapi" data-class="java.lang.Thread">Thread</code> by passing it a <code class="javaapi" data-class="java.lang.Runnable">Runnable</code> object with a <code>run</code> method containing the code to execute.
+			<ul>
+				<li>other <code>Thread</code> methods: <code>start</code>, <code>stop</code>, <code>sleep</code>, <code>isRunning</code>, <code>join</code>
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+Thread thread = new Thread(new Runnable() {
+	public void run() {
+		// code to execute in thread goes here
+		myAnimationLoop();
+	}
+});
+thread.start();
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Avoid threads w/ library
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<ul>
+		<li><code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.graphics.GCanvas">GCanvas</code> includes an <code>animate</code> method that will call an <code>onAnimateTick</code> callback at specified intervals.
+			<ul>
+				<li>runs in a separate thread under-the-hood
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+// library eliminates threads, auto-redraws after each frame
+public class MyView extends GCanvas { ...
+	...
+	public void init() {
+		<em>animate</em>(<var>FPS</var>);   // frames/sec
+	}
+
+	// called once per frame of animation
+	@Override
+	<em>public void onAnimateTick()</em> {
+		super.onAnimateTick();
+		
+		<var>move/update shapes;</var>
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Bouncing ball exercise</h1>
+	
+	<div class="figuresright">
+		<img src="images/bouncing-ball.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/bouncing-ball.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>Write an app that draws a bouncing red ball.
+		<li>The ball moves in the x/y dimensions and bounces back when it hits any edge of the screen.
+			<ul>
+				<li>background color: yellow
+				<li>ball color: red
+				<li>ball size: 100 x 100px
+				<li>ball velocity: &lt; 80px per in x/y direction (random)
+				<li>ball should update 50 times per second
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		Bouncing ball (x only) w/ library
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<div class="figuresright">
+		<img src="images/bouncingball1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/bouncingball1.png" alt="figure" />
+	</div>
+	
+	<pre><code class="java">
+// library eliminates threads, auto-redraws after each frame
+public class BounceView extends GCanvas { ...
+	private GOval ball;
+	private int dx = 5;
+
+	public void init() {
+		ball = new GOval(10, 10, 50, 50);
+		ball.setFillColor(GColor.BLACK);
+		add(ball);
+		animate(50);   // 50 frames/sec
+	}
+
+	// called once per frame of animation
+	@Override
+	public void onAnimateTick() {
+		super.onAnimateTick();
+		ball.setX(ball.getX() + dx);
+		if (ball.getRightX() >= getWidth()
+			  || ball.getX() <= 0) {
+			dx = -dx;   // bounce
+		}
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Raindrops exercise</h1>
+	
+	<div class="figuresright">
+		<img src="images/raindrops.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/raindrops.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>Write an app that looks like falling rain.
+			<ul>
+				<li>Every half-second, a new raindrop will appear.
+				<li>The raindrops have random x-coordinates and start at the top (y=0).
+				<li>Each raindrop is a 10px blue circle.
+				<li>The drops fall 5px every frame, at 50 fps.
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		Raindrops w/ library
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<div class="figuresright">
+		<img src="images/raindrops.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/raindrops.png" alt="figure" />
+	</div>
+	
+	<pre><code class="java">
+// library eliminates threads, auto-redraws after each frame
+public class RainView extends GCanvas { ...
+	private int dy = 5;      // fall by 5px/frame
+	private int frames = 0;
+
+	public void init() {
+		animate(50);         // 50 frames/sec
+	}
+
+	// called once per frame of animation
+	@Override
+	public void onAnimateTick() {
+		super.onAnimateTick();
+		frames++;
+		if (frames % 25 == 0) {
+			// add a raindrop
+			GOval raindrop = new GOval(10, 10);
+			raindrop.setFillColor(GColor.BLUE);
+			RandomGenerator randy = RandomGenerator.getInstance();
+			float randX = randy.nextFloat(0, getWidth() - 10);
+			add(raindrop, randX, 0);
+		}
+
+		// make all the raindrops fall
+		for (GObject obj : this) {
+			obj.translate(0, dy);
+		}
+	}
+}
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

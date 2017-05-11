@@ -1,0 +1,263 @@
+<html>
+	<head>
+		<title>CS 193A - Styles and Themes</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Styles and Themes</p>
+</section>
+
+<section>
+	<h1>Redundant XML styling</h1>
+	
+	<ul>
+		<li>In large layouts, you'll have views with similar appearance.
+		<li>It is redundant to write the same attributes on every widget.
+	</ul>
+	
+	<pre><code class="xml">
+&lt;TextView
+    android:id=&quot;@+id/text1&quot;
+    <span class="bad">android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:textColor=&quot;#00FF00&quot;
+    android:typeface=&quot;monospace&quot;</span>
+    android:text=&quot;Hello, world!&quot; /&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/text2&quot;
+    <span class="bad">android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:textColor=&quot;#00FF00&quot;
+    android:typeface=&quot;monospace&quot;</span>
+    android:text=&quot;Goodbye&quot; /&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Styles XML file</h1>
+	
+	<div class="figuresright">
+		<img src="images/androidstudio-project-layout.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/androidstudio-project-layout.png" alt="image" />
+	</div>
+	
+	<ul>
+		<li><span class="filename">res/</span>   = resource files (many are XML)
+			<ul>
+				<li><span class="filename">drawable/</span>  = images
+				<li><span class="filename">layout/</span>  = descriptions of GUI layout
+				<li><span class="filename">menu/</span>  = overall app menu options
+				<li><span class="filename">values/</span>  = constant values, arrays, styles
+					<ul>
+						<li><span class="filename">styles.xml</span>
+					</ul>
+				<li><span class="filename">strings/</span>  = localization data
+			</ul>
+		
+		<li>You can define commonly used styles in <span class="filename">res/values/styles.xml</span> and use them repeatedly in code.
+	</ul>
+</section>
+
+<section>
+	<h1>Example styles.xml</h1>
+	
+	<ul>
+		<li>Declare styles with a <code>&lt;style&gt;</code> tag.
+			<ul>
+				<li>Give each style a name attribute.
+				<li>Inside, use <code>&lt;item&gt;</code> tags to declare style attribute values.
+			</ul>
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- res/values/styles.xml --&gt;
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;resources&gt;
+	&lt;style name=&quot;<em>CodeFont</em>&quot;&gt;
+		&lt;item name=&quot;android:layout_width&quot;&gt;match_parent&lt;/item&gt;
+		&lt;item name=&quot;android:layout_height&quot;&gt;wrap_content&lt;/item&gt;
+		&lt;item name=&quot;android:textColor&quot;&gt;#00FF00&lt;/item&gt;
+		&lt;item name=&quot;android:typeface&quot;&gt;monospace&lt;/item&gt;
+	&lt;/style&gt;
+&lt;/resources&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Fix redundant XML styling</h1>
+	
+	<pre><code class="xml">
+&lt;TextView
+    android:id=&quot;@+id/text1&quot;
+    <span class="bad"><strike>android:layout_width=&quot;match_parent&quot;</strike>
+    <strike>android:layout_height=&quot;wrap_content&quot;</strike>
+    <strike>android:textColor=&quot;#00FF00&quot;</strike>
+    <strike>android:typeface=&quot;monospace&quot;</strike></span>
+    <em class="good">style="@style/CodeFont"</em>
+    android:text=&quot;Hello, world!&quot; /&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/text2&quot;
+    <span class="bad"><strike>android:layout_width=&quot;match_parent&quot;</strike>
+    <strike>android:layout_height=&quot;wrap_content&quot;</strike>
+    <strike>android:textColor=&quot;#00FF00&quot;</strike>
+    <strike>android:typeface=&quot;monospace&quot;</strike></span>
+    <em class="good">style="@style/CodeFont"</em>
+    android:text=&quot;Goodbye&quot; /&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Style inheritance</h1>
+	
+	<ul>
+		<li>Give your style a parent attribute to use inheritance.
+			<ul>
+				<li>It will copy all properties from the parent.
+				<li>You can add more properties and/or override existing ones.
+			</ul>
+		<li>The following style inherits the monospace font, layout width/height, text color, etc. from <code>CodeFont</code>
+			<ul>
+				<li>Alternate syntax: Name your style with prefix of parent's name, such as <code>CodeFont.Emphasized</code>
+			</ul>
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- res/values/styles.xml --&gt;
+&lt;style name=&quot;EmphasizedCode&quot; <em>parent=&quot;@style/CodeFont&quot;</em>&gt;
+	&lt;item name=&quot;android:textStyle&quot;&gt;bold|italic&lt;/item&gt;
+&lt;/style&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Declaring a color</h1>
+	
+	<ul>
+		<li>If many of your styles use a color, you can declare that color as a <color> element and give it a name.
+			<ul>
+				<li>Refer to it in styles as  <code>@color/<var>name</var></code>
+				<li>Colors are <a class="popup" href="javascript:if(confirm(%27http://www.w3schools.com/colors/colors_names.asp  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.w3schools.com/colors/colors_names.asp%27" tppabs="http://www.w3schools.com/colors/colors_names.asp">hex strings</a>  <var>#RRGGBB</var> where R,G,B are 00-FF (0-255)
+			</ul>
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- res/values/styles.xml --&gt;
+<em>&lt;color name=&quot;my_orange&quot;&gt;#dd7700&lt;/color&gt;</em>
+&lt;style name=&quot;CodeFont&quot;&gt;...
+	&lt;item name=&quot;android:textColor&quot;&gt;<em>@color/my_orange</em>&lt;/item&gt;
+&lt;/style&gt;
+&lt;style name=&quot;AnotherStyle&quot;&gt;...
+	&lt;item name=&quot;android:background&quot;&gt;<em>@color/my_orange</em>&lt;/item&gt;
+&lt;/style&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		All style properties
+		(<a class="popup" href="javascript:if(confirm(%27https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/styles.xml  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/styles.xml%27" tppabs="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/styles.xml">link</a>)
+	</h1>
+	
+	<ul>
+		<li>Each property's name starts with <code>android:</code> , e.g. <code>android:textSize</code>
+		<li class="subbullet" style="font-size: 0.35em">
+		activityCloseEnterAnimation, activityCloseExitAnimation, activityOpenEnterAnimation, activityOpenExitAnimation, animateLayoutChanges, background, backgroundLeft, backgroundRight, backgroundSplit, borderBottom, borderLeft, borderRight, borderTop, bottomBright, bottomDark, bottomMedium, breakStrategy, button, buttonGravity, cacheColorHint, calendarViewMode, calendarViewShown, centerBright, centerDark, centerMedium, checkMark, childDivider, clickable, clickColor, collapseContentDescription, collapseIcon, completionHintView, completionThreshold, contentDescription, contentInsetStart, datePickerMode, dateTextAppearance, dialogLayout, disabledAlpha, displayOptions, divider, dividerPadding, dropDownHorizontalOffset, dropDownSelector, dropDownVerticalOffset, dropDownWidth, ellipsize, enabled, eventsInterceptionEnabled, fadeDuration, fadeOffset, fadingEdge, fadingEdgeLength, fastScrollStyle, focusable, focusableInTouchMode, focusedMonthDateColor, fontFamily, fragmentCloseEnterAnimation, fragmentCloseExitAnimation, fragmentFadeEnterAnimation, fragmentFadeExitAnimation, fragmentOpenEnterAnimation, fragmentOpenExitAnimation, fullBright, fullDark, gestureColor, gestureStrokeAngleThreshold, gestureStrokeLengthThreshold, gestureStrokeSquarenessThreshold, gestureStrokeWidth, gravity, groupIndicator, headerLayout, headerRemoveIconIfEmpty, height, homeLayout, horizontalProgressLayout, hyphenationFrequency, indeterminateBehavior, indeterminateDrawable, indeterminateDuration, indeterminateOnly, indeterminateProgressStyle, indicatorLeft, indicatorRight, internalLayout, isIndicator, itemColor, itemLayout, keyBackground, keyPreviewHeight, keyPreviewLayout, keyPreviewOffset, keyTextColor, keyTextSize, labelTextSize, launchTaskBehindSourceAnimation, launchTaskBehindTargetAnimation, layout, layout_height, layout_marginBottom, layout_marginEnd, layout_marginStart, layout_marginTop, layout_width, legacyLayout, listSelector, maxButtonHeight, maxDate, maxHeight, maxLines, maxWidth, minDate, minHeight, minWidth, mirrorForRtl, navigationButtonStyle, needsDefaultBackgrounds, negativeButtonText, orientation, padding, paddingBottom, paddingEnd, paddingStart, paddingTop, pointerIconArrow, pointerIconSpotAnchor, pointerIconSpotHover, pointerIconSpotTouch, popupAnimationStyle, popupBackground, popupLayout, popupPromptView, position, positiveButtonText, progressBarStyle, progressDrawable, progressLayout, quickContactWindowSize, resOutColor, ringtoneType, scaleType, scrollbars, scrollbarStyle, scrollHorizontally, selectable, selectedDateVerticalBar, selectedWeekBackgroundColor, shadowColor, shadowDx, shadowDy, shadowRadius, shouldDisableView, showDefault, showDividers, shownWeekCount, showSilent, showWeekNumber, singleLine, spacing, spinnerMode, src, subtitleTextAppearance, subtitleTextStyle, switchTextOff, switchTextOn, tabLayout, tabStripEnabled, tabStripLeft, tabStripRight, taskCloseEnterAnimation, taskCloseExitAnimation, taskOpenEnterAnimation, taskOpenExitAnimation, taskToBackEnterAnimation, taskToBackExitAnimation, taskToFrontEnterAnimation, taskToFrontExitAnimation, textAlignment, textAppearance, textColor, textColorHighlight, textColorHint, textColorLink, textCursorDrawable, textEditNoPasteWindowLayout, textEditPasteWindowLayout, textEditSideNoPasteWindowLayout, textEditSidePasteWindowLayout, textEditSuggestionItemLayout, textOff, textOn, textSelectHandle, textSelectHandleLeft, textSelectHandleRight, textSize, textStyle, textUnderlineColor, textUnderlineThickness, thumb, thumbDrawable, thumbMinHeight, thumbMinWidth, thumbOffset, timePickerMode, titleMargins, titleTextAppearance, titleTextStyle, topBright, topDark, touchscreenBlocksFocus, trackDrawable, uncertainGestureColor, unfocusedMonthDateColor, unselectedAlpha, verticalCorrection, wallpaperCloseEnterAnimation, wallpaperCloseExitAnimation, wallpaperIntraCloseEnterAnimation, wallpaperIntraCloseExitAnimation, wallpaperIntraOpenEnterAnimation, wallpaperIntraOpenExitAnimation, wallpaperOpenEnterAnimation, wallpaperOpenExitAnimation, weekDayTextAppearance, weekNumberColor, weekSeparatorLineColor, widgetLayout, windowEnterAnimation, windowExitAnimation, windowHideAnimation, windowShowAnimation
+	</ul>
+</section>
+
+<section>
+	<h1>Themes</h1>
+	
+	<p>
+		<strong>theme</strong>: A collection of many styles.
+	</p>
+	
+	<ul>
+		<li>each app can set a theme to use
+		<li>Android defines several default themes that you can choose from
+		<li>you can define your own themes if you like
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/theme-MaterialDark.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/theme-MaterialDark.png" alt="figure" />
+		<img src="images/theme-MaterialLight.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/theme-MaterialLight.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Setting app theme</h1>
+	
+	<p>
+		To set your app's theme, declare it in <span class="filename">AndroidManifest.xml</span>.
+	</p>
+	
+	<pre><code class="xml">
+&lt;!-- AndroidManifest.xml --&gt;
+&lt;application android:theme=&quot;@android:style/Theme.Material&quot;&gt;
+	...
+</code></pre>
+
+	<ul>
+		<li>You can also specify a different theme for each activity:
+	</ul>
+
+	<pre><code class="xml">
+&lt;activity android:name=&quot;.MainActivity&quot;
+	android:theme=&quot;@android:style/Theme.Translucent&quot;&gt; ...
+</code></pre>
+</section>
+
+<section>
+	<h1>Defining your own theme</h1>
+	
+	<ul>
+		<li>Declare your new theme as a style that inherits from the Theme type, or from an existing theme that you want to tweak.
+		<li>It will copy all properties from the parent theme.
+		<li>The following theme is the same as Light, but with a different window background color:
+	</ul>
+
+	<pre><code class="xml">
+&lt;!-- res/values/styles.xml --&gt;
+&lt;style name=&quot;MyTheme&quot; parent=&quot;@android:style/Theme.Light&quot;&gt;
+	&lt;item name=&quot;android:windowBackground&quot;&gt;#b0b0ff&lt;/item&gt;
+&lt;/style&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		All theme properties
+		(<a class="popup" href="javascript:if(confirm(%27https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/themes.xml  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/themes.xml%27" tppabs="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/themes.xml">link</a>)
+	</h1>
+	
+	<ul>
+		<li>Each property's name starts with <code>android:</code> , e.g. <code>android:textSize</code>
+		<li class="subbullet" style="font-size: 0.3em">
+		absListViewStyle, accessibilityFocusedDrawable, actionBarDivider, actionBarItemBackground, actionBarPopupTheme, actionBarSize, actionBarSplitStyle, actionBarStyle, actionBarTabBarStyle, actionBarTabStyle, actionBarTabTextStyle, actionBarTheme, actionBarWidgetTheme, actionButtonStyle, actionDropDownStyle, actionMenuTextAppearance, actionMenuTextColor, actionModeBackground, actionModeCloseButtonStyle, actionModeCloseDrawable, actionModeCopyDrawable, actionModeCutDrawable, actionModeFindDrawable, actionModePasteDrawable, actionModePopupWindowStyle, actionModeSelectAllDrawable, actionModeShareDrawable, actionModeSplitBackground, actionModeStyle, actionModeWebSearchDrawable, actionOverflowButtonStyle, actionOverflowMenuStyle, activatedBackgroundIndicator, activityChooserViewStyle, alertDialogCenterButtons, alertDialogIcon, alertDialogStyle, alertDialogTheme, ambientShadowAlpha, autoCompleteTextViewStyle, background, backgroundDimAmount, backgroundDimEnabled, borderlessButtonStyle, buttonBarButtonStyle, buttonBarNegativeButtonStyle, buttonBarNeutralButtonStyle, buttonBarPositiveButtonStyle, buttonBarStyle, buttonStyle, buttonStyleInset, buttonStyleSmall, buttonStyleToggle, calendarViewStyle, candidatesTextStyleSpans, checkBoxPreferenceStyle, checkboxStyle, checkedTextViewStyle, colorActivatedHighlight, colorBackground, colorBackgroundCacheHint, colorBackgroundFloating, colorButtonNormal, colorControlActivated, colorControlHighlight, colorControlNormal, colorEdgeEffect, colorFocusedHighlight, colorForeground, colorForegroundInverse, colorLongPressedHighlight, colorMultiSelectHighlight, colorPressedHighlight, colorPrimary, colorPrimaryDark, datePickerDialogTheme, datePickerStyle, detailsElementBackground, dialogCustomTitleDecorLayout, dialogPreferenceStyle, dialogPreferredPadding, dialogTheme, dialogTitleDecorLayout, dialogTitleIconsDecorLayout, disabledAlpha, dividerHorizontal, dividerVertical, dropDownHintAppearance, dropDownItemStyle, dropdownListPreferredItemHeight, dropDownListViewStyle, dropDownSpinnerStyle, editTextBackground, editTextColor, editTextPreferenceStyle, editTextStyle, errorMessageAboveBackground, errorMessageBackground, expandableListPreferredChildIndicatorLeft, expandableListPreferredChildIndicatorRight, expandableListPreferredChildPaddingLeft, expandableListPreferredItemIndicatorLeft, expandableListPreferredItemIndicatorRight, expandableListPreferredItemPaddingLeft, expandableListViewStyle, expandableListViewWhiteStyle, fastScrollOverlayPosition, fastScrollPreviewBackgroundLeft, fastScrollPreviewBackgroundRight, fastScrollStyle, fastScrollTextColor, fastScrollThumbDrawable, fastScrollTrackDrawable, findOnPageNextDrawable, findOnPagePreviousDrawable, fingerprintAuthDrawable, floatingToolbarCloseDrawable, floatingToolbarForegroundColor, floatingToolbarItemBackgroundBorderlessDrawable, floatingToolbarItemBackgroundDrawable, floatingToolbarOpenDrawable, floatingToolbarPopupBackgroundDrawable, fragmentBreadCrumbsStyle, galleryItemBackground, galleryStyle, gestureOverlayViewStyle, gridViewStyle, homeAsUpIndicator, horizontalDivider, horizontalScrollViewStyle, imageButtonStyle, imageWellStyle, imeExtractEnterAnimation, imeExtractExitAnimation, imeFullscreenBackground, isLightTheme, itemBackground, itemIconDisabledAlpha, itemTextAppearance, keyboardViewStyle, lightRadius, lightY, lightZ, listChoiceBackgroundIndicator, listChoiceIndicatorMultiple, listChoiceIndicatorSingle, listDivider, listDividerAlertDialog, listPopupWindowStyle, listPreferredItemHeight, listPreferredItemHeightLarge, listPreferredItemHeightSmall, listPreferredItemPaddingEnd, listPreferredItemPaddingLeft, listPreferredItemPaddingRight, listPreferredItemPaddingStart, listSeparatorTextViewStyle, listViewStyle, listViewWhiteStyle, mediaRouteButtonStyle, moreIcon, navigationBarColor, numberPickerStyle, panelBackground, panelColorBackground, panelColorForeground, panelFullBackground, panelMenuIsCompact, panelMenuListWidth, panelTextAppearance, pointerStyle, popupMenuStyle, popupWindowStyle, preferenceActivityStyle, preferenceCategoryStyle, preferenceFragmentListStyle, preferenceFragmentPaddingSide, preferenceFragmentStyle, preferenceFrameLayoutStyle, preferenceHeaderPanelStyle, preferenceInformationStyle, preferenceLayoutChild, preferenceListStyle, preferencePanelStyle, preferenceScreenStyle, preferenceStyle, presentationTheme, progressBarStyle, progressBarStyleHorizontal, progressBarStyleInverse, progressBarStyleLarge, progressBarStyleLargeInverse, progressBarStyleSmall, progressBarStyleSmallInverse, progressBarStyleSmallTitle, quickContactBadgeOverlay, quickContactBadgeStyleSmallWindowLarge, quickContactBadgeStyleSmallWindowMedium, quickContactBadgeStyleSmallWindowSmall, quickContactBadgeStyleWindowLarge, quickContactBadgeStyleWindowMedium, quickContactBadgeStyleWindowSmall, radioButtonStyle, ratingBarStyle, ratingBarStyleIndicator, ratingBarStyleSmall, ringtonePreferenceStyle, scrollbarDefaultDelayBeforeFade, scrollbarFadeDuration, scrollbarSize, scrollbarThumbHorizontal, scrollbarThumbVertical, scrollbarTrackHorizontal, scrollbarTrackVertical, scrollViewStyle, searchDialogTheme, searchResultListItemHeight, searchViewStyle, searchWidgetCorpusItemBackground, seekBarDialogPreferenceStyle, seekBarPreferenceStyle, seekBarStyle, segmentedButtonStyle, selectableItemBackground, selectableItemBackgroundBorderless, spinnerDropDownItemStyle, spinnerItemStyle, spinnerStyle, spotShadowAlpha, starStyle, statusBarColor, switchPreferenceStyle, switchStyle, tabWidgetStyle, textAppearance, textAppearanceAutoCorrectionSuggestion, textAppearanceButton, textAppearanceEasyCorrectSuggestion, textAppearanceInverse, textAppearanceLarge, textAppearanceLargeInverse, textAppearanceLargePopupMenu, textAppearanceListItem, textAppearanceListItemSecondary, textAppearanceListItemSmall, textAppearanceMedium, textAppearanceMediumInverse, textAppearanceMisspelledSuggestion, textAppearanceSearchResultSubtitle, textAppearanceSearchResultTitle, textAppearanceSmall, textAppearanceSmallInverse, textAppearanceSmallPopupMenu, textCheckMark, textCheckMarkInverse, textColor, textColorAlertDialogListItem, textColorHighlight, textColorHighlightInverse, textColorHint, textColorHintInverse, textColorLink, textColorLinkInverse, textColorPrimary, textColorPrimaryActivated, textColorPrimaryDisableOnly, textColorPrimaryInverse, textColorPrimaryInverseDisableOnly, textColorPrimaryInverseNoDisable, textColorPrimaryNoDisable, textColorSearchUrl, textColorSecondary, textColorSecondaryActivated, textColorSecondaryInverse, textColorSecondaryInverseNoDisable, textColorSecondaryNoDisable, textColorTertiary, textColorTertiaryInverse, textCursorDrawable, textEditNoPasteWindowLayout, textEditPasteWindowLayout, textEditSideNoPasteWindowLayout, textEditSidePasteWindowLayout, textEditSuggestionItemLayout, textSelectHandle, textSelectHandleLeft, textSelectHandleRight, textSelectHandleWindowStyle, textSuggestionsWindowStyle, textViewStyle, timePickerDialogTheme, timePickerStyle, toastFrameBackground, toolbarStyle, verticalDivider, webTextViewStyle, webViewStyle, windowActionBar, windowActionBarFullscreenDecorLayout, windowActionModeOverlay, windowActivityTransitions, windowAnimationStyle, windowBackground, windowBackgroundFallback, windowClipToOutline, windowCloseOnTouchOutside, windowContentOverlay, windowContentTransitions, windowDisablePreview, windowDrawsSystemBarBackgrounds, windowFixedHeightMajor, windowFixedHeightMinor, windowFixedWidthMajor, windowFixedWidthMinor, windowFrame, windowFullscreen, windowIsFloating, windowIsTranslucent, windowNoDisplay, windowNoTitle, windowOverscan, windowShowWallpaper, windowSoftInputMode, windowTitleBackgroundStyle, windowTitleSize, windowTitleStyle, windowTranslucentNavigation, windowTranslucentStatus, yesNoPreferenceStyle
+	</ul>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

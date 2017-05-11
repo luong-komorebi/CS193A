@@ -1,0 +1,575 @@
+<html>
+	<head>
+		<title>CS 193A - Fragments</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Fragments</p>
+</section>
+
+<section>
+	<h1>Situational layouts</h1>
+
+	<ul>
+		<li>Your app can use different layout in different situations:
+			<ul>
+				<li>different device type (tablet vs phone vs watch)
+				<li>different screen size
+				<li>different orientation (portrait vs. landscape)
+				<li>different country or locale (language, etc.)
+			</ul>
+	</ul>
+	
+	<div class="figure">
+		<img src="images/fragment-1-cropped.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/fragment-1-cropped.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Situation-specific folders</h1>
+	
+	<div class="figuresright">
+		<img src="images/layout-folders.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/layout-folders.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>Your app will look for resource folder names with suffixes:
+			<ul>
+				<li>screen density, e.g. <span class="filename">drawable-hdpi</span>
+						(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/training/basics/supporting-devices/screens.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/training/basics/supporting-devices/screens.html%27" tppabs="http://developer.android.com/training/basics/supporting-devices/screens.html">link</a>)
+					<ul>
+						<li><code>xhdpi</code>: 2.0 (twice as many pixels/dots per inch)
+						<li><code>hdpi</code>: 1.5
+						<li><code>mdpi</code>: 1.0 (baseline)
+						<li><code>ldpi</code>: 0.75
+					</ul>
+				
+				<li>screen size, e.g. <span class="filename">layout-large</span>
+						(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/training/multiscreen/screensizes.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/training/multiscreen/screensizes.html%27" tppabs="http://developer.android.com/training/multiscreen/screensizes.html">link</a>)
+					<ul>
+						<li><code>small</code>, <code>normal</code>, <code>large</code>, <code>xlarge</code>
+					</ul>
+				
+				<li>orientation, e.g. <span class="filename">layout-land</span>
+					<ul>
+						<li>portrait
+						<li><code>land</code>: landscape
+					</ul>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Portrait vs landscape layout</h1>
+	
+	<ul>
+		<li>To create a different layout in landscape mode:
+			<ul>
+				<li>create a folder in your project called <span class="filename">res/layout-land</span>
+				<li>place another copy of your activity's <strong>layout XML file</strong> there
+				<li>modify it as needed to represent the differences
+				<li>when phone is rotated, activity reloads itself with <span class="filename">layout-land</span> version
+			</ul>
+	</ul>
+	
+	<div class="figure">
+		<img src="images/layout-folders-wide.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/layout-folders-wide.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Stop rotation layout reload</h1>
+	
+	<ul>
+		<li>A quick way to retain your activity's GUI state on rotation is to set the <code>configChanges</code> attribute of the activity in <span class="filename">AndroidManifest.xml</span>.
+			<ul>
+				<li>Won't reload layout from <span class="filename">layout-land</span> folder
+			</ul>
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- AndroidManifest.xml --&gt;
+&lt;activity android:name=&quot;.MainActivity&quot;
+	<em>android:configChanges=&quot;orientation|screenSize&quot;</em>
+	...&gt;
+</code></pre>
+
+	<div class="figureshorizontal">
+		<img src="images/activity-state-lost-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-state-lost-1.png" alt="figure" />
+		<img src="images/activity-state-lost-6.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-state-lost-6.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Checking orientation in Java</h1>
+	
+	<ul>
+		<li>Sometimes the Java code of your activity wants to behave differently in each orientation.
+		<li>You can check the orientation with the following code:
+	</ul>
+	
+	<pre><code class="java">
+if (getResources().getConfiguration().orientation ==
+		Configuration.ORIENTATION_PORTRAIT) {
+	// we are in portrait orientation
+	...
+}
+if (getResources().getConfiguration().orientation ==
+		Configuration.ORIENTATION_LANDSCAPE) {
+	// we are in landscape orientation
+	...
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Lib: Checking orientation
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<ul>
+		<li>You can check the orientation with the following code:
+	</ul>
+	
+	<pre><code class="java">
+if (<em>isPortrait()</em>) {
+	// we are in portrait orientation
+	...
+}
+if (<em>isLandscape()</em>) {
+	// we are in landscape orientation
+	...
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Problem: redundant layouts</h1>
+	
+	<ul>
+		<li>With situational layout you begin to encounter redundancy.
+			<ul>
+				<li>The layout in one case (e.g. portrait or medium) is very similar to the layout in another case (e.g. landscape or large).
+				<li>You don't want to represent the same XML or Java code multiple times in multiple places.
+			</ul>
+		
+		<li>You sometimes want your code to behave situationally, e.g.
+			<ul>
+				<li>In <strong>landscape</strong> mode, clicking a button should modify an existing <strong>view</strong>.
+				<li>In <strong>portrait</strong> mode, clicking a button should launch a new <strong>activity</strong>.
+			</ul>
+	</ul>
+	
+	<div class="figure">
+		<img src="images/fragment-1-cropped.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/fragment-1-cropped.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Fragments</h1>
+	
+	<ul>
+		<li><strong>fragment</strong>: A reusable segment of Android UI that can appear in an activity.
+			<ul>
+				<li>can help handle different devices and screen sizes
+				<li>can reuse a common fragment across multiple activities
+				<li>first added in Android 3.0  <em>(usable in older versions if necessary)</em>
+			</ul>
+	</ul>
+	
+	<div class="figure">
+		<img src="images/fragments-outline.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/fragments-outline.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Creating a fragment</h1>
+	
+	<ul>
+		<li>In Android Studio, right-click app, click:
+			New &rarr; Fragment &rarr; Fragment (blank)
+			<ul>
+				<li>un-check boxes about "Include __ methods"
+				<li>now create layout XML and Java event code as in an Activity
+			</ul>
+	</ul>
+	
+	<div class="figure">
+		<img src="images/android-studio-new-fragment.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-studio-new-fragment.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Using fragments in activity XML</h1>
+	
+	<ul>
+		<li>Activity layout XML can include fragments.
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- activity_name.xml --&gt;
+&lt;LinearLayout ...&gt;
+	&lt;fragment ...
+		android:id=&quot;@+id/<var>id1</var>&quot;
+		android:name=&quot;<var>ClassName1</var>&quot;
+		tools:layout=&quot;@layout/<var>name1</var>&quot; /&gt;
+	&lt;fragment ...
+		android:id=&quot;@+id/<var>id2</var>&quot;
+		android:name=&quot;<var>ClassName2</var>&quot;
+		tools:layout=&quot;@layout/<var>name2</var>&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Fragment life cycle</h1>
+	
+	<div class="figuresright">
+		<img src="images/fragment-lifecycle-2.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/fragment-lifecycle-2.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>Fragments have a similar life cycle and events as activities.
+			<ul>
+				<li><code>onAttach</code> to glue fragment to its surrounding activity
+				<li><code>onCreate</code> when fragment is loading
+				<li><strong><code>onCreateView</code></strong> method that must return fragment's root UI view
+				<li><strong><code>onActivityCreated</code></strong> method that indicates the enclosing activity is ready
+				<li><code>onPause</code> when fragment is being left/exited
+				<li><code>onDetach</code> just as fragment is being deleted
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Fragment life cycle</h1>
+	
+	<div class="figure">
+		<img src="images/fragment-lifecycle-3.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/fragment-lifecycle-3.png" alt="figure" style="height: 15em" />
+	</div>
+</section>
+
+<section>
+	<h1>Fragment template</h1>
+	
+	<pre><code class="java">
+public class <var>Name</var> extends Fragment {
+	@Override
+	public View onCreateView(LayoutInflater inflater,
+			ViewGroup vg, Bundle bundle) {
+		// load the GUI layout from the XML
+		return inflater.inflate(R.layout.id, vg, false);
+	}
+
+	public void onActivityCreated(Bundle savedState) {
+		super.onActivityCreated(savedState);
+		// ... any other GUI initialization needed
+	}
+
+	// any other code (e.g. event-handling)
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Fragment vs. Activity</h1>
+	
+	<ul>
+		<li>Many <strong>activity methods</strong> aren't present in the fragment.
+			<ul>
+				<li>But call <code>getActivity</code> to access the activity the fragment is in.
+				
+				<pre><code class="java">
+<strike>Button b = (Button) findViewById(R.id.but);</strike>
+Button b = (Button) <em>getActivity()</em>.findViewById(R.id.but);
+</code></pre>
+				<li>Sometimes also use <code>getView</code> to refer to the activity's layout
+			</ul>
+		
+		<li><strong>Event handlers</strong> cannot be attached in the XML any more.  :-(
+			<ul>
+				<li>Must be attached in Java code instead.
+			</ul>
+		
+		<li><strong>Passing information</strong> to a fragment (via Intents/Bundles) is trickier.
+			<ul>
+				<li>The fragment must ask its enclosing activity for the information.
+			</ul>
+		
+		<li><strong>Fragment initialization</strong> code is different.
+			<ul>
+				<li>Typically move <code>onCreate</code> code to <code>onActivityCreated</code>.
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Fragment onClick listener</h1>
+	
+	<ul>
+		<li>Activity:
+			<pre><code class="xml">
+<strike>&lt;Button android:id=&quot;@+id/b1&quot;</strike>
+		<strike>android:onClick=&quot;onClickB1&quot; ... /&gt;</strike>
+</code></pre>
+
+		<li>Fragment:
+			<pre><code class="xml">
+&lt;!-- in fragment's XML layout file --&gt;
+&lt;Button android:id=&quot;@+id/b1&quot; ... /&gt;
+</code></pre>
+
+			<pre><code class="java">
+// in fragment's Java file
+Button b = (Button) getActivity().findViewById(r.id.b1);
+b.setOnClickListener(new View.OnClickListener() {
+	@Override
+	public void onClick(View view) {
+		// whatever code would have been in onClickB1
+	}
+});
+</code></pre>
+	</ul>
+</section>
+
+<section data-transition="fade-out">
+	<h1>Activity with parameters</h1>
+	
+	<pre><code class="java">
+public class <var>Name</var> extends Activity {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.<var>name</var>);
+
+		// extract parameters passed to activity from intent
+		Intent intent = getIntent();
+		int <var>name1</var> = intent.getIntExtra("<var>id1</var>", <var>default</var>);
+		String <var>name2</var> = intent.getStringExtra("<var>id2</var>", "<var>default</var>");
+
+		// use parameters to set up the initial state
+		...
+	}
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-in">
+	<h1>Fragment with parameters</h1>
+	
+	<pre><code class="java">
+public class <var>Name</var> extends <em>Fragment</em> {
+	@Override
+	protected void <em>onActivityCreated</em>(Bundle savedState) {
+		super.onActivityCreated(savedState);
+
+
+		// extract parameters passed to activity from intent
+		Intent intent = <em>getActivity()</em>.getIntent();
+		int <var>name1</var> = intent.getIntExtra("<var>id1</var>", <var>default</var>);
+		String <var>name2</var> = intent.getStringExtra("<var>id2</var>", "<var>default</var>");
+
+		// use parameters to set up the initial state
+		...
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Fragment communication</h1>
+	
+	<div class="figuresright">
+		<img src="images/fragment-2-tablet.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/fragment-2-tablet.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>An activity can contain multiple fragments.
+		<li>The fragments can talk to each other.
+			<ul>
+				<li>use activity's <code>getFragmentManager</code> method
+				<li>its <code>findFragmentById</code> method can access any fragment that has an id
+				<li>write regular methods to communicate
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+Activity act = getActivity();
+if (act.getResources().getConfiguration().orientation ==
+		Configuration.ORIENTATION_LANDSCAPE) {
+	// update other fragment within this same activity
+	FragmentClass fragment = (FragmentClass)
+		act.<em>getFragmentManager().findFragmentById</em>(R.id.id);
+	fragment.<var>methodName</var>(<var>parameters</var>);
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Re-using layout with include</h1>
+	
+	<pre class="syntaxtemplate"><code class="xml">
+&lt;include layout=&quot;@layout/<var>name</var>&quot; /&gt;
+</code></pre>
+	
+	<ul>
+		<li>To use a layout in multiple places without a fragment, use the <code>include</code> tag in your XML.
+		<li>Similar to a fragment, but without its own lifecycle and event handling behavior.
+		<li>Example (uses a hypothetical layout in <span class="filename">content1.xml</span>):
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- activity_example1.xml --&gt;
+&lt;LinearLayout ...&gt;
+	...
+	&lt;include layout=&quot;@layout/content1&quot; /&gt;
+</code></pre>
+	
+	<pre><code class="xml">
+&lt;!-- activity_example2.xml --&gt;
+&lt;RelativeLayout ...&gt;
+	...
+	&lt;include layout=&quot;@layout/content1&quot; /&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Dynamically add a fragment</h1>
+	
+	<ul>
+		<li>You can add or remove a fragment from the screen dynamically in your activity's Java code:
+		<pre><code class="java">
+getFragmentManager().beginTransaction()
+	.add(R.id.<var>containerID</var>, <var>fragment</var>)
+	.commit();
+</code></pre>
+		
+		<li>Example:
+		<pre><code class="java">
+// in my activity class somewhere
+MyFragment frag = new MyFragment();
+getFragmentManager().beginTransaction()
+	.add(R.id.mycontainer, frag)
+	.commit();
+</code></pre>
+		
+		<li>related methods in fragment manager: <code>remove</code>, <code>replace</code>
+	</ul>
+</section>
+
+<section>
+	<h1>Fragment subclasses</h1>
+	
+	<ul>
+		<li><code class="androidapi" data-class="android.app.DialogFragment">DialogFragment</code> - Pops up on top of the current activity.
+		<li><code class="androidapi" data-class="android.app.ListFragment">ListFragment</code> - Shows list of items as its main content.
+		<li><code class="androidapi" data-class="android.app.PreferenceFragment">PreferenceFragment</code> - Allows user to change app settings.
+	</ul>
+
+	<div class="figureshorizontal">
+		<img src="images/dialogfragment-example-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/dialogfragment-example-1.png" alt="figure" />
+		<img src="images/list-custom-layout.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/list-custom-layout.jpg" alt="figure" />
+		<img src="images/preferencefragment-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/preferencefragment-1.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>
+		Lib: SimpleActivity
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<ul>
+		<li>Accessing fragments from a <code>SimpleActivity</code>:
+		
+		<pre><code class="java">
+Fragment myFrag = <em>findFragmentById</em>(R.id.<var>theId</var>);
+</code></pre>
+	</ul>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>findFragment(<var>id</var>)</code> <br />
+<code>findFragmentById(<var>id</var>)</code></td>
+			<td>return fragment with the given ID</td>
+		</tr>
+		
+		<tr>
+			<td><code>addFragment(<var>containerID</var>, <br />&nbsp; <var>fragment</var>);</code></td>
+			<td>add a new fragment into the given view as its container</td>
+		</tr>
+		
+		<tr>
+			<td><code>removeFragment(<var>fragment</var>);</code></td>
+			<td>remove an existing fragment</td>
+		</tr>
+		
+		<tr>
+			<td><code>replaceFragment(<var>containerID</var>, <br />&nbsp; <var>fragment</var>);</code></td>
+			<td>replace a fragment with a new one</td>
+		</tr>
+		
+		<tr>
+			<td><code>hideFragment(<var>fragment</var>);</code></td>
+			<td>make a fragment invisible</td>
+		</tr>
+		
+		<tr>
+			<td><code>showFragment(<var>fragment</var>);</code></td>
+			<td>make a fragment visible</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		Lib: <code class="androidapi" data-class="stanford.androidlib.SimpleFragment">SimpleFragment</code>
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<ul>
+		<li>If your app uses fragments, you can also have your fragments extend <code class="androidapi" data-class="stanford.androidlib.SimpleFragment">SimpleFragment</code>:
+	
+		<pre><code class="java">
+<strike>public class MyFragment extends Fragment {</strike>
+public class MyFragment <em>extends SimpleFragment</em> {
+</code></pre>
+
+		<li>Not a lot of functionality yet, but currently lets you access the <code>SimpleActivity</code> containing the fragment.
+		
+		<pre><code class="java">
+SimpleActivity act = <em>getSimpleActivity</em>();
+...
+</code></pre>
+	</ul>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

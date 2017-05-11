@@ -1,0 +1,256 @@
+<html>
+	<head>
+		<title>CS 193A - Camera</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Camera and Photos</p>
+</section>
+
+<section>
+	<h1>Requesting camera permission</h1>
+	
+	<div class="figuresright">
+		<img src="images/camera.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/camera.png" alt="figure" style="max-width: 200px;" />
+	</div>
+	
+	<ul>
+		<li>You must declare that your app uses the camera in your app's <span class="filename">AndroidManifest.xml</span> file.
+	</ul>
+	
+	<pre><code class="xml">
+&lt;manifest ...&gt;
+	&lt;!-- permissions needed for the camera --&gt;
+	<em>&lt;uses-permission 
+		 android:name=&quot;android.permission.CAMERA&quot; /&gt;
+	&lt;uses-feature
+		 android:name=&quot;android.hardware.camera&quot;
+		 android:required=&quot;true&quot; /&gt;</em>
+	&lt;uses-permission android:name=&quot;android.permission.MANAGE_DOCUMENTS&quot; /&gt;
+	&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
+	...
+&lt;/manifest&gt;
+</code></pre>
+
+	<pre><code class="java">
+// in activity code
+requestPermission("android.permission.CAMERA");
+</code></pre>
+
+</section>
+
+<section>
+	<h1>AVD and camera</h1>
+	
+	<div class="figuresright">
+		<img src="images/camera-avd-enable.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/camera-avd-enable.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li>It is difficult to emulate a camera in the Android Virtual Device.
+		<li>In AVD Manager, you can try setting the device to use your laptop's webcam as the virtual camera, but it may crash.
+			<ul>
+				<li>AVD Manager &rarr; Edit &rarr; Advanced Settings &rarr; Camera
+			</ul>
+		<li>Alternatively, just deploy your app to a physical device to test camera functionality.
+	</ul>
+</section>
+
+<section>
+	<h1>Camera code example</h1>
+	
+	<ul>
+		<li>Example that takes a picture and places it into an <code>ImageView</code>:
+	</ul>
+	
+	<pre class="longcode"><code class="java">
+private static final int REQ_CODE_TAKE_PICTURE = 30210;  // 1-65535
+...
+Intent picIntent = <em>new Intent(MediaStore.ACTION_IMAGE_CAPTURE)</em>;
+<em>startActivityForResult</em>(picIntent, REQ_CODE_TAKE_PICTURE);
+...
+
+@Override
+protected void <em>onActivityResult</em>(int requestCode, int resultCode,
+								Intent intent) {
+	if (requestCode == REQ_CODE_TAKE_PICTURE
+			&& resultCode == RESULT_OK) {
+		<em>Bitmap bmp = (Bitmap) intent.getExtras().get("data");</em>
+		ImageView img = (ImageView) findViewById(R.id.camera_image);
+		img.setImageBitmap(bmp);
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Camera code example 2</h1>
+	
+	<ul>
+		<li>Example that takes a picture and saves it to the Pictures folder:
+	</ul>
+	
+	<pre><code class="java">
+private static final int REQ_CODE_TAKE_PICTURE = 30210;
+...
+Intent picIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+// create the file to save the image into
+File photosDir = Environment.getExternalStoragePublicDirectory(
+		Environment.DIRECTORY_PICTURES);
+if (!photosDir.exists()) { photosDir.mkdirs(); }
+
+File photoFile = new File(photosDir, "myPhoto.jpg");
+picIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+				   Uri.fromFile(photoFile));
+startActivityForResult(picIntent, REQ_CODE_TAKE_PICTURE);
+...
+
+// (onActivityResult not needed)
+</code></pre>
+</section>
+
+<section>
+	<h1>Check if camera is present</h1>
+	
+	<ul>
+		<li>Not every device has a camera.
+		<li>Your app may want to check whether camera is present or not.
+		<li>Put a method like this in your activity:
+	</ul>
+	
+	<pre><code class="java">
+// Returns true if the current device has a camera.
+public boolean <em>hasCamera</em>() {
+	return getPackageManager().hasSystemFeature(
+			PackageManager.FEATURE_CAMERA);
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Photo gallery example</h1>
+	
+	<ul>
+		<li>Grab an existing photo from the built-in photo gallery activity:
+	</ul>
+	
+	<pre class="longcode"><code class="java">
+private static final int REQ_CODE_PHOTO_GALLERY = 30211;  // 1-65535
+...
+Intent picIntent = <em>new Intent(Intent.ACTION_PICK,
+		MediaStore.Images.Media.EXTERNAL_CONTENT_URI);</em>
+<em>startActivityForResult</em>(picIntent, REQ_CODE_PHOTO_GALLERY);
+...
+
+@Override
+protected void <em>onActivityResult</em>(int requestCode, int resultCode, Intent intent) {
+	if (requestCode == REQ_CODE_PHOTO_GALLERY && resultCode == RESULT_OK) {
+		Uri targetUri = intent.getData();   // location of photo file
+		try {
+			Bitmap bitmap = BitmapFactory.decodeStream(
+					getContentResolver().openInputStream(targetUri));
+			...
+		} catch (FileNotFoundException fnfe) {
+			Log.wtf("onActivityResult", fnfe);
+		}
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		The <code>Camera</code> class
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/hardware/Camera.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/hardware/Camera.html%27" tppabs="http://developer.android.com/reference/android/hardware/Camera.html">link</a>)
+	</h1>
+	
+	<ul>
+		<li>In our previous example, we used the built-in photo-taking activity using an <code>Intent</code>.
+			<ul>
+				<li>This is simple but allows very little customization.
+			</ul>
+		<li>For more precise camera control, look up the <code>Camera</code> class:
+	</ul>
+	
+	<pre><code class="java">
+<em>Camera cam = Camera.open();</em>
+Camera.Parameters params = cam.getParameters();
+params.setPreviewSize(<var>width</var>, <var>height</var>);
+cam.setParameters(<var>params</var>);
+cam.setDisplayOrientation(<var>degrees</var>);
+cam.startPreview();
+cam.takePicture(...);   // pass "callbacks" to run later
+cam.stopPreview();
+cam.release();
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Lib: <code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.SimpleCamera">SimpleCamera</code>
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>takePhoto();</code> <br />
+<code>takePhoto("<var>filename</var>");</code></td>
+			<td>initiates taking a photo
+(if filename passed, saves it)</td>
+		</tr>
+		
+		<tr>
+			<td><code>photoGallery();</code></td>
+			<td>launches photo gallery activity</td>
+		</tr>
+		
+		<tr>
+			<td><code>cameraExists()</code></td>
+			<td>returns <code>true</code> if device has a camera</td>
+		</tr>
+		
+		<tr>
+			<td><code>onPhotoReady(<var>bitmap</var>)</code></td>
+			<td>override this to capture the photo after it is taken/chosen</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// make it easy to take a photo with the camera
+SimpleCamera.with(this).takePhoto();
+...
+public void <em>onPhotoReady</em>(Bitmap bitmap) {
+    // write code here to process the photo
+    
+}
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

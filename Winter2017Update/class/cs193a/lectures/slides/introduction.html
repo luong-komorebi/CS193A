@@ -1,0 +1,370 @@
+<html>
+	<head>
+		<title>CS 193A - Introduction</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>
+		Introduction to the course <br />
+		and Android development
+	</p>
+</section>
+
+<section>
+	<h1>What is CS 193A?</h1>
+
+	<div class="figuresright">
+		<img src="images/stanford-cs-logo.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-cs-logo.jpg" alt="image" />
+		<img src="images/android-logo-with-text.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-logo-with-text.jpg" alt="image" />
+	</div>
+
+	<ul>
+		<li><strong>CS 193A</strong>: Intro to Android Development</li>
+		<li>3 units</li>
+		<li>increased reliance on Piazza and peer help</li>
+		<!--
+		<li>sharing of ideas and code encouraged</li>
+		<li>less rigid HW requirements;
+			creativity and exploration encouraged</li>
+		<li>possible peer grading component</li>
+		<li>"pass" if you submit reasonable work on most HW</li>
+		-->
+
+		<li class="spaced">Prerequisite: CS 106B or equivalent</li>
+		<li>basic Java programming knowledge</li>
+		<li>object-oriented programming</li>
+		<li>data structures (ArrayList, HashMap, etc.)</li>
+	</ul>
+</section>
+
+<section>
+	<h1>What is Android?</h1>
+	
+	<div class="figuresright">
+		<img src="images/all-apps-screen.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/all-apps-screen.png" alt="image" />
+	</div>
+
+	<ul>
+		<li>mobile OS maintained by <strong>Google</strong></li>
+		<li>originally purchased from Android, Inc. in 2005</li>
+		<li>runs on phones, tablets, watches, TVs, ...</li>
+		<li>based on <strong>Java</strong> (dev language) and <strong>Linux</strong> (kernel)</li>
+	
+		<li class="spaced">the #1 mobile OS worldwide, and now #1 overall OS worldwide!</li>
+		<li>has over 1 million apps published in Play Store</li>
+
+		<li class="spaced">code is released as open source (periodically)
+			<ul>
+				<li>easier to customize, license, pirate, etc. than iOS</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Why develop for Android?</h1>
+	
+	<ul>
+		<li>Why not just write a <strong>web site</strong>? Android has a browser...</li>
+		<li>better, snappier UI with a more consistent user experience</li>
+		<li>able to use different kinds of widgets/controls than in a web page</li>
+		<li>more direct access to the device's hardware (camera, GPS, etc.)</li>
+		<li>users highly prefer apps over mobile web browsing</li>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/web-app-vs-native1.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/web-app-vs-native1.jpg" alt="image" />
+		<img src="images/apps-time-spent.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/apps-time-spent.png" alt="image" />
+	</div>
+</section>
+
+<section>
+	<h1>Why not iOS?</h1>
+	
+	<p>
+		Why not write apps for <strong>iOS</strong>, which runs on iPhones and iPads?
+	</p>
+
+	<div class="figuresright">
+		<img src="images/android-or-iphone.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-or-iphone.jpg" alt="image" />
+	</div>
+
+	<ul>
+		<li>familiar language (Java, not Obj-C / Swift)</li>
+
+		<li>free dev tools (Apple charges $$$)</li>
+
+		<li>more liberated app store (can make an app and put on your phone or others')</li>
+
+		<li>Android has a larger install base</li>
+
+		<li>there is already a <a class="popup" target="_blank" href="javascript:if(confirm(%27http://cs193p.stanford.edu/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://cs193p.stanford.edu/%27" tppabs="http://cs193p.stanford.edu/"><strong>CS 193P</strong></a> class for building iOS apps!  Take it!</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Android architecture</h1>
+	
+	<ul>
+		<li>
+			Android OS provides libraries for many system features like contacts, phone dialing, notifications, 2D/3D graphics, database access, security / encryption, camera, audio, input/output, ...
+		</li>
+		<li>
+			Android Java code is compiled into a special <strong>Dalvik</strong> binary format
+		</li>
+	</ul>
+
+	<div class="figureshorizontal">
+		<img src="images/android-ecosystem-architecture.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-ecosystem-architecture.png" alt="image" />
+	</div>
+</section>
+
+<section>
+	<h1>Android <a class="popup" target="_blank" href="javascript:if(confirm(%27https://en.wikipedia.org/wiki/Android_version_history  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://en.wikipedia.org/wiki/Android_version_history%27" tppabs="https://en.wikipedia.org/wiki/Android_version_history">version history</a></h1>
+	
+	<table class="compact">
+		<tr>
+			<th>Version</th>
+			<th>API level</th>
+			<th>Date</th>
+			<th>Codename</th>
+		</tr>
+		
+		<tr>
+			<td>1.0 - 1.1</td>
+			<td>1, 2</td>
+			<td>Sep 2008</td>
+			<td>none</td>
+		</tr>
+		
+		<tr>
+			<td>1.5</td>
+			<td>3</td>
+			<td>Apr 2009</td>
+			<td>Cupcake</td>
+		</tr>
+		
+		<tr>
+			<td>1.6</td>
+			<td>4</td>
+			<td>Sep 2009</td>
+			<td>Donut</td>
+		</tr>
+		
+		<tr>
+			<td>2.0 - 2.1</td>
+			<td>5, 6, 7</td>
+			<td>Oct 2009</td>
+			<td>Eclair</td>
+		</tr>
+		
+		<tr>
+			<td>2.2</td>
+			<td>8</td>
+			<td>May 2010</td>
+			<td>Froyo</td>
+		</tr>
+		
+		<tr>
+			<td>2.3</td>
+			<td>9, 10</td>
+			<td>Dec 2010</td>
+			<td>Gingerbread</td>
+		</tr>
+		
+		<tr>
+			<td>3.0</td>
+			<td>11, 12, 13</td>
+			<td>Feb 2011</td>
+			<td>Honeycomb</td>
+		</tr>
+		
+		<tr>
+			<td>4.0</td>
+			<td>14, 15</td>
+			<td>Oct 2011</td>
+			<td>Ice Cream Sandwich</td>
+		</tr>
+		
+		<tr>
+			<td>4.1 - 4.3</td>
+			<td>16, 17, 18</td>
+			<td>Jun 2012</td>
+			<td>Jelly Bean</td>
+		</tr>
+		
+		<tr>
+			<td>4.4</td>
+			<td>19, 20</td>
+			<td>Sep 2013</td>
+			<td>Kit Kat</td>
+		</tr>
+		
+		<tr>
+			<td>5.0 - 5.1</td>
+			<td>21 - 22</td>
+			<td>Jun 2014</td>
+			<td>Lollipop</td>
+		</tr>
+		
+		<tr>
+			<td>6.0</td>
+			<td>23</td>
+			<td>Oct 2015</td>
+			<td>Marshmallow</td>
+		</tr>
+		
+		<tr>
+			<td>7.0 - 7.1.1</td>
+			<td>24 - 25</td>
+			<td>Aug 2016</td>
+			<td>Nougat</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Version distribution</h1>
+	
+	<div>
+		<img src="images/android-version-distribution.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-version-distribution.png" alt="image" />
+	</div>
+</section>
+
+<section>
+	<h1>Version issues</h1>
+	
+	<ul>
+		<li>
+			Check your phone's version of Android:
+			
+			<ul>
+				<li>Settings &rarr; System &rarr; About Device &rarr; Android version</li>
+				<li>"Why wouldn't my phone have the newest Android version?
+					Can't I just update it?"</li>
+			</ul>
+		</li>
+		
+		<li>Several companies affect whether your device is up-to-date:
+			<ul>
+				<li>Google;  phone manufacturer;  service provider;  ...
+				
+
+					<div class="figureshorizontal figureshorizontal4">
+						<img src="images/google-logo.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/google-logo.png" alt="image" />
+						&rarr;
+						<img src="images/samsung-logo.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/samsung-logo.jpg" alt="image" />
+						&rarr;
+						<img src="images/att-logo.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/att-logo.jpg" alt="image" />
+						&rarr;
+						<img src="images/stick-figure.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stick-figure.png" alt="image" />
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li>
+			If any company in the chain doesn't want to push out an update for your device, it can become out of date.
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		Android Studio
+		(<a class="popup" href="javascript:if(confirm(%27https://web.stanford.edu/class/cs193a/android-studio.shtml  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://web.stanford.edu/class/cs193a/android-studio.shtml%27" tppabs="https://web.stanford.edu/class/cs193a/android-studio.shtml">install</a>)
+	</h1>
+	
+	<ul>
+		<li>Google's official Android IDE, at v2.2 as of January 2017</li>
+		<li>replaces previous Eclipse-based environment</li>
+		<li>based on IntelliJ IDEA editor;  free to download and use</li>
+	</ul>
+
+	<div>
+		<img src="images/androidstudio-screenshot1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/androidstudio-screenshot1.png" alt="image" />
+	</div>
+</section>
+
+<section>
+	<h1>Project structure</h1>
+	
+	<div class="figuresright">
+		<img src="images/androidstudio-project-layout.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/androidstudio-project-layout.png" alt="image" />
+	</div>
+	
+	<ul>
+		<li><span class="filename">AndroidManifest.xml</span>
+			<ul>
+				<li>overall project config and settings</li>
+			</ul>
+		</li>
+		<li><span class="filename">src/java/...</span>
+			<ul>
+				<li>source code for your Java classes</li>
+			</ul>
+		</li>
+		<li><span class="filename">res/...</span>  = resource files  (many are XML)
+			<ul>
+				<li><span class="filename">drawable/</span>  = images</li>
+				<li><span class="filename">layout/</span>  = descriptions of GUI layout</li>
+				<li><span class="filename">menu/</span>  = overall app menu options</li>
+				<li><span class="filename">values/</span>  = constant values and arrays</li>
+				<li><span class="filename">strings/</span>  = localization data</li>
+				<li><span class="filename">styles/</span>    = general appearance styling</li>
+			</ul>
+		</li>
+		<li>Gradle
+			<ul>
+				<li>a build/compile management system</li>
+				<li><span class="filename">build.gradle</span>  = main build config file</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Virtual Devices (AVDs)</h1>
+	
+	<div class="figuresright">
+		<img src="images/emulator.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/emulator.png" alt="image" />
+	</div>
+
+	<ul>
+		<li>emulator / software simulation of an Android device</li>
+		<li>when you click "Run" in Android Studio,
+			it builds your app, installs it on the virtual device, and loads it</li>
+		<li>must set up virtual device first in Android Studio</li>
+		<li>alternative: install your app
+		on your actual Android device!
+			<ul>
+				<li>pro: app runs faster,
+				 better "real" test</li>
+				<li>con: need device plugged into dev PC</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

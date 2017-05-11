@@ -1,0 +1,674 @@
+<html>
+	<head>
+		<title>CS 193A - Dialogs</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Dialogs</p>
+</section>
+
+<section>
+	<h1>Motivation</h1>
+	
+	<ul>
+		<li><strong>dialog</strong>: A pop-up UI that interrupts your activity.
+			<ul>
+				<li>not a different activity itself; sits on top of the activity
+				<li>meant to briefly display information or ask for a bit of input
+				<li>once the user is done interacting with the dialog, it closes,
+					and app resumes activity it was on before
+			</ul>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/dialogs-7.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/dialogs-7.png" alt="figure" />
+		<img src="images/dialogs-8.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/dialogs-8.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Types of dialogs</h1>
+	
+	<ul>
+		<li>Android has a <code class="androidapi" data-class="android.app.Dialog">Dialog</code> class with subclasses including:
+	</ul>
+
+	<table class="columns5">
+		<tr>
+			<td><img src="images/alertdialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/alertdialog.png" alt="figure" /></td>
+			<td><img src="images/characterpickerdialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/characterpickerdialog.png" alt="figure" /></td>
+			<td><img src="images/datepickerdialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/datepickerdialog.png" alt="figure" /></td>
+		</tr>
+		
+		<tr>
+			<td><code class="androidapi" data-class="android.app.AlertDialog">AlertDialog</code></td>
+			<td><code class="androidapi" data-class="android.app.CharacterPickerDialog">CharacterPickerDialog</code></td>
+			<td><code class="androidapi" data-class="android.app.DatePickerDialog">DatePickerDialog</code></td>
+		</tr>
+		
+		<tr>
+			<td><img src="images/progressdialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/progressdialog.png" alt="figure" /></td>
+			<td><img src="images/timepickerdialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/timepickerdialog.png" alt="figure" /></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><code class="androidapi" data-class="android.app.ProgressDialog">ProgressDialog</code></td>
+			<td><code class="androidapi" data-class="android.app.TimePickerDialog">TimePickerDialog</code></td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Parts of a dialog</h1>
+	
+	<div class="figure">
+		<img src="images/dialog-parts-diagram.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/dialog-parts-diagram.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Building a dialog</h1>
+	
+	<ul>
+		<li>Create a dialog in your activity class with a dialog <em>builder</em>.
+		<li>The builder has many <code>set</code> methods to customize the dialog.
+		<li>When ready, <code>create()</code> the dialog and <code>show()</code> it.
+	</ul>
+	
+	<pre><code class="java">
+// in MyActivity.java
+<em>AlertDialog.Builder</em> builder = new AlertDialog.Builder();
+builder.setTitle("My Dialog");
+builder.setMessage("Welcome to my app!");
+...
+AlertDialog dialog = builder.<em>create</em>();
+dialog.<em>show</em>();
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Dialog builder methods
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/app/AlertDialog.Builder.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/app/AlertDialog.Builder.html%27" tppabs="http://developer.android.com/reference/android/app/AlertDialog.Builder.html">link</a>)
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>setCancelable(<var>bool</var>)</code></td>
+			<td>whether Cancel button should show</td>
+		</tr>
+		<tr>
+			<td><code>setIcon(<var>id</var>)</code></td>
+			<td>drawable icon on the dialog</td>
+		</tr>
+		<tr>
+			<td><code>setItems(<var>items</var>, <var>listener</var>)</code></td>
+			<td>items to display as a list</td>
+		</tr>
+		<tr>
+			<td><code>setMessage("<var>text</var>")</code></td>
+			<td>text to display in dialog</td>
+		</tr>
+		<tr>
+			<td><code>setMultiChoiceItems(<var>items</var>, <br />
+				<var>checkedItems</var>, <var>listener</var>)</code></td>
+			<td>items to display as checkboxes</td>
+		</tr>
+		<tr>
+			<td><code>setNegativeButton("<var>text</var>", <var>listener</var>)</code></td>
+			<td>text / event handler for No button</td>
+		</tr>
+		<tr>
+			<td><code>setPositiveButton("<var>text</var>", <var>listener</var>)</code></td>
+			<td>text / event handler for Yes/OK button</td>
+		</tr>
+		<tr>
+			<td><code>setSingleChoiceItems(<var>items</var>, <br />
+				<var>checkedIndex</var>, <var>listener</var>)</code></td>
+			<td>items to display as radio buttons</td>
+		</tr>
+		<tr>
+			<td><code>setTitle("<var>text</var>")</code></td>
+			<td>title text on top of dialog</td>
+		</tr>
+		<tr>
+			<td><code>setView(<var>view</var>)</code></td>
+			<td>defines a custom dialog layout</td>
+		</tr>
+		<tr>
+			<td><code>create()</code></td>
+			<td>builds and returns the dialog</td>
+		</tr>
+		<tr>
+			<td><code>show();</code></td>
+			<td>builds/returns dialog and shows it</td>
+		</tr>
+	</table>
+	
+	<ul class="aside">
+		<li>methods that accept a string or array can also take a resource ID
+	</ul>
+</section>
+
+<section data-transition="fade-out">
+	<h1>Attaching listeners</h1>
+	
+	<pre><code class="java">
+<em>AlertDialog.Builder</em> builder = new AlertDialog.Builder();
+...
+
+builder.<em>setPositiveButton</em>("OK",
+	new DialogInterface.OnClickListener() {
+		@Override
+		public void <em>onClick</em>(DialogInterface dialog, int id) {
+			// code to run when OK is pressed
+		}
+});
+builder.<em>setNegativeButton</em>("Cancel",
+	new DialogInterface.OnClickListener() {
+		@Override
+		public void <em>onClick</em>(DialogInterface dialog, int id) {
+			// code to run when Cancel is pressed
+		}
+});
+</code></pre>
+</section>
+
+<section data-transition="fade-in fade-out">
+	<h1>Listening to a list of items</h1>
+	
+	<pre><code class="java">
+AlertDialog.Builder builder = new AlertDialog.Builder();
+...
+String[] items = {"Leo", "Mike", "Don", "Raph"};
+builder.<em>setItems</em>(items,
+	new DialogInterface.OnClickListener() {
+		@Override
+		public void <em>onClick</em>(DialogInterface dialog, int index) {
+			// code to run when the item at this index is pressed
+		}
+});
+
+// for radio buttons:    .setSingleChoiceItems
+
+// still need to call setPositiveButton, etc.
+</code></pre>
+</section>
+
+<section data-transition="fade-in">
+	<h1>Listening to checkbox items</h1>
+	
+	<pre><code class="java">
+AlertDialog.Builder builder = new AlertDialog.Builder();
+...
+String[] items = {"lettuce", "tomato", "cheese", "mayo"};
+builder.<em>setMultiChoiceItems</em>(items,
+	new DialogInterface.OnMultiChoiceClickListener() {
+		@Override
+		public void <em>onClick</em>(DialogInterface dialog, int index,
+		                    boolean isChecked) {
+			// code to run when the item at this index is clicked
+		}
+});
+
+// still need to call setPositiveButton, etc.
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Lib: <code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.SimpleDialog">SimpleDialog</code>
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+
+	<table class="methodtable boxedtable compacttable" style="max-width: 100%;">
+		<tr>
+			<td>
+				<img src="images/showAlertDialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/showAlertDialog.png" alt="screenshot" /> <br />
+				<code>showAlertDialog</code>
+			</td>
+
+			<td>
+				<img src="images/showCheckboxInputDialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/showCheckboxInputDialog.png" alt="screenshot" /> <br />
+				<code>showCheckboxInputDialog</code>
+			</td>
+
+			<td>
+				<img src="images/showConfirmDialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/showConfirmDialog.png" alt="screenshot" /> <br />
+				<code>showConfirmDialog</code>
+			</td>
+
+			<td>
+				<img src="images/showInputDialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/showInputDialog.png" alt="screenshot" /> <br />
+				<code>showInputDialog</code>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<img src="images/showListInputDialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/showListInputDialog.png" alt="screenshot" /> <br />
+				<code>showListInputDialog</code>
+			</td>
+
+			<td>
+				<img src="images/showMultiInputDialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/showMultiInputDialog.png" alt="screenshot" /> <br />
+				<code>showMultiInputDialog</code>
+			</td>
+
+			<td>
+				<img src="images/showRadioInputDialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/showRadioInputDialog.png" alt="screenshot" /> <br />
+				<code>showRadioInputDialog</code>
+			</td>
+
+			<td>
+				
+			</td>
+		</tr>
+	</table>
+	
+	<ul style="font-size: smaller;">
+		<li class="aside">(many methods can accept params to customize behavior)
+		<li class="aside">(others: <code>showDate/TimeInputDialog</code>, <code>showProgressDialog</code>)
+	</ul>
+</section>
+
+<section>
+	<h1>
+		Lib: listen for dialog events
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>onAlertDialogClose(<var>dialog</var>)</code></td>
+			<td>called when alert dialog closes</td>
+		</tr>
+		
+		<tr>
+			<td><code>onDialogCancel(<var>dialog</var>)</code></td>
+			<td>called when any dialog is canceled</td>
+		</tr>
+		
+		<tr>
+			<td><code>onInputDialogClose(<var>dialog</var>, <var>input</var>)</code></td>
+			<td>called when input / list / radio dialog closes</td>
+		</tr>
+		
+		<tr>
+			<td><code>onMultiInputDialogClose(<var>dialog</var>, <br />
+&nbsp; <var>inputs</var>)</code></td>
+			<td>called when checkbox / multi-input closes</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		Alert dialog example
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<pre><code class="java">
+// example of showInputDialog (in your activity class)
+SimpleDialog.with(this).showInputDialog("What's your name?");
+...
+@Override
+public void onInputDialogClose(AlertDialog dialog, String input) {
+	toast("The user's name is " + input);
+}
+
+// example of showMultiInputDialog (in your activity class)
+SimpleDialog.with(this).showMultiInputDialog(
+		"Username", "Email", "Password");
+...
+@Override
+public void onMultiInputDialogClose(AlertDialog dialog,
+                                    String[] inputs) {
+	toast("username: " + inputs[0]);
+	toast("email:    " + inputs[1]);
+	toast("password: " + inputs[2]);
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		More dialog methods
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>setDialogsCancelable(<var>bool</var>);</code></td>
+			<td>whether dialogs should have Cancel button</td>
+		</tr>
+		
+		<tr>
+			<td><code>setDialogsIcon(<var>id</var>);</code></td>
+			<td>ID of drawable to show as icon on dialogs</td>
+		</tr>
+		
+		<tr>
+			<td><code>setDialogsTitle("<var>text</var>");</code></td>
+			<td>text to show next to icon as dialogs' title</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// methods to further customize dialog appearance
+SimpleDialog.with(this).setDialogsCancelable(true);
+SimpleDialog.with(this).setDialogsIcon(
+    android.R.drawable.ic_dialog_alert);
+SimpleDialog.with(this).setDialogsTitle("Security Warning");
+
+SimpleDialog.with(this).showConfirmDialog("Unsafe! Continue?");
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Options in strings.xml
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<pre><code class="xml">
+&lt;!-- res/values/strings.xml --&gt;
+&lt;resources&gt;
+	...
+
+	&lt;!-- XML options to customize dialog appearance --&gt;
+	&lt;bool name=&quot;dialogCancelable&quot;&gt;true&lt;/bool&gt;
+	&lt;string name=&quot;dialogDefaultTitle&quot;&gt;Security Warning&lt;/string&gt;
+	&lt;drawable name=&quot;dialogIcon&quot;&gt;@android:drawable/ic_dialog_alert&lt;/drawable&gt;
+&lt;/resources&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Custom dialogs</h1>
+	
+	<div class="figuresright">
+		<img src="images/dialog-custom.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/dialog-custom.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><code>AlertDialog</code> is useful but very limited.
+		<li>To make your own custom dialog with its own widgets, layout, and behavior:
+			<ol>
+				<li>create a new <strong>fragment</strong> that extends DialogFragment  (<span class="filename">.java</span>)
+				<li>create a <strong>layout</strong> for it  (<span class="filename">.xml</span>)
+				<li>write the Java/XML code to create the fragment's UI and handle its <strong>events</strong>
+				<li>write the Java code in your <strong>activity</strong> to launch the dialog
+			</ol>
+	</ul>
+</section>
+
+<section>
+	<h1>Fragment layout, 2 text fields</h1>
+	
+	<div class="figuresright">
+		<img src="images/dialog-custom-cropped.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/dialog-custom-cropped.png" alt="figure" />
+	</div>
+	
+	<pre class="longcode"><code class="java">
+&lt;LinearLayout ...
+	android:orientation=&quot;vertical&quot;
+	android:minWidth=&quot;700dp&quot;
+	tools:context=&quot;cs193a.vocabquiz.AddWordFragment&quot;&gt;
+
+	&lt;EditText
+		android:id=&quot;@+id/edit1&quot;
+		android:hint=&quot;your new word&quot;
+		android:layout_width=&quot;match_parent&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+	&lt;EditText
+		android:id=&quot;@+id/edit2&quot;
+		android:hint=&quot;its definition&quot;
+		android:layout_width=&quot;match_parent&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+	&lt;Button
+		android:id=&quot;@+id/add&quot;
+		android:layout_gravity=&quot;right&quot;
+		android:text=&quot;Add&quot;
+		android:layout_width=&quot;wrap_content&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>DialogFragment</h1>
+	
+	<pre><code class="java">
+// Create a Fragment class that extends DialogFragment
+public class <var>Name</var> extends DialogFragment { 
+
+	public View <em>onCreateView</em>(LayoutInflater inflater,
+			ViewGroup container, Bundle bundle) {
+
+		final View dialog = inflater.inflate(R.layout.<var>layoutName</var>,
+									 container, false);
+
+		// any code to initialize event listeners, etc.
+		...
+
+		return dialog;
+	}
+
+</code></pre>
+</section>
+
+<section>
+	<h1>Why final?</h1>
+	
+	<pre class="longcode"><code class="java">
+// A final variable can be used inside nested
+// anonymous classes declared in that code.
+public class AddWordFragment extends DialogFragment { 
+	public View <em>onCreateView</em>(LayoutInflater inflater,
+			ViewGroup group, Bundle bundle) {
+		final View dialog = inflater.inflate(R.layout.<var>layout</var>, group, false);
+
+		// any code to initialize event listeners, etc.
+		Button addButton = (Button) dialog.findViewById(R.id.add);
+		addButton.<em>setOnClickListener</em>(new View.OnClickListener() {
+			public void onClick(View v) {
+				EditText wordBox = (EditText) dialog.findViewById(R.id.edit1);
+				EditText defnBox = (EditText) dialog.findViewById(R.id.edit2);
+				String word = wordBox.getText().toString();
+				String defn = defnBox.getText().toString();
+				// now what?
+			}
+		});
+		return dialog;
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Dialog[Fragment] methods</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th><code class="androidapi" data-class="android.app.DialogFragment">DialogFragment</code> Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>dismiss();</code></td>
+			<td>closes the dialog</td>
+		</tr>
+		<tr>
+			<td><code>getActivity()</code></td>
+			<td>returns the activity the dialog fragment is inside</td>
+		</tr>
+		<tr>
+			<td><code>getDialog()</code></td>
+			<td>returns the dialog the dialog fragment is inside</td>
+		</tr>
+		<tr>
+			<td><code>show(FragmentManager, "<var>tag</var>");</code></td>
+			<td>causes the fragment and its dialog to appear</td>
+		</tr>
+
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+
+		<tr>
+			<th><code class="androidapi" data-class="android.app.Dialog">Dialog</code> Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>cancel();</code></td>
+			<td>closes the dialog</td>
+		</tr>
+		<tr>
+			<td><code>create();</code></td>
+			<td>creates the dialog</td>
+		</tr>
+		<tr>
+			<td><code>dismiss();</code></td>
+			<td>closes the dialog</td>
+		</tr>
+		<tr>
+			<td><code>findViewById(<var>id</var>)</code></td>
+			<td>return a <code>View</code> inside the dialog</td>
+		</tr>
+		<tr>
+			<td><code>hide();</code></td>
+			<td>make invisible but do not delete yet</td>
+		</tr>
+		<tr>
+			<td><code>isShowing()</code></td>
+			<td>returns <code>true</code> if not hidden</td>
+		</tr>
+		<tr>
+			<td><code>setTitle("<var>title</var>");</code></td>
+			<td>title text at top of dialog</td>
+		</tr>
+		<tr>
+			<td><code>show();</code></td>
+			<td>cause dialog to appear on screen</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Dialog &rarr; Activity communication</h1>
+	
+	<div class="figuresright">
+		<img src="images/dialog-custom.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/dialog-custom.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>When a dialog is finished, it often wants to send information back to the activity or fragment that created it.
+			<ul>
+				<li>In our example, that is the word and definition the user typed.
+			</ul>
+		
+		<li>Two common ways of doing this:
+			<ol>
+				<li>use <code>Intent</code> / <code>onActivityResult</code> system
+				<li>create a custom event listener interface
+			</ol>
+		
+		<li>We'll explore option 1 now.
+	</ul>
+</section>
+
+<section>
+	<h1>Dialog &rarr; Activity communication</h1>
+	
+	<pre class="longcode"><code class="java">
+public class AddWordFragment extends DialogFragment { 
+	public View <em>onCreateView</em>(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
+		final View dialog = inflater.inflate(R.layout.layout, group, false);
+		Button addButton = (Button) dialog.findViewById(R.id.add);
+		addButton.<em>setOnClickListener</em>(new View.OnClickListener() {
+			public void onClick(View v) {
+				EditText wordBox = (EditText) dialog.findViewById(R.id.edit1);
+				EditText defnBox = (EditText) dialog.findViewById(R.id.edit2);
+				String word = wordBox.getText().toString();
+				String defn = defnBox.getText().toString();
+
+				// send information back to activity using an intent
+				// (activity's onActivityResult method must be public)
+				<em>MainActivity activity = (MainActivity) getActivity();
+				Intent intent = new Intent();
+				intent.putExtra("word", word);
+				intent.putExtra("definition", defn);
+				activity.onActivityResult(MainActivity.REQ_CODE_ADD_WORD, 
+				                          Activity.RESULT_OK, intent);</em>
+			}
+		});
+		return dialog;
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Launching a custom dialog</h1>
+	
+	<pre><code class="java">
+// Write code like the following in your activity class.
+// tell the dialog box to pop up
+FragmentManager manager = getFragmentManager();
+AddWordFragment fragment = new AddWordFragment();
+fragment.show(manager, "add_word_fragment_name");
+...
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode,
+								Intent intent) {
+	super.onActivityResult(requestCode, resultCode, intent);
+	if (requestCode == REQ_CODE_ADD_WORD && resultCode == RESULT_OK) {
+		// extract returned parameters from the intent
+		String word = intent.getStringExtra("word");
+		String defn = intent.getStringExtra("definition");
+		addWordToFile(word, defn);
+	}
+}
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

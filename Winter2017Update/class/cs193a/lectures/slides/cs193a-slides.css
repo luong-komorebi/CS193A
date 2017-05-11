@@ -1,0 +1,352 @@
+/* fix/undo stuff from White theme */
+.reveal {
+	font-family: Calibri, "Source Sans Pro", Helvetica, Arial, sans-serif;
+	/* font-size: 32px; */
+	font-size: 34px;
+}
+
+.reveal code,
+.reveal pre,
+.reveal samp,
+.reveal xmp {
+	font-family: Consolas, "Lucida Sans Console", "Courier New", monospace;
+}
+
+.reveal pre {
+	box-shadow: none;
+	/* background-color: #F0F0F0; */
+	background-color: transparent;
+}
+
+.reveal pre {
+	font-size: 0.7em;
+	width: 98%;
+}
+
+.reveal pre code {
+	background-color: transparent;
+	display: inline;
+	max-height: inherit;
+	padding: 0;
+}
+
+.reveal section h1 {
+	background-color: #8C1515;
+	color: white;
+	font-size: 1.8em;
+	margin-top: 0;
+}
+
+.reveal .slides > section, .reveal .slides > section > section {
+	padding: 0;
+}
+
+.reveal small {
+	vertical-align: inherit;
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+	text-transform: inherit;
+}
+
+.reveal ol, .reveal dl, .reveal ul {
+	display: block;
+}
+
+.reveal .slide-number {
+	background-color: white;
+	color: #666;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.reveal table td,
+.reveal table th {
+	padding: 0;
+}
+
+/* Marty's new styles */
+.aside, .aside * {
+	color: #777 !important;
+}
+
+.bad, .bad * {
+	color: #900 !important;
+}
+
+.good, .good * {
+	color: #090 !important;
+}
+
+.reveal button#fullscreenbutton {
+	background-color: #ccc;
+	border: 1px solid #aaa;
+	border-radius: 3px;
+	color: black;
+	font-size: 19px;
+	height: 24px;
+	line-height: 24px;
+	opacity: 0.7;
+	padding: 0;
+	right: 0;
+	text-align: center;
+	top: 10px;
+	width: 24px;
+	vertical-align: middle;
+}
+
+.reveal button#fullscreenbutton:hover {
+	background-color: #eec;
+}
+
+.reveal section a:hover {
+	background-color: #ffc;
+	text-decoration: underline;
+}
+
+.reveal section table {
+	caption-side: bottom;
+}
+
+.reveal section caption,
+.reveal section .caption {
+	color: #555;
+	font-size: smaller;
+	font-style: italic;
+	margin-top: 0.1em;
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
+.reveal section .figurelarge img {
+	height: 80%;
+	max-height: 20em;
+}
+
+.reveal section .figuresright {
+	float: right;
+	margin-left: 1em;
+	max-width: 33%;
+	text-align: right;
+}
+
+.reveal section .figuresright img {
+	/* display: block; */
+	margin-top: 0;
+	max-height: 13em;
+}
+
+.reveal section .figureshorizontal {
+	max-height: 33%;
+	text-align: center;
+	vertical-align: top;
+}
+
+.reveal section .figureshorizontal img {
+	max-width: 40%;
+	max-height: 10em;
+	vertical-align: top;
+}
+
+.reveal section .figureshorizontal4 img {
+	max-height: 150px;
+	max-width: 20%;
+	vertical-align: middle;
+}
+
+.reveal section img {
+	margin: 15px 0px;
+	background: rgba(255, 255, 255, 0.12);
+	border: none;
+	box-shadow: none;
+}
+
+.reveal section img.icon {
+	vertical-align: middle;
+}
+
+.reveal section li.small {
+	font-size: 0.5em;
+}
+
+.reveal section li.small span.filename,
+.reveal section li .column {
+	display: inline-block;
+	min-width: 9em;
+}
+
+.reveal section li.spaced {
+	margin-top: 1em;
+}
+
+.reveal section li.subbullet {
+	list-style-type: none;
+	margin-bottom: 0.5em;
+}
+
+.reveal section li ul {
+	margin-bottom: 0.5em;
+}
+
+.reveal section li li {
+	font-size: smaller;
+}
+
+.reveal section code em,
+.reveal section pre em,
+.reveal section code em *,
+.reveal section pre em *,
+.reveal section code strong,
+.reveal section pre strong,
+.reveal section code strong *,
+.reveal section pre strong * {
+	font-style: normal;
+	font-weight: bold !important;
+	background-color: #ffc;
+}
+
+.reveal pre .linenumber,
+.reveal pre.linenumbers {
+	color: #aaa;
+	font-style: italic;
+	font-weight: normal;
+}
+
+.reveal .linenumberstable {
+	width: 100%;
+}
+
+.reveal section code strike,
+.reveal section pre strike,
+.reveal section code strike *,
+.reveal section pre strike * {
+	color: #888 !important;
+}
+
+.reveal section pre var,
+.reveal section code var {
+	color: #355;
+}
+
+
+.reveal section pre.longcode {
+	font-size: 0.58em;
+	line-height: 1em;
+}
+
+.reveal section span.filename {
+	color: #880066;
+	font-weight: bold;
+}
+
+.reveal section span.filename var {
+	color: #ee0066;
+	font-weight: normal;
+}
+
+.reveal table.compact {
+	font-size: 22px;
+}
+
+.reveal section table.columns5 th,
+.reveal section table.columns5 td {
+	font-size: 22px;
+	text-align: center;
+	vertical-align: top;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.reveal section table.columns5 img {
+	max-height: 40%;
+}
+
+.reveal table.boxedtable,
+.reveal table.boxedtable td,
+.reveal table.boxedtable th,
+.reveal table.boxedtable tr {
+	border: 1px solid black;
+}
+
+.reveal table.compact th,
+.reveal table.compact td {
+    padding: 0.1em 0.5em 0.1em 0.5em;
+}
+
+.reveal table.methodtable {
+	/* clear: right; */
+	font-size: 24px;
+	margin-bottom: 1em;
+	/* min-width: 90%; */
+}
+
+.reveal table.methodtable td,
+.reveal table.methodtable th {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.reveal table.methodtable tr:nth-child(2n) {
+	background-color: #f8f8f8;
+}
+
+.reveal table.methodtable td img,
+.reveal table.methodtable th img {
+	vertical-align: top;
+}
+
+.reveal table.compacttable {
+	font-size: 70%;
+	line-height: 1.05em;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}
+
+.reveal table.compacttable th code,
+.reveal table.compacttable td code {
+	white-space: nowrap;
+}
+
+.reveal .titleslide h1 {
+	font-size: 2.5em;
+	margin-top: 20%;
+}
+
+.reveal .titleslide p {
+	font-size: 160%;
+}
+
+.reveal .stanfordliblogo {
+	position: absolute;
+	top: -15px;
+	right: 0px;
+	max-height: 1.2em;
+}
+
+/* styles for Highlight.js */
+.reveal section .hljs-keyword,
+.reveal section .hljs-attribute,
+.reveal section .hljs-selector-tag,
+.reveal section .hljs-meta-keyword,
+.reveal section .hljs-doctag,
+.reveal section .hljs-name {
+	font-weight: normal;
+	color: #007;
+}
+
+.reveal section .hljs-comment {
+	color: #090;
+}
+
+.reveal section .hljs-meta {
+	color: #888;
+}
+
+.reveal section .hljs-title,
+.reveal section .hljs-section {
+	font-weight: normal;
+}
+
+.reveal section .hljs-string {
+	color: #085;
+}

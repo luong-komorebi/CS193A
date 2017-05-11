@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DictionaryAwesome</string>
+
+    <string-array name="words">
+        <item>Marty</item>
+        <item>Cynthia Lee</item>
+        <item>Mehran Salami</item>
+    </string-array>
+</resources>

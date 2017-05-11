@@ -1,0 +1,119 @@
+<html>
+	<head>
+		<title>CS 193A - MediaPlayer</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Playing audio with MediaPlayer</p>
+</section>
+
+<section>
+	<h1>
+		Playing sound effects
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/topics/media/mediaplayer.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/topics/media/mediaplayer.html%27" tppabs="http://developer.android.com/guide/topics/media/mediaplayer.html">link</a>)
+	</h1>
+	
+	<ul>
+		<li>Find sound files such as .WAV, .MP3
+		<li>put sound files in project folder <span class="filename">res/raw</span> (really <span class="filename">app/src/main/res/raw</span>)
+		<li>in Java code, refer to audio file as <code>R.raw.<var>filename</var></code>
+			<ul>
+				<li>(don't include the extension;  <code>R.raw.foo</code> for <span class="filename">foo.mp3</span>)
+				<li>use simple file names with only letters and numbers
+			</ul>
+	</ul>
+	
+	<ul>
+		<li>Load and play clips using Android's <code class="androidapi" data-class="android.media.MediaPlayer">MediaPlayer</code> class
+			<pre><code class="java">
+MediaPlayer mp = MediaPlayer.create(this, R.raw.<var>filename</var>);
+mp.start();
+</code></pre>
+		
+		<li>other methods: <code>stop</code>, <code>pause</code>, <code>isLooping</code>, <code>isPlaying</code>, <code>getCurrentPosition</code>, <code>release</code>, <code>seekTo</code>, <code>setDataSource</code>, <code>setLooping</code>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		Lib: SimpleMedia
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>play(<var>id</var>);</code></td>
+			<td>play/unpause sound with given ID</td>
+		</tr>
+		
+		<tr>
+			<td><code>loop(<var>id</var>);</code></td>
+			<td>repeatedly plays sound</td>
+		</tr>
+		
+		<tr>
+			<td><code>pause(<var>id</var>);</code></td>
+			<td>pause sound if playing</td>
+		</tr>
+		
+		<tr>
+			<td><code>stop(<var>id</var>);</code></td>
+			<td>stops the given sound if playing</td>
+		</tr>
+		
+		<tr>
+			<td><code>isPlaying(<var>id</var>)</code></td>
+			<td>returns true if the sound is playing</td>
+		</tr>
+		
+		<tr>
+			<td><code>isLooping(<var>id</var>)</code></td>
+			<td>returns true if the sound is looping</td>
+		</tr>
+		
+		<tr>
+			<td><code>getPosition(<var>id</var>)</code></td>
+			<td>returns time index of playing clip in MS</td>
+		</tr>
+		
+		<tr>
+			<td><code>setPosition(<var>id</var>, <var>ms</var>)</code></td>
+			<td>advances the clip to the given time</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// convenience methods for playing sounds
+SimpleMedia.with(this).play(R.id.cowabunga);
+SimpleMedia.with(this).loop(R.id.tmnt_theme);
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

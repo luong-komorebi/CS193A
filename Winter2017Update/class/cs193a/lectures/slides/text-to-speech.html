@@ -1,0 +1,285 @@
+<html>
+	<head>
+		<title>CS 193A - Text to Speech</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Text-to-Speech and Speech-to-Text</p>
+</section>
+
+<section>
+	<h1>Text-to-Speech</h1>
+
+	<div class="figuresright">
+		<img src="images/text-to-speech.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/text-to-speech.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>text-to-speech:</strong> Allows Android device to speak an audible message based on a text string.
+			<ul>
+				<li>Not installed by default on some devices.
+				<li>To install, click Settings &rarr; Language and Input &rarr; Text to speech output &rarr; Google text-to-speech engine "settings" icon &rarr; Install voice data &rarr; Languages
+			</ul>
+		<li>In general, text-to-speech on Android is simple:
+			<ul>
+				<li>create a <code class="androidapi" data-class="android.speech.tts.TextToSpeech">TextToSpeech</code> object
+				<li>call its <code>speak</code> method
+			</ul>
+		<li>But there are a few details that require us to discuss some advanced features of Java.
+	</ul>
+</section>
+
+<section>
+	<h1><code class="androidapi" data-class="android.speech.tts.TextToSpeech">TextToSpeech</code> methods</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>new TextToSpeech(<var>activity</var>, <var>listener</var>)</code></td>
+			<td>constructor</td>
+		</tr>
+		<tr>
+			<td><code>getVoice()</code>, <code>getVoices()</code>, <code>setVoice(<var>v</var>)</code></td>
+			<td>change speaking voice</td>
+		</tr>
+		<tr>
+			<td><code>getLanguage()</code>, <code>setLanguage(<var>lang</var>)</code></td>
+			<td>sets language used</td>
+		</tr>
+		<tr>
+			<td><code>getPitch()</code>, <code>setPitch(<var>p</var>)</code></td>
+			<td>sets vocal tone used</td>
+		</tr>
+		<tr>
+			<td><code>isSpeaking()</code></td>
+			<td>whether speech is currently playing</td>
+		</tr>
+		<tr>
+			<td><code>shutdown();</code></td>
+			<td>kills TTS engine</td>
+		</tr>
+		<tr>
+			<td><code>speak(<var>text</var>, <var>mode</var>, <var>params</var>)</code></td>
+			<td>speaks given text aloud</td>
+		</tr>
+		<tr>
+			<td><code>stop();</code></td>
+			<td>halts any speech</td>
+		</tr>
+		<tr>
+			<td><code>synthesizeToFile(<var>text</var>, <br/>
+				&nbsp; <var>params</var>, <var>filename</var>)</code></td>
+			<td>speaks to file</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Initialization and listener</h1>
+	
+	<ul>
+		<li>The <code>TextToSpeech</code> service can take a while to initialize.
+			<ul>
+				<li>So its constructor forces you to pass a listener object.
+				<li>The listener will be notified when the TTS service is done loading.
+				<li>This helps keep the main UI from freezing up during TTS load time.
+				<li class="subbullet">(The code below uses a Java <em>anonymous inner class</em>.)
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+TextToSpeech tts = new TextToSpeech(this,
+		<em>new TextToSpeech.OnInitListener</em>() {
+	@Override
+	public void onInit(int status) {
+		// code to run when done loading
+	}
+});
+</code></pre>
+</section>
+
+<section>
+	<h1>Waiting for initialization</h1>
+	
+	<ul>
+		<li>You must wait until the text-to-speech listener's <code>onInit</code> method has been called before trying to speak any text.
+			<ul>
+				<li>Otherwise the app will crash with an exception.
+			</ul>
+		<li>Typical usage pattern:
+			<ul>
+				<li>create a <code>boolean</code> flag in your activity
+				<li>have your listener set it to <code>true</code> when the initialization is complete
+				<li>only call speak on the TTS object if the flag is set to <code>true</code>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>The speak method</h1>
+	
+	<ul>
+		<li>The <code>speak</code> method accepts three parameters *:
+			<ul>
+				<li>the text to speak aloud, as a <code>String</code>
+				<li>the mode to use for speaking, one of:
+					<ul>
+						<li><code>TextToSpeech.QUEUE_ADD:&nbsp;&nbsp;</code> Speak after any other text is done.
+						<li><code>TextToSpeech.QUEUE_FLUSH:</code> Stop any other text and speak immediately.
+					</ul>
+				<li>a <code>Map</code> of parameters (we don't need any, so we can pass <code>null</code>).
+				<li class="aside">* (Android 5 introduces a different version of <code>speak</code>, but we'll ignore it.)
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+// speak text aloud, if my init boolean flag is set
+if (myTTSisReady) {
+	tts.speak("Hello, world!", TextToSpeech.QUEUE_FLUSH, null);
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Speech-to-text</h1>
+	
+	<ul>
+		<li><strong>speech-to-text</strong>: User talks; Android records, turns into a String.
+			<ul>
+				<li>Similar to camera, Android has a built-in activity for speech-to-text.
+				<li>You can call it using an <code>Intent</code> and wait for the result.
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+// perform speech-to-text using an intent
+Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
+                Locale.getDefault());
+intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+// prompt tells user what to say
+intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "<var>text</var>");
+startActivityForResult(intent, requestCode);
+</code></pre>
+</section>
+
+<section>
+	<h1>Receiving speech-to-text data</h1>
+	
+	<ul>
+		<li>When the speech-to-text activity comes back, its <code>Intent</code> gives you all text spoken by the user in an <code>ArrayList</code>.
+			<ul>
+				<li>Usually the first element (index 0) contains the string you want.
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+@Override
+protected void onActivityResult(int requestCode,
+		int resultCode, Intent intent) {
+	super.onActivityResult(requestCode, resultCode, intent);
+	ArrayList&lt;String&gt; list = intent.getStringArrayListExtra(
+			RecognizerIntent.EXTRA_RESULTS);
+	String spokenText = list.get(0);
+	// ...
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Robust speech-to-text code</h1>
+	
+	<ul>
+		<li>Some devices do not have speech-to-text capability.
+			<ul>
+				<li>In these cases, it will throw an exception when you try to use it.
+				<li>To handle such situations, you can <strong><code>try/catch</code></strong> the exception.
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+// try/catch speech in case device does not support it
+Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+...
+<em>try {</em>
+	startActivityForResult(intent, requestCode);
+<em>} catch (ActivityNotFoundException anfe) {</em>
+	// code to handle the exception
+<em>}</em>
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Lib: <code class="stanfordandroidlibraryapi" data-class="stanford.androidlib.SimpleSpeech">SimpleSpeech</code>
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>speak("<var>text</var>");</code></td>
+			<td>speak a string aloud (text-to-speech)</td>
+		</tr>
+		
+		<tr>
+			<td><code>textToSpeechSupported()</code></td>
+			<td>returns <code>true</code> if the device supports text-to-speech and the <code>speak</code> method</td>
+		</tr>
+		
+		<tr>
+			<td><code>speechToTextSupported()</code></td>
+			<td>returns <code>true</code> if the device supports speech-to-text</td>
+		</tr>
+		
+		<tr>
+			<td><code>speechToText("<var>prompt</var>");</code></td>
+			<td>initiate speech-to-text</td>
+		</tr>
+		
+		<tr>
+			<td><code>onSpeechToTextReady(<var>text</var>)</code></td>
+			<td>called when speech-to-text is ready</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// convenience methods for speech
+SimpleSpeech.with(this).speak("Hello, world!");
+SimpleSpeech.with(this).speechToText("Say your name");
+...
+public void <em>onSpeechToTextReady</em>(String theName) { ...
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

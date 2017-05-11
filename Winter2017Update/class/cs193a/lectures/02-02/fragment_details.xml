@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="top|center"
+    android:layout_gravity="top|center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="cs193a.stanford.edu.pokedex.DetailsFragment">
+
+    <ImageView
+        android:id="@+id/pokemon_image"
+        android:layout_width="150sp"
+        android:layout_height="150sp" />
+
+    <TextView
+        android:id="@+id/pokemon_name"
+        android:text="NAME"
+        android:textSize="24dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/pokemon_details"
+            android:text="test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,717 @@
+<html>
+	<head>
+		<title>CS 193A - RESTful Web APIs</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>RESTful Web APIs</p>
+</section>
+
+<section>
+	<h1>Web services to access data</h1>
+	
+	<ul>
+		<li>Many apps access data through a web layer.
+		<li><strong>Client</strong> (app) makes queries by contacting certain specific URLs.
+		<li><strong>Server</strong> (web URL) sends the appropriate database data back.
+		<li>Client parses the data, displays it, etc.
+	</ul>
+	
+	<div class="figures">
+		<img src="images/web-services.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/web-services.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Web services</h1>
+	
+	<ul>
+		<li><strong>web service:</strong> a set of functionality offered over a server using the web, but not web pages / HTML
+			<ul>
+				<li>Use the web's HTTP protocol to connect and transfer data.
+				<li>Client connects to specific URLs to request specific data, which is then sent back in some documented format such as XML or JSON.
+				<li><strong>REST:</strong> <u>Re</u>presentational <u>S</u>tate <u>T</u>ransfer.  Common style of web services.
+					<ul>
+						<li>"RESTful web services" or "RESTful APIs"
+					</ul>
+			</ul>
+		
+			<div class="figuresright">
+				<img src="images/rest-webservices.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/rest-webservices.jpg" alt="figure" />
+			</div>
+			
+		<li>Web services are a bit like remote function calls where you can request data via URLs with parameters and get the data returned as a response.
+	</ul>
+</section>
+
+<section>
+	<h1>How to find and use web APIs</h1>
+	
+	<div class="figuresright">
+		<img src="images/rest-api-chuck-norris.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/rest-api-chuck-norris.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>Locate</strong> them online
+			<ul>
+				<li>Google for phrases like "<var>&lt;company&gt;</var> REST API" or "<var>&lt;service&gt;</var> free API"
+			</ul>
+		
+		<li><strong>Sign up</strong> for an account
+			<ul>
+				<li>Many web APIs require a login or API key
+				<li>Register to receive key or account
+			</ul>
+		
+		<li>Read the online <strong>documentation</strong> to find out how the API works
+			<ul>
+				<li>APIs are not standardized; each one is completely unique
+				<li>Need documentation to learn the available services, parameters, etc.
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Data formats: JSON, XML</h1>
+	
+	<ul>
+		<li>Most web APIs return their data in one of these formats:
+			<ul>
+				<li>
+					<div class="figuresright">
+						<img src="images/json-logo.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/json-logo.png" alt="figure" />
+					</div>
+
+					JSON: <u>J</u>avaScript <u>O</u>bject <u>N</u>otation
+					<ul>
+						<li>Data is a JavaScript object literal.
+						<li>JS objects are basically maps from keys to values.
+						<li>All values in the data are the fields of the object.
+						<li>Object can contain sub-objects, lists, strings, numbers, etc.
+						<li>Slightly less capable than XML, but simpler to read, write, parse.
+						<li>Currently most popular web data interchange format for most apps.
+					</ul>
+
+				<li>
+					<div class="figuresright">
+						<img src="images/xml-logo-3.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/xml-logo-3.png" alt="figure" />
+					</div>
+
+					XML: E<u>x</u>tensible <u>M</u>arkup <u>L</u>anguage
+					<ul>
+						<li>Data is a nested tree of tags and attributes.
+						<li>More structured, but bulkier/harder to parse.
+						<li>Very popular 5-10 years ago but being superseded by JSON.
+					</ul>
+
+				<li>
+					<div class="figuresright">
+						<img src="images/yaml-logo.gif" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/yaml-logo.gif" alt="figure" />
+					</div>
+
+					Some web APIs use other data formats:
+					<ul>
+						<li>YAML: <u>Y</u>et <u>A</u>nother <u>M</u>arkup <u>L</u>anguage.  Popular in Ruby/Rails community.
+						<li>plain text (gasp!)
+					</ul>
+			</ul>
+	</ul>
+</section>
+
+<section data-transition="fade-out">
+	<h1>JSON data example</h1>
+	
+	<pre><code class="json">
+
+{
+  "private": "true",
+  "from": "Alice Smith (alice@example.com)",
+  "to": [
+    "Robert Jones (roberto@example.com)",
+    "Charles Dodd (cdodd@example.com)"
+  ],
+  "subject": "Tomorrow's \"Birthday Bash\" event!",
+
+  "message": {
+    "language": "english",
+    "text": "Hey guys, don't forget to call me this weekend!"
+  }
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-in">
+	<h1>JSON data annotated</h1>
+	
+	<pre><code class="json">
+ <em class="aside">&swarr; {...} = object document</em>
+{    <em class="aside">&darr; key / &darr; value pairs</em>
+  "private": "true",   <em class="aside">&larr; boolean</em>
+  "from": "Alice Smith (alice@example.com)",   <em class="aside">&larr; string</em>
+  "to": [   <em class="aside">&larr; [] denotes an array</em>
+    "Robert Jones (roberto@example.com)",   <em class="aside">&larr; array element 0</em>
+    "Charles Dodd (cdodd@example.com)"      <em class="aside">&larr; array element 1</em>
+  ],
+  "subject": "Tomorrow's \"Birthday Bash\" event!",
+
+  "message": {   <em class="aside">&larr; {...} = a nested object</em>
+    "language": "english",
+    "text": "Hey guys, don't forget to call me this weekend!"
+  }
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Chuck Norris REST API</h1>
+	
+	<ul>
+		<li>fetches random Chuck Norris quotes and "Facts" in JSON format
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27http://www.icndb.com/api/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.icndb.com/api/%27" tppabs="http://www.icndb.com/api/">http://www.icndb.com/api/</a>
+				<li>
+					<div class="figuresright">
+						<img src="images/rest-icndb.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/rest-icndb.png" alt="figure" />
+					</div>
+					login/key required?  <strong>NO</strong>
+			</ul>
+		
+		<li style="font-size: smaller">API:  <span class="filename">http://api.icndb.com/ ________</span>
+			<ul>
+				<li><span class="filename">/jokes/random</span>	- fetch a random joke
+					<ul>
+						<li class="small">{ "type": "success", "value": { "id": 194, "joke": "Chuck Norris kicked cancer.", "categories": [] } }</small>
+					</ul>
+						
+				<li><span class="filename">/jokes/random/<var>N</var></span>	- fetch multiple random jokes
+					<ul>
+						<li class="small">{ "type": "success", "value": [ { "id": 417, "joke": "..." }, { "id": 505, "joke": "...", "categories": ["nerdy"] }, { "id": 291, "joke": "...", "categories": [] } ]  }
+					</ul>
+						
+				<li><span class="filename">/jokes/random/limitTo=[<var>categories</var>]</span>	- limit categories of joke
+				<li><span class="filename">/jokes/random/exclude=[<var>categories</var>]</span>	- exclude categories of joke
+
+				<li><span class="filename">/jokes/<var>N</var></span>	- fetch a specific joke with ID #N
+					<ul>
+						<li class="small">{ "type": "success", "value": { "id": 194, "joke": "Chuck Norris kicked cancer.", "categories": [] } }
+					</ul>
+						
+				<li><span class="filename">/jokes/count</span>	- fetch total number of jokes
+					<ul>
+						<li class="small">{ "type": "success", "value": 549 }
+					</ul>
+						
+				<li><span class="filename">/categories</span>	- fetch names of all categories of jokes
+					<ul>
+						<li class="small">{ "type": "success", "value": [ "nerdy", "explicit", "chuck norris", "bruce schneier" ] }
+					</ul>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Parsing JSON data</h1>
+	
+	<div style="overflow: hidden">
+		<pre style="float: left; width: 42%; font-size: 0.6em;">
+
+
+
+{
+  "private": "true",               <span class="aside">&rarr;</span>
+  "from": "Alice (alice@ex.com)",  <span class="aside">&rarr;</span>
+  "subject": "Today's event",      <span class="aside">&rarr;</span>
+
+  "to": [                          <span class="aside">&rarr;</span>
+    "Robert (roberto@ex.com)",     <span class="aside">&rarr;</span>
+    "Charles (cdodd@ex.com)"       <span class="aside">&rarr;</span>
+  ],
+
+  "message": {                     <span class="aside">&rarr;</span>
+    "lang": "english",             <span class="aside">&rarr;</span>
+    "text": "Call this weekend!"   <span class="aside">&rarr;</span>
+  }
+}
+</pre>
+		
+		<pre style="float: left; width: 56%; font-size: 0.6em;">
+private void processData(String data) {
+try {
+  <span class="comment">// extract the information from JSON data</span>
+  JSONObject json = new JSONObject(data);
+  boolean private = json.getBoolean("private");
+  String from = json.getString("from");
+  String subject = json.getString("subject");
+
+  JSONArray a = json.getJSONArray("to");
+  String to1 = a.getString(0);
+  String to2 = a.getString(1);
+
+
+  JSONObject msg =
+             json.getJSONObject("message");
+  String lang = msg.getString("lang");
+  String text = msg.getString("text");
+
+} catch (JSONException e) {
+    Log.wtf("json", e);
+}
+}
+</pre>
+
+	</div>
+</section>
+
+<section>
+	<h1>
+		JSONObject methods
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/org/json/JSONObject.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/org/json/JSONObject.html%27" tppabs="http://developer.android.com/reference/org/json/JSONObject.html">link</a>)
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td>
+				<code><var>j</var>.get("<var>key</var>")</code> <br />
+				<code><var>j</var>.getBoolean("<var>key</var>")</code> <br />
+				<code><var>j</var>.getDouble("<var>key</var>")</code> <br />
+				<code><var>j</var>.getInt("<var>key</var>")</code> <br />
+				<code><var>j</var>.getJSONArray("<var>key</var>")</code> <br />
+				<code><var>j</var>.getJSONObject("<var>key</var>")</code> <br />
+				<code><var>j</var>.getLong("<var>key</var>")</code> <br />
+				<code><var>j</var>.getString("<var>key</var>")</code> <br />
+			</td>
+			<td>retrieve value of the given key, or throw a <code>JSONException</code> if key is not found</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>j</var>.has("<var>key</var>")</code></td>
+			<td>return <code>true</code> if given key maps to a value</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>j</var>.isNull("<var>key</var>")</code></td>
+			<td>return <code>true</code> if given key maps to <code>null</code></td>
+		</tr>
+		
+		<tr>
+			<td><code><var>j</var>.keys()</code></td>
+			<td>return iterator of all keys in object</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<code><var>j</var>.opt("<var>key</var>", <var>default</var>)</code> <br />
+				<code><var>j</var>.optBoolean("<var>key</var>", <var>default</var>)</code> <br />
+				...
+			</td>
+			<td>retrieve value of the given key, or return default if key is not found</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>j</var>.put("<var>key</var>", <var>value</var>);</code></td>
+			<td>set the value for a given key</td>
+		</tr>
+		
+		<tr>
+			<td><code><var>j</var>.remove("<var>key</var>");</code></td>
+			<td>removes key/value mapping if it exists</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<code><var>j</var>.toString()</code> <br />
+				<code><var>j</var>.toString(<var>spaces</var>)</code>
+			</td>
+			<td>convert JSON object to a string, with optional indentation and spacing</td>
+		</tr>
+		
+		<tr>
+			<td><code>JSONObject.quote(<var>str</var>)</code></td>
+			<td>encodes data as a JSON string</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Fetching web data, no library</h1>
+	
+	<pre><code class="java">
+// fetch REST API data in the background without any libraries (ick!)
+public void <em>fetchData</em>(String urlString) {
+	Thread thread = new Thread(new Runnable() {
+		public void run() {
+			try {
+				URL url = new URL(urlString);   // connect to the site
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				conn.setConnectTimeout(30000);   // milliseconds
+				conn.setReadTimeout(10000);
+				conn.setRequestMethod("GET");
+				conn.connect();
+				int responseCode = conn.getResponseCode();   // HTTP result codes; 200=success
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+					InputStream input = conn.getInputStream();   // read data from URL to string
+					StringBuilder sb = new StringBuilder();
+					while (true) {
+						int ch = input.read();
+						if (ch == -1) break;
+						sb.append((char) ch);
+					}
+					String text = sb.toString();
+					<em>processData(text);</em>   // you write this!
+				} else {
+					Log.d("url", "HTTP fail, code " + responseCode);   // request failed
+				}
+			} catch (IOException ioe) {
+				Log.wtf("url", ioe);
+			}
+		}
+	});
+	thread.start();
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Updating widgets in thread</h1>
+	
+	<ul>
+		<li>Code in a <strong>background thread</strong> cannot modify UI widgets.
+			<ul>
+				<li>The code will throw an exception.
+				<li>Widgets must be updated in Android's UI thread.
+			</ul>
+			
+			<pre><code class="java">
+final TextView textView = (TextView) findViewById(R.id.<var>id</var>);
+<strike>textView.setText(myJsonText);</strike>   // will throw exception
+</code></pre>
+
+		<li>Simplest way to update a widget (without libraries): call <code>post</code> method, pass a <code>Runnable</code> containing code to run:
+			
+			<pre><code class="java">
+// update a UI widget in a background thread
+textView.<em>post</em>(new Runnable() {
+	public void run() {
+		textView.setText(joke);
+	}
+});
+</code></pre>
+	</ul>
+</section>
+
+<section>
+	<h1>Fetching web data, Ion library</h1>
+	
+	<pre><code class="java">
+// fetch REST API data in background with Ion library (yay!)
+public void fetchData(String urlString) {
+	Ion.with(context)
+		.load("<var>urlString</var>")
+		<em>.asString()</em>
+		.setCallback(new FutureCallback&lt;String&gt;() {
+			public void onCompleted(Exception e,
+									<em>String data</em>) {
+				// process the data or error
+				JSONObject json = new JSONObject(data);
+				<em>processData(json);</em>   // you write this!
+			}
+		});
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>The Cat API</h1>
+	
+	<div class="figuresright">
+		<img src="images/rest-cat-api-with-cat.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/rest-cat-api-with-cat.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>facts/photos of cats in <strong>XML</strong> / HTML
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27http://thecatapi.com/docs.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://thecatapi.com/docs.html%27" tppabs="http://thecatapi.com/docs.html">http://thecatapi.com/docs.html</a>
+				<li>login/key required?  <strong>OPTIONAL</strong>
+			</ul>
+		
+		<li>API:  <span class="filename">http://thecatapi.com/ ________</span>
+			<ul>
+				<li><span class="filename">/api/images/get?<var>param</var>=<var>val</var>&<var>param</var>=<var>val</var></span>	- fetch a random cat picture
+					<ul>
+						<li class="small"><span class="filename">image_id=<var>ID</var></span>	specific image ID
+						<li class="small"><span class="filename">format=<var>format</var></span>	format of data to return:  xml, html, or src  [default xml]
+						<li class="small"><span class="filename">results_per_page=<var>N</var></span>	number of images to send back [default 1]
+						<li class="small"><span class="filename">category=<var>cat</var></span>	category of images  [default none]
+						<li class="small"><span class="filename">size=<var>size</var></span>	size:  small, med, or full  [default full]
+						<li class="small"><span class="column">example:</span>  <a class="popup" href="javascript:if(confirm(%27http://thecatapi.com/api/images/get?format=xml&size=med&results_per_page=3  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://thecatapi.com/api/images/get?format=xml&size=med&results_per_page=3%27" tppabs="http://thecatapi.com/api/images/get?format=xml&size=med&results_per_page=3">http://thecatapi.com/api/images/get?format=xml&size=med&results_per_page=3</a>
+					</ul>
+				<li><span class="filename">/api/images/vote</span>	- score an image from 1-10
+					<ul>
+						<li class="small"><span class="filename">api_key=<var>key</var></span>	API key  (required)
+						<li class="small"><span class="filename">image_id=<var>ID</var></span>	ID of image to vote on  (required)
+						<li class="small"><span class="filename">score=<var>N</var></span>	score from 1-10  (required)
+						<li class="small"><span class="column">example:</span>  <a class="popup" href="javascript:if(confirm(%27http://thecatapi.com/api/images/vote?api_key=xxxxx&image_id=bC24&score=8  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://thecatapi.com/api/images/vote?api_key=xxxxx&image_id=bC24&score=8%27" tppabs="http://thecatapi.com/api/images/vote?api_key=xxxxx&image_id=bC24&score=8">http://thecatapi.com/api/images/vote?api_key=xxxxx&image_id=bC24&score=8</a>
+					</ul>
+				<li><span class="filename">/api/images/getvotes</span>	- return all votes made by your API key
+					<ul>
+						<li class="small"><span class="filename">api_key=<var>key</var></span>	API key  (required)
+					</ul>
+				<li><span class="filename">/api/categories/list</span>	- get list of all active image categories
+					<ul>
+						<li class="small">{ "type": "success", "value": 549 }
+					</ul>
+			</ul>
+	</ul>
+</section>
+
+<section data-transition="fadeout">
+	<h1>XML data example</h1>
+	
+	<pre><code class="xml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;note private=&quot;true&quot;&gt;
+  &lt;from&gt;Alice Smith (alice@example.com)&lt;/from&gt;
+
+  &lt;recipients&gt;
+    &lt;to&gt;Robert Jones (roberto@example.com)&lt;/to&gt;
+    &lt;to&gt;Charles Dodd (cdodd@example.com)&lt;/to&gt;
+  &lt;/recipients&gt;
+
+  &lt;subject&gt;Tomorrow's &quot;Birthday Bash&quot; event!&lt;/subject&gt;
+
+  &lt;message language=&quot;english&quot; format=&quot;text&quot;&gt;
+    Hey guys, don't forget to call me this weekend!
+  &lt;/message&gt;
+&lt;/note&gt;
+</code></pre>
+</section>
+
+<section data-transition="fadein">
+	<h1>XML data annotated</h1>
+	
+	<pre><code class="xml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; <em class="aside">&larr; XML prolog</em>
+&lt;note private=&quot;true&quot;&gt; <em class="aside">&larr; document node</em>
+  &lt;from&gt;Alice Smith (alice@example.com)&lt;/from&gt;
+      <em class="aside">&nwarr; tag (or element)</em>      <em class="aside">&nwarr; text content</em>
+  &lt;recipients&gt;
+    &lt;to&gt;Robert Jones (roberto@example.com)&lt;/to&gt;
+    &lt;to&gt;Charles Dodd (cdodd@example.com)&lt;/to&gt;
+  &lt;/recipients&gt;
+
+  &lt;subject&gt;Tomorrow's &quot;Birthday Bash&quot; event!&lt;/subject&gt;
+                  <em class="aside">&swarr; attributes &searr;</em>
+  &lt;message language=&quot;english&quot; format=&quot;text&quot;&gt;
+    Hey guys, don't forget to call me this weekend!
+  &lt;/message&gt;
+&lt;/note&gt;
+</code></pre>
+</section>
+
+<section data-transition="fadeout">
+	<h1>XML Cat data example</h1>
+	
+	<pre><code class="xml">
+&lt;!-- http://thecatapi.com/api/images/get?format=xml&size=med&results_per_page=3 --&gt;
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;response&gt;
+  &lt;data&gt;
+    &lt;images&gt;
+      &lt;image&gt;
+        &lt;url&gt;http://24.media.tumblr.com/tumblr_m27fatL9PD1qzex9io1_500.jpg&lt;/url&gt;
+        &lt;id&gt;2eo&lt;/id&gt;
+        &lt;source_url&gt;http://thecatapi.com/?id=2eo&lt;/source_url&gt;
+      &lt;/image&gt;
+      &lt;image&gt;
+        &lt;url&gt;http://27.media.tumblr.com/tumblr_m1o0ai1nI31qzex9io1_500.jpg&lt;/url&gt;
+        &lt;id&gt;21m&lt;/id&gt;
+        &lt;source_url&gt;http://thecatapi.com/?id=21m&lt;/source_url&gt;
+      &lt;/image&gt;
+      &lt;image&gt;
+        &lt;url&gt;http://25.media.tumblr.com/tumblr_m18j7miQoo1r94vvxo1_500.jpg&lt;/url&gt;
+        &lt;id&gt;do0&lt;/id&gt;
+        &lt;source_url&gt;http://thecatapi.com/?id=do0&lt;/source_url&gt;
+      &lt;/image&gt;
+    &lt;/images&gt;
+  &lt;/data&gt;
+&lt;/response&gt;
+</code></pre>
+</section>
+
+<section data-transition="fadein">
+	<h1>JSON Cat data example</h1>
+	
+	<pre><code class="json">
+  // http://thecatapi.com/api/images/get?format=<em>json</em>&size=med&results_per_page=3
+{
+  &quot;response&quot;: {
+    &quot;data&quot;: {
+      &quot;images&quot;: {
+        &quot;image&quot;: [
+          { &quot;url&quot;: &quot;http://27.media.tumblr.com/tumblr_m27fatL9PD1qzex9io1_500.jpg&quot;,
+            &quot;id&quot;: &quot;sm&quot;,
+            &quot;source_url&quot;: &quot;http://thecatapi.com/?id=sm&quot; },
+          { &quot;url&quot;: &quot;http://25.media.tumblr.com/tumblr_m1o0ai1nI31qzex9io1_500.jpg&quot;,
+            &quot;id&quot;: &quot;5tv&quot;,
+            &quot;source_url&quot;: &quot;http://thecatapi.com/?id=5tv&quot; },
+          { &quot;url&quot;: &quot;http://25.media.tumblr.com/tumblr_m18j7miQoo1r94vvxo1_500.jpg&quot;,
+            &quot;id&quot;: &quot;b0f&quot;,
+            &quot;source_url&quot;: &quot;http://thecatapi.com/?id=b0f&quot; }
+        ]
+      }
+    }
+  }
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Converting XML to JSON</h1>
+	
+	<pre><code class="java">
+// how to fetch REST API data in a background thread
+// and convert it from XML to JSON format
+// using Stanford Android lib and Ion web library
+public void <em>fetchData</em>(String urlString) {
+	Ion.with(context)
+		.load(urlString)
+		.asString()
+		.setCallback(new FutureCallback&lt;String&gt;() {
+			public void onCompleted(Exception e,
+									String data) {
+				<em>JSONObject json = XML.toJSONObject(data);</em>
+				processData(json);   // you write this!
+			}
+		});
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Library quick look: GSON</h1>
+	
+	<div class="figuresright">
+		<img src="images/gson.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/gson.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>GSON</strong> library maps JSON &rarr; Java objects
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://github.com/google/gson  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/google/gson%27" tppabs="https://github.com/google/gson">https://github.com/google/gson</a>
+				<li><em>The idea:</em>  Create classes to match JSON data, then use GSON to unpack JSON into object.
+				<li>in <span class="filename">build.gradle</span>:	<code>compile 'com.google.code.gson:gson:2.8.0'</code>
+			</ul>
+		
+		<pre><code class="java">
+public class BankAccount {
+	private int id;
+	private String name;
+	private double balance;
+
+	public BankAccount() {}
+}
+...
+String json = "{\"id\":1234,\"name\":\"Marty\",\"balance\":0.25}";
+Gson gson = new Gson();
+BankAccount acct = <em>gson.fromJson</em>(json, BankAccount.class);
+</code></pre>
+	</ul>
+</section>
+
+<section>
+	<h1>Library quick look: Retrofit</h1>
+	
+	<div class="figuresright">
+		<img src="images/retrofit.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/retrofit.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>Retrofit</strong> library maps REST APIs to methods
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27http://square.github.io/retrofit/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://square.github.io/retrofit/%27" tppabs="http://square.github.io/retrofit/">http://square.github.io/retrofit/</a>
+				<li><em>The idea:</em> Instead of writing code in potentially multiple places to fetch and unpack the data from REST APIs, declare special methods that map to REST endpoints.
+				<li>in <span class="filename">build.gradle</span>:	 <code>compile 'com.squareup.retrofit2:retrofit:2.1.0'</code>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Retrofit code example</h1>
+
+	<pre><code class="java">
+// example that uses Retrofit with Chuck Norris API
+public interface <em>ChuckNorrisAPI</em> {
+	@GET(&quot;/jokes/random&quot;)
+	Call&lt;String&gt; <em>randomJoke</em>();      // API /jokes/random =&gt; randomJoke() method
+
+	@GET(&quot;/jokes/random/{num}&quot;)
+	Call&lt;String[]&gt; <em>allRandomJokes</em>(@Path(&quot;num&quot;) int num);
+}
+...
+Retrofit retrofit = new Retrofit.Builder()
+	.baseUrl(&quot;http://api.icndb.com&quot;)
+	.addConverterFactory(GsonConverterFactory.create())
+	.build();
+ChuckNorrisAPI chuck = retrofit.create(ChuckNorrisAPI.class);
+Call&lt;String&gt; joke = <em>chuck.randomJoke()</em>;  ...
+</code></pre>
+</section>
+
+<section>
+	<h1>Other cool APIs</h1>
+	
+	<ul>
+		<li>Twitter
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://dev.twitter.com/rest/public  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://dev.twitter.com/rest/public%27" tppabs="https://dev.twitter.com/rest/public">https://dev.twitter.com/rest/public</a>
+			</ul>
+		<li>Instagram
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://www.instagram.com/developer/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://www.instagram.com/developer/%27" tppabs="https://www.instagram.com/developer/">https://www.instagram.com/developer/</a>
+			</ul>
+		<li>Wikipedia
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://www.mediawiki.org/wiki/API:Main_page  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://www.mediawiki.org/wiki/API:Main_page%27" tppabs="https://www.mediawiki.org/wiki/API:Main_page">https://www.mediawiki.org/wiki/API:Main_page</a>
+			</ul>
+		<li>Yo
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://medium.com/@YoAppStatus/yo-developers-api-e7f2f0ec5c3c  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://medium.com/@YoAppStatus/yo-developers-api-e7f2f0ec5c3c%27" tppabs="https://medium.com/@YoAppStatus/yo-developers-api-e7f2f0ec5c3c">https://medium.com/@YoAppStatus/yo-developers-api-e7f2f0ec5c3c</a>
+			</ul>
+
+		<li>Trivia game
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://market.mashape.com/pareshchouhan/trivia  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://market.mashape.com/pareshchouhan/trivia%27" tppabs="https://market.mashape.com/pareshchouhan/trivia">https://market.mashape.com/pareshchouhan/trivia</a>
+			</ul>
+		
+		<li>... and many more!
+	</ul>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

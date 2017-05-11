@@ -1,0 +1,297 @@
+<html>
+	<head>
+		<title>CS 193A - User Login</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>User Login</p>
+</section>
+
+<section>
+	<h1>Authentication</h1>
+	
+	<p>
+		Most modern apps require the user to have an <strong>account</strong> or <strong>log in</strong>.
+	</p>
+	
+	<div class="figuresright">
+		<img src="images/authentication.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/authentication.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>authentication:</strong> Logging in / verifying identity of a user.
+			<ul>
+				<li>"Who is this user?"
+			</ul>
+		
+		<li><strong>authorization:</strong> Granting / denying permissions for various actions.
+			<ul>
+				<li>"What is this user allowed to do?"
+			</ul>
+		
+		<li>many ways to do this:
+			<ul>
+				
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>How to do Authentication</h1>
+	
+	<div class="figuresright">
+		<img src="images/sign-in-with-google.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/sign-in-with-google.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>do it yourself:</strong> Write code to ask for a user name/password.
+			<ul>
+				<li>hard to get this right!
+				<li>must encrypt user data securely in database
+				<li>must use secure protocols, HTTPS, etc.
+				<li>if server hacked, users get mad
+				<li><strong>Do not do this.</strong>
+			</ul>
+		<li><strong>use an external auth service:</strong> Rely on an outside entity for auth.
+			<ul>
+				<li>Google account, Facebook, Microsoft, GitHub, PayPal, ...
+					<ul>
+						<li>+: easier
+						<li>-: introduces a dependency; requires users to have an account on that service
+					</ul>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Google Identity Platform</h1>
+	
+	<div class="figuresright">
+		<img src="images/sign-in-button.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/sign-in-button.png" alt="figure" />
+		<img src="images/oauth.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/oauth.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>Google Identity Platform:</strong>
+			Services provided by Google to help integrate accounts and login into apps.
+			<ul>
+				<li>sometimes just called "Google Sign-in"
+				<li>built on top of OAuth
+			</ul>
+		
+		<li><strong><a class="popup" href="javascript:if(confirm(%27https://oauth.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://oauth.net/%27" tppabs="https://oauth.net/">OAuth:</a></strong> Open standard for authorization features.
+			<ul>
+				<li>current version: <strong>OAuth 2.0</strong>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Preparing your emulator</h1>
+	
+	<ul>
+		<li>to use Google Sign-in, must install <strong>Google Play Services</strong> in emulator
+		<li>in A.Studio:  "<strong>SDK Manager</strong>"
+			<img class="icon" src="images/sdk-manager-toolbar-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/sdk-manager-toolbar-icon.png" alt="figure" title="SDK Manager" />
+			<ul>
+				<li>make sure "<strong>Google APIs</strong>" are installed
+			</ul>
+		<li>in A.Studio: "<strong>AVD Manager</strong>"
+			<img class="icon" src="images/avd-manager-toolbar-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/avd-manager-toolbar-icon.png" alt="figure" title="AVD Manager" />
+			<ul>
+				<li>make sure your AVD uses "Google APIs"
+				<li>if not, click "pencil" icon to change it
+			</ul>
+	</ul>
+
+	<div class="figure">
+		<img src="images/avd-google-apis.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/avd-google-apis.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Access key and config file</h1>
+
+	<ul>
+		<li>must get <strong>API access key</strong> and <strong>configuration file</strong> for project
+		<li>go to <a class="popup" href="javascript:if(confirm(%27https://developers.google.com/identity/sign-in/android/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developers.google.com/identity/sign-in/android/%27" tppabs="https://developers.google.com/identity/sign-in/android/">https://developers.google.com/identity/sign-in/android/</a>
+		<li>click "Get Started" &rarr; "Get a Configuration File"
+			<ul>
+				<li><u>crucial</u>: must set correct <strong>package</strong> (same as in Java code)
+				<li>e.g. <code>"package <strong><u>edu.stanford.cs193a.logintest</u></strong>;"</code>
+			</ul>
+		<li>get an <a class="popup" href="javascript:if(confirm(%27https://developers.google.com/android/guides/client-auth  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developers.google.com/android/guides/client-auth%27" tppabs="https://developers.google.com/android/guides/client-auth">SHA-1 key file</a> (requires using Terminal) :-/
+	
+	<div class="figure">
+		<img src="images/google-signin-create-app.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/google-signin-create-app.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Download .json file</h1>
+	
+	<ul>
+		<li>you need to generate/download a file <span class="filename">google-services.json</span>
+			<ul>
+				<li>Your app sends this to Google's server to get permission to use the API.
+			</ul>
+
+		<li>save it into your app's <span class="filename">app/</span> directory
+		<li>will not work if in wrong folder or stores wrong app name/package
+		<li><em>NOTE:</em> be careful storing such a file in GitHub / online (has private keys in it!)
+	</ul>
+	
+	<div class="figure">
+		<img src="images/google-signin-download-json.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/google-signin-download-json.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Add Google Signin to project</h1>
+	
+	<ul>
+		<li>in <strong>project</strong> level <span class="filename">build.gradle</span> file:
+		
+		<pre><code class="groovy">
+buildscript { ...
+	dependencies { ...
+		<em>classpath 'com.google.gms:google-services:3.0.0'</em>  // add this line!
+</code></pre>
+
+		<li>in <strong>app</strong> level <span class="filename">build.gradle</span> file:
+		
+		<pre><code class="groovy">
+dependencies { ...
+	<em>compile 'com.google.android.gms:play-services-auth:10.0.1'</em>  // add this line!
+}
+
+// put this at the very BOTTOM of the file!
+<em>apply plugin: 'com.google.gms.google-services'</em>  // add this line!
+</code></pre>
+
+		<li>then "Sync Now"
+	</ul>
+</section>
+
+<section>
+	<h1>Sign-In button (optional)</h1>
+	
+	<div class="figuresright">
+		<img src="images/signin-button-layout.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/signin-button-layout.png" alt="figure" />
+	</div>
+	
+	<pre><code class="xml">
+&lt;!-- res/layout/activity_?.xml --&gt;
+&lt;LinearLayout ...&gt;
+
+	<em>&lt;com.google.android.gms.common.SignInButton</em>
+		android:id=&quot;@+id/sign_in_button&quot;
+		android:layout_width=&quot;wrap_content&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre>
+
+	<ul>
+		<li>Note: Can't listen to events using <code>onClick</code> (must attach in Java code)
+	</ul>
+</section>
+
+<section>
+	<h1>Initialize Google API</h1>
+	
+	<pre><code class="java">
+private GoogleApiClient google;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	...
+	// request the user's ID, email address, and basic profile
+	GoogleSignInOptions options = new GoogleSignInOptions.Builder(
+				GoogleSignInOptions.DEFAULT_SIGN_IN)
+			.requestEmail()
+			.build();
+
+	// build API client with access to Sign-In API and options above
+	google = new GoogleApiClient.Builder(this)
+			.enableAutoManage(this, this)
+			.addApi(Auth.GOOGLE_SIGN_IN_API, options)
+			.addConnectionCallbacks(this)
+			.build();
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Activity events and callbacks</h1>
+	
+	<ul>
+		<li>in order to pass <code>this</code> to API client builder <code>.enableAutoManage</code> call, you must implement some event listening methods in your activity:
+	</ul>
+	
+	<pre><code class="java">
+public class MyActivity extends Activity
+		<em>implements GoogleApiClient.OnConnectionFailedListener,</em>
+		<em>GoogleApiClient.ConnectionCallbacks</em> {
+	...
+	
+	public void onConnectionFailed(ConnectionResult connectionResult) {...}
+	public void onConnected(Bundle bundle) {...}
+	public void onConnectionSuspended(int i) {...}
+</code></pre>
+</section>
+
+<section>
+	<h1>Initiating sign-in process</h1>
+	
+	<ul>
+		<li>to do a login, start an activity using an intent created as follows:
+	</ul>
+	
+	<pre><code class="java">
+// use this intent to start an activity for a result
+Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(google);
+</code></pre>
+
+	<ul>
+		<li>when the activity returns, examine the result:
+	</ul>
+
+	<pre><code class="java">
+GoogleSignInResult result =
+		Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
+if (result.isSuccess()) {
+	// signed in successfully
+	GoogleSignInAccount acct = result.getSignInAccount();
+	String username = acct.getDisplayName();
+	...
+} else {
+	// login failed
+	...
+}
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,268 @@
+<html>
+	<head>
+		<title>CS 193A - React Native</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>React Native</p>
+</section>
+
+<section>
+	<h1>What is React Native?</h1>
+	
+	<div class="figures">
+		<img src="images/react-native-logo.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/react-native-logo.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/%27" tppabs="https://facebook.github.io/react-native/">React Native</a>: Framework to build cross-platform apps.
+			<ul>
+				<li>developed by Facebook
+				<li>based on <a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react/%27" tppabs="https://facebook.github.io/react/">React</a>, a JavaScript framework for building web front-ends
+				<li>code in JavaScript ("JSX") using a plain text editor (no Android Studio!)
+				<li>deploy the same app to Android, iOS, web, and/or desktop (wow)
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Installing React Native</h1>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/getting-started.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/getting-started.html%27" tppabs="https://facebook.github.io/react-native/docs/getting-started.html">React Native Install Guide</a> (use this page for install)
+		<li>install Android Studio and <strong style="text-decoration: underline;">Android 6.0</strong> (Marshmallow)
+			<ul>
+				<li>may need older versions of Android or Build Tools (23.0.1) from SDK Manager
+			</ul>
+		<li>install a simple text editor like <a class="popup" href="javascript:if(confirm(%27https://atom.io/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://atom.io/%27" tppabs="https://atom.io/">Atom</a>
+		<li>install <a class="popup" href="javascript:if(confirm(%27https://nodejs.org/en/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://nodejs.org/en/%27" tppabs="https://nodejs.org/en/">Node.js</a> (server-side JavaScript framework)
+		<li>install React Native from terminal
+		<li>create/test an app
+	</ul>
+	
+	<div class="figures">
+		<img src="images/atom-text-editor.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/atom-text-editor.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Making a simple app</h1>
+	
+	<div class="figuresright">
+		<img src="images/react-hello-world.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/react-hello-world.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>create a project from command line:
+			<pre>
+react-native init <var>ProjectName</var>
+</pre>
+		<li>edit <span class="filename">index.android.js</span> to modify the UI
+		<li>launch your AVD emulator
+		<li>run the project in the emulator:
+			<pre>
+cd <var>ProjectName</var>
+react-native run-android
+react-native start --reset-cache
+</pre>
+	</ul>
+</section>
+
+<section>
+	<h1>Hello, World!</h1>
+	
+	<pre><code class="javascript">
+import React, { Component } from 'react';
+import { AppRegistry, Text } from 'react-native';
+
+class HelloWorldApp extends Component {
+	render() {
+		return (
+			&lt;Text&gt;Hello world!&lt;/Text&gt;
+		);
+	}
+}
+
+AppRegistry.registerComponent('HelloWorldApp', () => HelloWorldApp);
+</code></pre>
+</section>
+
+<section>
+	<h1>Anatomy of a React Native app</h1>
+	
+	<ul>
+		<li>code is in <a class="popup" href="javascript:if(confirm(%27http://es6-features.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://es6-features.org/%27" tppabs="http://es6-features.org/"><strong>ECMAScript 6</strong></a> (basically JavaScript)
+			<ul>
+				<li>advanced version of JS w/ classes, imports, etc.
+			</ul>
+		<li>UI is expressed using <a class="popup" href="javascript:if(confirm(%27http://buildwithreact.com/tutorial/jsx  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://buildwithreact.com/tutorial/jsx%27" tppabs="http://buildwithreact.com/tutorial/jsx">JSX</a>
+			<ul>
+				<li>a way of embedding blobs of XML inside JavaScript code
+				<li>used to combine XML layout with Java(Script) event code
+				<li><code>&lt;Text&gt;</code> is an example of a React JSX <strong>component</strong>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>React Components</h1>
+	
+	<ul>
+		<li><strong>common:</strong>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/activityindicator.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/activityindicator.html%27" tppabs="https://facebook.github.io/react-native/docs/activityindicator.html">ActivityIndicator</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/button.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/button.html%27" tppabs="https://facebook.github.io/react-native/docs/button.html">Button</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/image.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/image.html%27" tppabs="https://facebook.github.io/react-native/docs/image.html">Image</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/keyboardavoidingview.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/keyboardavoidingview.html%27" tppabs="https://facebook.github.io/react-native/docs/keyboardavoidingview.html">KeyboardAvoidingView</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/listview.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/listview.html%27" tppabs="https://facebook.github.io/react-native/docs/listview.html">ListView</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/mapview.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/mapview.html%27" tppabs="https://facebook.github.io/react-native/docs/mapview.html">MapView</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/modal.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/modal.html%27" tppabs="https://facebook.github.io/react-native/docs/modal.html">Modal</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/navigator.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/navigator.html%27" tppabs="https://facebook.github.io/react-native/docs/navigator.html">Navigator</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/picker.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/picker.html%27" tppabs="https://facebook.github.io/react-native/docs/picker.html">Picker</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/refreshcontrol.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/refreshcontrol.html%27" tppabs="https://facebook.github.io/react-native/docs/refreshcontrol.html">RefreshControl</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/scrollview.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/scrollview.html%27" tppabs="https://facebook.github.io/react-native/docs/scrollview.html">ScrollView</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/slider.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/slider.html%27" tppabs="https://facebook.github.io/react-native/docs/slider.html">Slider</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/statusbar.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/statusbar.html%27" tppabs="https://facebook.github.io/react-native/docs/statusbar.html">StatusBar</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/switch.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/switch.html%27" tppabs="https://facebook.github.io/react-native/docs/switch.html">Switch</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/text.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/text.html%27" tppabs="https://facebook.github.io/react-native/docs/text.html">Text</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/textinput.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/textinput.html%27" tppabs="https://facebook.github.io/react-native/docs/textinput.html">TextInput</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/touchablehighlight.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/touchablehighlight.html%27" tppabs="https://facebook.github.io/react-native/docs/touchablehighlight.html">TouchableHighlight</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/touchablenativefeedback.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/touchablenativefeedback.html%27" tppabs="https://facebook.github.io/react-native/docs/touchablenativefeedback.html">TouchableNativeFeedback</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/touchableopacity.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/touchableopacity.html%27" tppabs="https://facebook.github.io/react-native/docs/touchableopacity.html">TouchableOpacity</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/touchablewithoutfeedback.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/touchablewithoutfeedback.html%27" tppabs="https://facebook.github.io/react-native/docs/touchablewithoutfeedback.html">TouchableWithoutFeedback</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/view.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/view.html%27" tppabs="https://facebook.github.io/react-native/docs/view.html">View</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/webview.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/webview.html%27" tppabs="https://facebook.github.io/react-native/docs/webview.html">WebView</a></span>
+		
+		<li>Android:
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/drawerlayoutandroid.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/drawerlayoutandroid.html%27" tppabs="https://facebook.github.io/react-native/docs/drawerlayoutandroid.html">DrawerLayoutAndroid</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/progressbarandroid.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/progressbarandroid.html%27" tppabs="https://facebook.github.io/react-native/docs/progressbarandroid.html">ProgressBarAndroid</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/toolbarandroid.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/toolbarandroid.html%27" tppabs="https://facebook.github.io/react-native/docs/toolbarandroid.html">ToolbarAndroid</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/viewpagerandroid.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/viewpagerandroid.html%27" tppabs="https://facebook.github.io/react-native/docs/viewpagerandroid.html">ViewPagerAndroid</a></span>
+		
+		<li>iOS:
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/datepickerios.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/datepickerios.html%27" tppabs="https://facebook.github.io/react-native/docs/datepickerios.html">DatePickerIOS</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/navigatorios.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/navigatorios.html%27" tppabs="https://facebook.github.io/react-native/docs/navigatorios.html">NavigatorIOS</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/pickerios.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/pickerios.html%27" tppabs="https://facebook.github.io/react-native/docs/pickerios.html">PickerIOS</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/progressviewios.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/progressviewios.html%27" tppabs="https://facebook.github.io/react-native/docs/progressviewios.html">ProgressViewIOS</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/segmentedcontrolios.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/segmentedcontrolios.html%27" tppabs="https://facebook.github.io/react-native/docs/segmentedcontrolios.html">SegmentedControlIOS</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/snapshotviewios.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/snapshotviewios.html%27" tppabs="https://facebook.github.io/react-native/docs/snapshotviewios.html">SnapshotViewIOS</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/tabbarios.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/tabbarios.html%27" tppabs="https://facebook.github.io/react-native/docs/tabbarios.html">TabBarIOS</a></span>
+			<span class="component"><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/tabbarios-item.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/tabbarios-item.html%27" tppabs="https://facebook.github.io/react-native/docs/tabbarios-item.html">TabBarIOS.Item</a></span>
+	</ul>
+</section>
+
+<section>
+	<h1>Styles</h1>
+	
+	<pre><code class="javascript">
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#F5FCFF',
+	},
+	welcome: {
+		fontSize: 20,
+		textAlign: 'center',
+		margin: 10,
+	},
+	...
+});
+</code></pre>
+
+	<ul>
+		<li>styles are nested JS properties passed to <code>StyleSheet.create</code>
+		<li>mirrors <a class="popup" href="javascript:if(confirm(%27https://en.wikipedia.org/wiki/Cascading_Style_Sheets  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://en.wikipedia.org/wiki/Cascading_Style_Sheets%27" tppabs="https://en.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a> properties from web dev
+	</ul>
+</section>
+
+<section>
+	<h1>App layout</h1>
+	
+	<ul>
+		<li><a class="popup" href="javascript:if(confirm(%27https://facebook.github.io/react-native/docs/flexbox.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://facebook.github.io/react-native/docs/flexbox.html%27" tppabs="https://facebook.github.io/react-native/docs/flexbox.html">FlexBox</a> properties:
+			<small><code>flexDirection</code>, <code>alignItems</code>, <code>justifyContent</code>, ...</small>
+	</ul>
+	
+	<div class="figuresright">
+		<img src="images/react-native-flex.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/react-native-flex.png" alt="figure" />
+	</div>
+	
+	<pre><code class="java">
+import React, { Component } from 'react';
+import { AppRegistry, View } from 'react-native';
+
+// "flex" system is a lot like Android's "weight"
+class FlexDimensionsBasics extends Component {
+	render() {
+		return (
+			&lt;View style={{flex: 1}}&gt;
+				&lt;View style={{flex: 1,
+					backgroundColor: 'powderblue'}} /&gt;
+				&lt;View style={{flex: 2,
+					backgroundColor: 'skyblue'}} /&gt;
+				&lt;View style={{flex: 3,
+					backgroundColor: 'steelblue'}} /&gt;
+			&lt;/View&gt;
+		);
+	}
+}
+
+AppRegistry.registerComponent('AwesomeProject',
+	() => FlexDimensionsBasics);
+</code></pre>
+</section>
+
+<section>
+	<h1>App state</h1>
+	
+	<ul>
+		<li>a React app's appearance is based on its <strong>state</strong>
+			<ul>
+				<li>a JS object (map) of key/value pairs
+				<li>when state is modified, app appearance immediately updates
+				<li>initialize in constructor; modify using <code>setState</code>
+			</ul>
+	</ul>
+	
+	<pre><code class="javascript">
+class StudentRegistration extends Component {
+	constructor(props) {
+		super(props);
+		<em>this.state</em> = {
+			name: "Joe Student",
+			school: "Stanford University",
+			id: 1234,
+			money: 0.00,
+		};
+	}
+
+	render() {
+		...
+}
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

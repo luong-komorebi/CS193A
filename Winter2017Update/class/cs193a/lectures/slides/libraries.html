@@ -1,0 +1,871 @@
+<html>
+	<head>
+		<title>CS 193A - Libraries</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Using Libraries</p>
+	
+	<p class="aside">
+		Animations; Bootstrap; ButterKnife; Ion; Picasso; SwipeStack
+	</p>
+</section>
+
+<section>
+	<h1>Libraries</h1>
+	
+	<ul>
+		<li>Many Android developers have produced useful <strong>libraries</strong>.
+			<ul>
+				<li>There is a <strong>Maven repository</strong> to store various libraries.
+				<li>This makes it easy to add them to your Android Studio projects.
+				<li>Most libraries use permissive licenses so that you can use them for free and can include them in the code of commercial apps/products.
+				<li class="aside">(Some libraries must be downloaded as .JARs and added manually to your project as we do with the Stanford Android library.)
+			</ul>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/maven-logo.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/maven-logo.png" alt="figure" />
+		<img src="images/maven-android.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/maven-android.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Adding a library to your project</h1>
+	
+	<ul>
+		<li>Edit the <span class="filename">build.gradle</span> file for your 'app' module and add lines to the following section at the bottom.
+			<ul>
+				<li>You can usually find out what file name to write below by going to various libraries' home pages / GitHub pages.
+			</ul>
+	</ul>
+	
+	<pre><code class="groovy">
+dependencies {
+	compile fileTree(dir: 'libs', include: ['*.jar'])
+	testCompile 'junit:junit:4.12'
+	compile 'com.android.support:appcompat-v7:23.1.1'
+
+	<em>compile '<var>your library file here</var>'</em>
+	<em>compile '<var>your library file here</var>'</em>
+	...
+	<em>compile '<var>your library file here</var>'</em>
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Picasso library</h1>
+	
+	<div class="figuresright">
+		<img src="images/picasso-screenshot.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/picasso-screenshot.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>Picasso</strong> is a powerful library for manipulating images.
+			<ul>
+				<li>written by Square, inc.
+				<li><a class="popup" href="javascript:if(confirm(%27http://square.github.io/picasso/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://square.github.io/picasso/%27" tppabs="http://square.github.io/picasso/">http://square.github.io/picasso/</a>
+			</ul>
+		<li>To add Picasso to your project:
+	</ul>
+	
+	<pre><code class="groovy">
+// in build.gradle
+dependencies {
+	...
+	<em>compile 'com.squareup.picasso:picasso:2.5.2'</em>
+}
+</code></pre>
+
+	<pre><code class="xml">
+&lt;!-- in AndroidManifest.xml --&gt;
+&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Displaying a web photo</h1>
+	
+	<ul>
+		<li>In your app's Java code, write:
+			<pre><code class="java">
+Picasso.with(this)
+	.load("<var>url</var>")
+	.into(<var>ImageView</var>);
+</code></pre>
+		
+		<li>Example:
+			<pre><code class="java">
+// show a cute puppy photo
+ImageView img = (ImageView) findViewById(R.id.photo);
+Picasso.with(this)
+	.load("http://www.martystepp.com/dogs/daisy-01.jpg")
+	.into(img);
+</code></pre>
+	</ul>
+</section>
+
+<section>
+	<h1>Picasso image methods</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>centerCrop()</code></td>
+			<td>center and crop image inside view</td>
+		</tr>
+		<tr>
+			<td><code>centerInside()</code></td>
+			<td>resize image proportionally inside view</td>
+		</tr>
+		<tr>
+			<td><code>error(<var>id</var>)</code></td>
+			<td>show given drawable as error</td>
+		</tr>
+		<tr>
+			<td><code>fetch()</code></td>
+			<td>download image in the background</td>
+		</tr>
+		<tr>
+			<td><code>fit()</code></td>
+			<td>resize image to fit view bounds</td>
+		</tr>
+		<tr>
+			<td><code>get()</code></td>
+			<td>return image as a Bitmap</td>
+		</tr>
+		<tr>
+			<td><code>into(<var>view</var>)</code></td>
+			<td>puts image into given view</td>
+		</tr>
+		<tr>
+			<td><code>placeholder(<var>id</var>)</code></td>
+			<td>show given drawable while loading</td>
+		</tr>
+		<tr>
+			<td><code>resize(<var>width</var>, <var>height</var>)</code></td>
+			<td>change image size in pixels</td>
+		</tr>
+		<tr>
+			<td><code>rotate(<var>degrees</var>)</code></td>
+			<td>rotate clockwise</td>
+		</tr>
+		<tr>
+			<td><code>tag("<var>tag</var>")</code></td>
+			<td>attaches a "tag" to a loading image <br />
+				(useful for bulk operations shown later)</td>
+		</tr>
+		<tr>
+			<td><code>transform(<var>trans</var>)</code></td>
+			<td>apply complex transformations</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Picasso methods</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>cancelRequest(<var>view</var>)</code></td>
+			<td>abort any image loading in that view</td>
+		</tr>
+		<tr>
+			<td><code>cancelTag("<var>tag</var>")</code></td>
+			<td>cancel all images with given tag</td>
+		</tr>
+		<tr>
+			<td><code>invalidate("<var>url</var>")</code> <br />
+				<code>invalidate(<var>File</var>)</code></td>
+			<td>flush out cache of given image, <br />
+				so it will be re-downloaded the next time</td>
+		</tr>
+		<tr>
+			<td><code>load("<var>url</var>")</code> <br />
+				<code>load(<var>id</var>)</code> <br />
+				<code>load(<var>File</var>)</code></td>
+			<td>load an image from various sources</td>
+		</tr>
+		<tr>
+			<td><code>pauseTag("<var>tag</var>")</code></td>
+			<td>pause all image loads for given tag</td>
+		</tr>
+		<tr>
+			<td><code>resumeTag("<var>tag</var>")</code></td>
+			<td>unpause all image loads for given tag</td>
+		</tr>
+		<tr>
+			<td><code>shutdown()</code></td>
+			<td>stop entire Picasso system</td>
+		</tr>
+		<tr>
+			<td><code>with(<var>context</var>)</code></td>
+			<td>use given activity/fragment as context</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Android Animations Library</h1>
+	
+	<ul>
+		<li>An ambitious Android user named <em>daimajia</em> has created several libraries, including one to do <strong>animation effects</strong> on <code>View</code>s.
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://github.com/daimajia/AndroidViewAnimations  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/daimajia/AndroidViewAnimations%27" tppabs="https://github.com/daimajia/AndroidViewAnimations">https://github.com/daimajia/AndroidViewAnimations</a>
+				<li>To use this library, add the following dependencies:
+			</ul>
+	</ul>
+	
+	<pre><code class="groovy">
+dependencies {
+	...
+
+	compile 'com.nineoldandroids:library:2.4.0'
+	compile 'com.daimajia.easing:library:1.0.1@aar'
+	compile 'com.daimajia.androidanimations:library:1.1.3@aar'
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Animations demo</h1>
+	
+	<div class="figure">
+		<img src="images/animations-library-demo.gif" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/animations-library-demo.gif" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Using an animation</h1>
+	
+	<ul>
+		<li>Anywhere in your app's Java code, write:
+			<pre><code class="java">
+YoYo.with(Techniques.<var>AnimationName</var>)
+	. <var>set various properties of the animation</var>
+	.playOn(<var>View</var>);
+</code></pre>
+		
+		<li>Example:
+			<pre><code class="java">
+// play a "tada" animation for 700 ms 
+// that will affect the "edit_area" view
+YoYo.with(Techniques.Tada)
+	.duration(700)
+	.playOn(findViewById(R.id.edit_area));
+</code></pre>
+	</ul>
+</section>
+
+<section>
+	<h1>Animations provided</h1>
+	
+	<ul>
+		<li>Attention
+			<ul><li>Flash, Pulse, RubberBand, Shake, Swing, Wobble, Bounce, Tada, StandUp, Wave</ul>
+		<li>Special
+			<ul><li>Hinge, RollIn, RollOut, Landing, TakingOff, DropOut</ul>
+		<li>Bounce
+			<ul><li>BounceIn, BounceInDown, BounceInLeft, BounceInRight, BounceInUp</ul>
+		<li>Fade
+			<ul>
+				<li>FadeIn, FadeInUp, FadeInDown, FadeInLeft, FadeInRight
+				<li>FadeOut, FadeOutDown, FadeOutLeft, FadeOutRight, FadeOutUp
+			</ul>
+		<li>Flip
+			<ul><li>FlipInX, FlipOutX, FlipOutY</ul>
+		<li>Rotate
+			<ul><li>RotateIn, RotateInDownLeft, RotateInDownRight, RotateInUpLeft, RotateInUpRight, RotateOut, RotateOutDownLeft, RotateOutDownRight, RotateOutUpLeft, RotateOutUpRight</ul>
+		<li>Slide
+			<ul><li>SlideInLeft, SlideInRight, SlideInUp, SlideInDown, SlideOutLeft, SlideOutRight, SlideOutUp, SlideOutDown</ul>
+		<li>Zoom
+			<ul><li>ZoomIn, ZoomInDown, ZoomInLeft, ZoomInRight, ZoomInUp, ZoomOut, ZoomOutDown, ZoomOutLeft, ZoomOutRight, ZoomOutUp</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>YoYo animation properties</h1>
+	
+	<table>
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>delay(<var>ms</var>)</code></td>
+			<td>time to delay before doing animation</td>
+		</tr>
+		<tr>
+			<td><code>duration(<var>ms</var>)</code></td>
+			<td>how long the animation should last</td>
+		</tr>
+		<tr>
+			<td><code>interpolate(<var>interpolator</var>)</code></td>
+			<td>blend two animations</td>
+		</tr>
+		<tr>
+			<td><code>withListener(<var>listener</var>)</code></td>
+			<td>notify a listener on animation events</td>
+		</tr>
+		<tr>
+			<td><code>playOn(<var>view</var>)</code></td>
+			<td>start the animation on the given view</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// example
+YoYo.with(Techniques.Wobble)
+	.delay(500)
+	.duration(2000)
+	.playOn(findViewById(R.id.myview));
+</code></pre>
+</section>
+
+<section>
+	<h1>YoYo animation events</h1>
+	
+	<ul>
+		<li>To hear animation events, pass a class that implements interface <code>AnimatorListener</code> (or extends <code>AnimatorListenerAdapter</code>) that implements some/all of the following methods:
+	</ul>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>onAnimationStart</code></td>
+			<td>called when animation begins</td>
+		</tr>
+		<tr>
+			<td><code>onAnimationEnd</code></td>
+			<td>called when animation ends</td>
+		</tr>
+		<tr>
+			<td><code>onAnimationCancel</code></td>
+			<td>called if animation is canceled</td>
+		</tr>
+		<tr>
+			<td><code>onAnimationRepeat</code></td>
+			<td>called if a looping animation repeats</td>
+		</tr>
+	</table>
+
+	<pre><code class="java">
+YoYo.with(Techniques.Wobble)                       // example
+	.<em>withListener</em>(new AnimatorListenerAdapter() {
+		public void <em>onAnimationEnd</em>(Animator anim) {
+			Log.v("demo", "Animation has ended!");
+		}
+	}).playOn(findViewById(R.id.myview));
+</code></pre>
+</section>
+
+<section>
+	<h1>ButterKnife library</h1>
+	
+	<div class="figuresright">
+		<img src="images/butterknife-logo.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/butterknife-logo.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>ButterKnife</strong> is a popular library intended to simplify usage of Android widgets and events in Java code.
+			<ul>
+				<li>written by Jake Wharton
+				<li><a class="popup" href="javascript:if(confirm(%27http://jakewharton.github.io/butterknife/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://jakewharton.github.io/butterknife/%27" tppabs="http://jakewharton.github.io/butterknife/">http://jakewharton.github.io/butterknife/</a>
+			</ul>
+		<li>To add ButterKnife to your Android Studio project:
+	</ul>
+	
+	<pre><code class="groovy">
+dependencies {
+	...
+
+	<em>compile 'com.jakewharton:butterknife:8.5.1'</em>
+	<em>annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'</em>
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>ButterKnife field bindings</h1>
+	
+	<ul>
+		<li>Using the <code>@Bind</code> annotation, you can declare a field that will always be set to the value of a widget with a certain ID.
+			<ul>
+				<li>equivalent to setting it equal to  <code>findViewById(R.id.<var>id</var>);</code>
+				<li>but retains its state if the activity is closed / reopened
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+// example: bind TextView and EditText by id
+public class MyActivity extends Activity {
+	<em>@BindView(R.id.mytext)</em> TextView myText;
+	<em>@BindView(R.id.myedit)</em> EditText myEdit;
+
+	public void onCreate(Bundle bundle) {
+		setContentView(R.layout.activity_my);
+		<em>ButterKnife.bind(this);</em>
+		myEdit.setText("Wow, cool!");
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>ButterKnife event bindings</h1>
+	
+	<ul>
+		<li>Using <code>@On<var>Event</var></code> annotations, you can easily attach methods to be event handlers for various widget events.
+			<ul>
+				<li>equivalent to calling <code>setOn<var>Event</var>Listener</code> on a given view
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+<em>@OnClick(R.id.mybutton)</em>
+public void handleClick(View view) {
+	Log.v("example", "Clicked the button!");
+}
+
+<em>@OnLongClick(R.id.mytextview)</em>
+public void handleLongClick(View view) {
+	Log.v("example", "Long-clicked text view!");
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Ion library</h1>
+	
+	<ul>
+		<li><strong>Ion</strong> is a library to make it easier to download files from the web.
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://github.com/koush/ion  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/koush/ion%27" tppabs="https://github.com/koush/ion">https://github.com/koush/ion</a>
+			</ul>
+		<li>To add Ion to your project:
+	</ul>
+	
+	<pre><code class="groovy">
+// in build.gradle
+dependencies {
+	...
+	<em>compile 'com.koushikdutta.ion:ion:2.+'</em>
+}
+</code></pre>
+
+	<pre><code class="xml">
+&lt;!-- in AndroidManifest.xml --&gt;
+&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Downloading a web file</h1>
+	
+	<ul>
+		<li>In your activity code, write:
+	</ul>
+	
+	<pre><code class="java">
+Ion.with(this)
+	.load("<var>url</var>")
+	.as<var>Type</var>()
+	.setCallback(new FutureCallback&lt;<var>Type</var>&gt;() {
+		public void <em>onCompleted</em>(Exception e,
+								<var>Type</var> result) {
+			// code to process the result
+		}
+	});
+</code></pre>
+</section>
+
+<section>
+	<h1>Ion download example</h1>
+	
+	<pre><code class="java">
+// grab a text file and log its contents
+Ion.with(this)
+	.load("http://www.example.com/notes.txt")
+	.asString()
+	.setCallback(new FutureCallback&lt;String&gt;() {
+		public void onCompleted(Exception e, String result) {
+			Log.v("ion", result);
+		}
+	});
+</code></pre>
+
+	<ul>
+		<li>other types:  <code>asJsonObject</code>, <code>asByteArray</code>
+	</ul>
+</section>
+
+<section>
+	<h1>Ion to fetch an image</h1>
+	
+	<pre><code class="java">
+// grab an image file
+Ion.with(this)
+	.load("http://example.com/image.png")
+	.withBitmap()
+	.placeholder(R.drawable.<var>placeholder_image</var>)
+	.error(R.drawable.<var>error_image</var>)
+	.intoImageView(<var>view</var>);
+</code></pre>
+
+	<ul>
+		<li>similar to functionality of Picasso library, without as many image processing features (fit, resize, crop)
+	</ul>
+</section>
+
+<section>
+	<h1>Ion to post data to a web server</h1>
+	
+	<pre><code class="java">
+// grab an image file
+Ion.with(this)
+	.load("https://example.com/submit")
+	.setBodyParameter("username", "jsmith12")
+	.setBodyParameter("password", "123456")
+	.asString()
+	.setCallback(new FutureCallback&lt;String&gt;() {
+		public void onCompleted(Exception e,
+								String result) {
+			Log.v("ion", result);
+		}
+	});
+</code></pre>
+	
+	<ul>
+		<li>can be used to submit form data to web servers / REST APIs
+	</ul>
+</section>
+
+<section>
+	<h1>Android-Bootstrap library</h1>
+	
+	<ul>
+		<li><strong>Android-Bootstrap</strong> is a library that provides some good-looking customizable widgets not normally available in Android
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://github.com/Bearded-Hen/Android-Bootstrap  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/Bearded-Hen/Android-Bootstrap%27" tppabs="https://github.com/Bearded-Hen/Android-Bootstrap">https://github.com/Bearded-Hen/Android-Bootstrap</a>
+			</ul>
+			
+		<li>To add it to your project:
+	</ul>
+	
+	<pre><code class="groovy">
+// in build.gradle
+dependencies {
+	<em>compile 'com.beardedhen:androidbootstrap:2.3.1'</em>
+}
+</code></pre>
+
+	<div class="figureshorizontal">
+		<img src="images/android-bootstrap-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-bootstrap-1.png" alt="figure" style="max-width: 19%" />
+		<img src="images/android-bootstrap-2.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-bootstrap-2.png" alt="figure" style="max-width: 19%" />
+		<img src="images/android-bootstrap-3.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-bootstrap-3.png" alt="figure" style="max-width: 19%" />
+		<img src="images/android-bootstrap-4.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-bootstrap-4.png" alt="figure" style="max-width: 19%" />
+		<img src="images/android-bootstrap-5.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-bootstrap-5.png" alt="figure" style="max-width: 19%" />
+	</div>
+</section>
+
+<section>
+	<h1>Using Android-Bootstrap widgets</h1>
+	
+	<div class="figuresright">
+		<img src="images/bootstrap-1-button.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/bootstrap-1-button.png" alt="figure" />
+	</div>
+	
+	<pre><code class="xml">
+&lt;!-- res/layout/activity_main.xml --&gt;
+&lt;LinearLayout
+	xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+	xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+	<em>xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</em> &gt;
+	...
+		<em>&lt;com.beardedhen.androidbootstrap.BootstrapButton</em>
+			android:id=&quot;@+id/rotate&quot;
+			android:text=&quot;Rotate&quot;
+			<em>app:</em>bootstrapBrand=&quot;success&quot;
+			<em>app:</em>bootstrapSize=&quot;lg&quot;
+			<em>app:</em>buttonMode=&quot;regular&quot;
+			<em>app:</em>showOutline=&quot;true&quot;
+			<em>app:</em>roundedCorners=&quot;true&quot;
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot; /&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>More about Android-Bootstrap</h1>
+	
+	<ul>
+		<li>Widget types available
+			<ul>
+				<li>AwesomeTextView, BootstrapButton, BootstrapButtonGroup, BootstrapCircleThumbnail, BootstrapEditText, BootstrapLabel, BootstrapProgressBar, BootstrapText, BootstrapThumbnail
+			</ul>
+		<li>Library is not very well documented
+			<ul>
+				<li>assumes familiarity with web library Bootstrap, made by Twitter
+				<li>need to dig around in <a href="javascript:if(confirm(%27https://github.com/Bearded-Hen/Android-Bootstrap/tree/master/sample/src/main/res/layout  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/Bearded-Hen/Android-Bootstrap/tree/master/sample/src/main/res/layout%27" tppabs="https://github.com/Bearded-Hen/Android-Bootstrap/tree/master/sample/src/main/res/layout">its source code</a>, 'sample' app to see syntax
+			</ul>
+	</ul>
+	
+	<div class="figure">
+		<img src="images/bootstrap-source-sample.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/bootstrap-source-sample.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Swiping</h1>
+	
+	<ul>
+		<li><strong>swipe</strong>: Sliding the finger in a given direction.
+			<ul>
+				<li>Commonly used in mobile apps to accept/reject, delete, dismiss
+				<li>Most common use case:
+				<li class="subbullet">swipe left   	(no, negative, delete),   or
+				<li class="subbullet">swipe right  	(yes, positive, approve)
+			</ul>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/swipe-right.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/swipe-right.png" alt="figure" />
+		<img src="images/swipe-up.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/swipe-up.png" alt="figure" />
+		<img src="images/tinder.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/tinder.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>SwipeStack library</h1>
+	
+	<div class="figuresright">
+		<img src="images/swipestack.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/swipestack.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>SwipeStack</strong> is a library that helps you make a stack of views that look like cards that you can "swipe" left or right.
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://github.com/flschweiger/SwipeStack  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/flschweiger/SwipeStack%27" tppabs="https://github.com/flschweiger/SwipeStack">https://github.com/flschweiger/SwipeStack</a>
+			</ul>
+		
+		<li>To add SwipeStack to your project:
+	</ul>
+	
+	<pre><code class="groovy">
+// in build.gradle
+dependencies {
+	...
+	<em>compile 'link.fls:swipestack:0.3.0'</em>
+}
+</code></pre>
+
+</section>
+
+<section>
+	<h1>Using a SwipeStack (XML)</h1>
+	
+	<ul>
+		<li>In your layout XML file:
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- declare an empty swipe stack --&gt;
+&lt;link.fls.SwipeStack
+	android:id=&quot;@+id/<var>id</var>&quot;
+	android:layout_width=&quot;<var>width</var>&quot;
+	android:layout_height=&quot;<var>height</var>&quot; /&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Using a SwipeStack (Java)</h1>
+	
+	<ul>
+		<li>In your activity's Java file, you must:
+			<ul>
+				<li>supply an adapter to tell the swipe stack what views are inside it
+				<li>supply a listener to respond to swiping events
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+SwipeStack swipeStack = (SwipeStack) findViewById(R.id.<var>id</var>);
+swipeStack.<em>setAdapter</em>(<var>adapter</var>);   // see next slide
+swipeStack.<em>setListener</em>(new SwipeStack.SwipeStackListener() {
+	public void <em>onViewSwipedToLeft</em>(int index) {
+		// TODO
+	}
+
+	public void <em>onViewSwipedToRight</em>(int index) {
+		// TODO
+	}
+
+	public void <em>onStackEmpty</em>() {
+		// TODO
+	}
+});
+</code></pre>
+</section>
+
+<section>
+	<h1>Writing an adapter class</h1>
+	
+	<pre class="longcode"><code class="java">
+public class <var>Name</var> extends BaseAdapter {
+	// return number of items in the stack
+	@Override
+	public int getCount() { ... }
+
+	// return a text representation of item at a given index
+	@Override
+	public String getItem(int index) { ... }
+
+	// return an id for item at a given index
+	@Override
+	public long getItemId(int index) { ... }
+
+	// return View for item at a given index
+	@Override
+	public View getView(int index, View convertView,
+	                    ViewGroup parent) { ... }
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Other swiping libraries</h1>
+	
+	<div class="figuresright">
+		<img src="images/swipelistview-crop.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/swipelistview-crop.png" alt="figure" />
+		<img src="images/swipelayout.gif" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/swipelayout.gif" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><code>SwipeListView</code> library implements a swipe-able list view:
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://github.com/47deg/android-swipelistview  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/47deg/android-swipelistview%27" tppabs="https://github.com/47deg/android-swipelistview">https://github.com/47deg/android-swipelistview</a>
+			</ul>
+		
+		<li><code>SwipeLayout</code> library provides one-direction swiping of layouts with a "surface" view and "bottom" view underneath it.
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://github.com/daimajia/AndroidSwipeLayout  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/daimajia/AndroidSwipeLayout%27" tppabs="https://github.com/daimajia/AndroidSwipeLayout">https://github.com/daimajia/AndroidSwipeLayout</a>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Swipe support in Android</h1>
+	
+	<ul>
+		<li>Android doesn't really have great support for swiping.
+		<li>You can detect mouse <strong>touch events</strong> and motion, but the threshold of what constitutes a "swipe", and how to respond to it, is up to you.
+	</ul>
+	
+	<pre><code class="java">
+public class MyActivity extends Activity
+		<em>implements OnTouchListener</em> {
+
+	@Override
+	public boolean <em>onTouch</em>(View view, MotionEvent event) {
+		...
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>A gesture listener</h1>
+	
+	<ul>
+		<li>You can write a "gesture listener" to listen to mouse swipes:
+			<ul>
+				<li>The listener won't do anything until you <em>attach</em> it  (next slide).
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public class GestureHelper extends SimpleOnGestureListener {
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2,
+	                       float velocityX, float velocityY) {
+		// did the mouse move far enough, fast enough?
+		...
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Listening for swipe gestures</h1>
+	
+	<ul>
+		<li>You have to use a "gesture detector" with your listener:
+	</ul>
+	
+	<pre><code class="java">
+public class <var>Name</var> extends Activity implements OnTouchListener {
+	private GestureDetector gesture;
+
+	@Override
+	protected void <em>onCreate</em>(Bundle savedInstanceState) {
+		gesture = new GestureDetector(this, new GestureHelper());
+	}
+
+	@Override
+	public boolean <em>onTouchEvent</em>(View v, MotionEvent e) {
+		return gesture.onTouchEvent(v, e);
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Other useful libraries</h1>
+	
+	<ul>
+		<li>There are literally thousands of Android libraries out there.
+		<li>Some sites with good lists of libraries:
+			<ul>
+				<li><a class="popup" href="javascript:if(confirm(%27https://github.com/codepath/android_guides/wiki/Must-Have-Libraries  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://github.com/codepath/android_guides/wiki/Must-Have-Libraries%27" tppabs="https://github.com/codepath/android_guides/wiki/Must-Have-Libraries">https://github.com/codepath/android_guides/wiki/Must-Have-Libraries</a>
+				<li><a class="popup" href="javascript:if(confirm(%27https://www.quora.com/What-are-the-best-open-source-libraries-available-for-Android  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://www.quora.com/What-are-the-best-open-source-libraries-available-for-Android%27" tppabs="https://www.quora.com/What-are-the-best-open-source-libraries-available-for-Android">https://www.quora.com/What-are-the-best-open-source-libraries-available-for-Android</a>
+				<li><a class="popup" href="javascript:if(confirm(%27https://android-arsenal.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://android-arsenal.com/%27" tppabs="https://android-arsenal.com/">https://android-arsenal.com/</a>
+				<li><a class="popup" href="javascript:if(confirm(%27https://android-libs.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://android-libs.com/%27" tppabs="https://android-libs.com/">https://android-libs.com/</a>
+				<li><a class="popup" href="javascript:if(confirm(%27http://www.andevcon.com/news/49-more-android-libraries-by-category  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.andevcon.com/news/49-more-android-libraries-by-category%27" tppabs="http://www.andevcon.com/news/49-more-android-libraries-by-category">http://www.andevcon.com/news/49-more-android-libraries-by-category</a>
+			</ul>
+	</ul>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

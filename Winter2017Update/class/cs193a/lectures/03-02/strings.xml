@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">La Voyage de Lune</string>
+    <string name="play_game">Commencer</string>
+    <string name="stop_game">Arreter</string>
+    <string name="score_text">Vous avez %1$d points gagne</string>
+</resources>

@@ -1,0 +1,2 @@
+AuthType WebAuth
+Require valid-user

@@ -1,0 +1,374 @@
+<html>
+	<head>
+		<title>CS 193A - Creating Our First Android App</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Creating Our First Android App</p>
+</section>
+
+<section>
+	<h1>Top-down design</h1>
+
+	<div class="figuresright">
+		<img src="images/numbergame-app.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/numbergame-app.png" alt="image" />
+	</div>
+
+	<ul>
+		<li>"Bigger Number" game  (really dumb)
+			<ul>
+				<li>user is shown two numbers</li>
+				<li>click button to choose which one is bigger</li>
+				<li>correct/incorrect message after each guess</li>
+				<li>earn points for each correct answer</li>
+			</ul>
+		</li>
+		
+		<li>We need to learn:
+			<ul>
+				<li>how to create and position graphical widgets</li>
+				<li>how to respond to user events</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Creating a new project</h1>
+	
+	<ul>
+		<li>click "Start a New Android Studio Project"</li>
+		<li>click "Next" through most of the menus</li>
+		<li>choose "Empty Activity" instead of "Blank Activity"</li>
+	</ul>
+
+	<div class="">
+		<img src="images/new-project.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/new-project.png" alt="image" />
+	</div>
+</section>
+
+<section>
+	<h1>Android terminology</h1>
+	
+	<div class="figuresright">
+		<img src="images/activity-yikyak-1.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-yikyak-1.jpg" alt="image" />
+	</div>
+
+	<ul>
+		<li><strong>activity</strong>: a single screen of UI in app
+			<ul>
+				<li>the fundamental unit of a GUI</li>
+			</ul>
+		</li>
+		
+		<li><strong>view</strong>: visible onscreen items
+			<ul>
+				<li><strong>widget</strong>: GUI control such as a button</li>
+				<li><strong>layout</strong>: invisible container to position/size widgets</li>
+			</ul>
+		</li>
+		
+		<li><strong>event</strong>: action that occurs when user interacts with widgets
+			<ul>
+				<li>e.g. clicks, typing, scrolling</li>
+			</ul>
+		</li>
+		
+		<li><strong>action bar</strong>: top menu of common actions</li>
+		<li><strong>notification area</strong>: top system menu</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Android widgets</h1>
+	
+	<table class="columns5">
+		<tr>
+			<td><img src="images/widget-analogclock.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-analogclock.png" alt="widget" /></td>
+			<td><img src="images/widget-button.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-button.png" alt="widget" /></td>
+			<td><img src="images/widget-checkbox.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-checkbox.png" alt="widget" /></td>
+			<td><img src="images/widget-datepicker.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-datepicker.png" alt="widget" /></td>
+			<td><img src="images/widget-digitalclock.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-digitalclock.png" alt="widget" /></td>
+		</tr>
+
+		<tr>
+			<td><code class="androidapi" data-class="android.widget.AnalogClock">AnalogClock</code></td>
+			<td><code class="androidapi" data-class="android.widget.Button">Button</code></td>
+			<td><code class="androidapi" data-class="android.widget.CheckBox">CheckBox</code></td>
+			<td><code class="androidapi" data-class="android.widget.DatePicker">DatePicker</code></td>
+			<td><code class="androidapi" data-class="android.widget.DigitalClock" style="margin-left: 0.5em">DigitalClock</code></td>
+		</tr>
+
+		<tr>
+			<td><img src="images/widget-edittext.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-edittext.png" alt="widget" /></td>
+			<td><img src="images/widget-gallery.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-gallery.png" alt="widget" /></td>
+			<td><img src="images/widget-imageview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-imageview.png" alt="widget" />
+				<img src="images/widget-imagebutton.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-imagebutton.png" alt="widget" /></td>
+			<td><img src="images/widget-mapview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-mapview.png" alt="widget" /></td>
+			<td><img src="images/widget-progressbar.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-progressbar.png" alt="widget" /></td>
+		</tr>
+
+		<tr>
+			<td><code class="androidapi" data-class="android.widget.EditText">EditText</code></td>
+			<td><code class="androidapi" data-class="android.widget.Gallery">Gallery</code></td>
+			<td><code class="androidapi" data-class="android.widget.ImageView">ImageView</code>/<code class="androidapi" data-class="android.widget.Button">Button</code></td>
+			<td><a class="popup" href="javascript:if(confirm(%27https://developers.google.com/android/reference/com/google/android/gms/maps/MapView  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developers.google.com/android/reference/com/google/android/gms/maps/MapView%27" tppabs="https://developers.google.com/android/reference/com/google/android/gms/maps/MapView"><code data-class="android.gms.maps.MapView">MapView</code></a></td>
+			<td><code class="androidapi" data-class="android.widget.ProgressBar">ProgressBar</code></td>
+		</tr>
+
+		<tr>
+			<td><img src="images/widget-radiobutton.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-radiobutton.png" alt="widget" /></td>
+			<td><img src="images/spinner.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/spinner.png" alt="widget" /></td>
+			<td><img src="images/widget-textview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-textview.png" alt="widget" /></td>
+			<td><img src="images/widget-timepicker.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-timepicker.png" alt="widget" /></td>
+			<td><img src="images/widget-webview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-webview.png" alt="widget" /></td>
+		</tr>
+
+		<tr>
+			<td><code class="androidapi" data-class="android.widget.RadioButton">RadioButton</code></td>
+			<td><code class="androidapi" data-class="android.widget.Spinner">Spinner</code></td>
+			<td><code class="androidapi" data-class="android.widget.TextView">TextView</code></td>
+			<td><code class="androidapi" data-class="android.widget.TimePicker">TimePicker</code></td>
+			<td><code class="androidapi" data-class="android.webkit.WebView">WebView</code></td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Designing a UI</h1>
+	
+	<ul>
+		<li>open XML file for your layout (e.g. <code>content_main.xml</code>)</li>
+		<li>drag widgets from left <strong>Palette</strong> to the preview image</li>
+		<li>set their properties in lower-right <strong>Properties</strong> panel</li>
+	</ul>
+	
+	<div class="">
+		<img src="images/designing-user-interface.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/designing-user-interface.png" alt="image" />
+	</div>
+</section>
+
+<section>
+	<h1>Events</h1>
+	
+	<p>
+		<strong>event</strong>: An external stimulus your program can respond to.
+	</p>
+
+	<div class="figuresright">
+		<img src="images/event.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/event.png" alt="image" />
+	</div>
+
+	<ul>
+		<li>Common kinds of events include:
+			<ul>
+				<li>Mouse motion / tapping, Keys pressed,</li>
+				<li>Timers expiring, Network data available</li>
+			</ul>
+		</li>
+		
+		<li><strong>event-driven programming</strong>: Overall execution of your program is largely dictated by user events.
+			<ul>
+				<li>Commonly used in graphical programs.</li>
+			</ul>
+		</li>
+		
+		<li>To respond to events in a program, you must:
+			<ul>
+				<li>Write methods to handle each kind of event ("listener" methods).</li>
+				<li>Attach those methods to particular GUI widgets.</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Setting an event listener</h1>
+	
+	<ul>
+		<li>select the widget in the <strong>Design</strong> view</li>
+		<li>scroll down its <strong>Properties</strong> until you find <code>onClick</code></li>
+		<li>type the name of a method you'll write to handle the click</li>
+		<li>switch to the <strong>Text view</strong> and find the XML for that button</li>
+		<li>click the "Light Bulb" and choose to "<strong>Create</strong>" the method</li>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/onclick-design.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/onclick-design.png" alt="image" />
+		<img src="images/onclick-create-method.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/onclick-create-method.png" alt="image" />
+	</div>
+</section>
+
+<section>
+	<h1>Event listener code</h1>
+	
+	<pre><code class="Java">package cs193a.stanford.edu.numbergame;
+
+import ...;
+
+public class MainActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle bundle) {
+        setContentView(R.layout.activity_main);
+        super.onCreate(bundle);
+    }
+    
+    public void button1_click(View view) {
+        // your code goes here
+        
+    }
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>View objects</h1>
+	
+	<ul>
+		<li>each widget has an associated Java object you can access</li>
+		<li>they are subclasses of parent class <code class="androidapi" data-class="android.view.View">View</code>
+			<ul>
+				<li>examples:  <code>Button</code>, <code>TextView</code>, <code>EditText</code>, ...</li>
+			</ul>
+		</li>
+		
+		<li><code>View</code> objects get/set methods &rarr; Design properties:
+			<ul>
+				<li>background, bottom, ID, left, margin, padding, right, text, textAlignment, textSize, top, typeface, visibility, x, y, z, ...</li>
+				<li>example: for a Button's <code>text</code> property, there will be methods:
+					<ul>
+						<li><code>public CharSequence <strong>getText</strong>()</code></li>
+						<li><code>public void <strong>setText</strong>(String text)</code></li>
+					</ul>
+				</li>
+				<li>Find list of properties in Design view, or typing ".get" on a button in Java code, or at:
+					<a class="popup" target="_blank" href="javascript:if(confirm(%27https://developer.android.com/reference/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developer.android.com/reference/%27" tppabs="https://developer.android.com/reference/">developer.android.com/reference</a></li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Interacting with widgets</h1>
+	
+	<ol>
+		<li>in Design view, give that view a unique ID property value</li>
+		<li>in Java code, call <code>findViewById</code> to access its View object
+			<ul>
+				<li>pass it a parameter of <code>R.id.<var>your_unique_ID</var></code></li>
+				<li>cast the returned value to the appropriate type (<code>Button</code>, <code>TextView</code>, etc.)</li>
+			</ul>
+		</li>
+	</ol>
+
+<pre><code class="java">public void button1_onclick(View view) {
+    TextView tv = (TextView) <strong>findViewById</strong>(R.id.mytextview);
+    tv.setText("You clicked it!");
+}
+</code></pre>
+	
+	<ul>
+		<li>Note: To convert between various data types in Java:
+			<ul>
+				<li><code>String</code> to <code>int</code>: &nbsp;&nbsp;&nbsp; <code>Integer.valueOf(<var>s</var>)</code></li>
+				<li><code>int</code> to <code>String</code>: &nbsp;&nbsp;&nbsp; <code>String.valueOf(<var>n</var>)</code></li>
+				<li>object to <code>String</code>: &nbsp;&nbsp;&nbsp;  <code><var>o</var>.toString()</code>
+					or <code>("" + o)</code>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Displaying Toasts</h1>
+
+<pre><code class="java">Toast.makeText(this, "<var>text</var>", Toast.LENGTH_SHORT).show();</code></pre>
+
+	<div class="figuresright">
+		<img src="images/toast-screen.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/toast-screen.jpg" alt="image" />
+	</div>
+
+	<ul>
+		<li><strong>toast</strong>: a pop-up message that appears for a short time</li>
+		<li>useful for displaying short updates in response to events</li>
+		<li>should not be relied upon extensively for important info</li>
+		<li>length can also be <code>Toast.LENGTH_LONG</code></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Log methods</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+
+		<tr>
+			<td><code>Log.d("<var>tag</var>", "<var>message</var>");</code></td>
+			<td>debug message (for debugging)</td>
+		</tr>
+
+		<tr>
+			<td><code>Log.e("<var>tag</var>", "<var>message</var>");</code></td>
+			<td>error message (fatal error)</td>
+		</tr>
+
+		<tr>
+			<td><code>Log.i("<var>tag</var>", "<var>message</var>");</code></td>
+			<td>info message (low-urgency FYI)</td>
+		</tr>
+
+		<tr>
+			<td><code>Log.v("<var>tag</var>", "<var>message</var>");</code></td>
+			<td>verbose message (rarely shown)</td>
+		</tr>
+
+		<tr>
+			<td><code>Log.w("<var>tag</var>", "<var>message</var>");</code></td>
+			<td>warning message (non-fatal error)</td>
+		</tr>
+
+		<tr>
+			<td><code>Log.wtf("<var>tag</var>", "<var>message</var>");</code></td>
+			<td>log stack trace of an exception</td>
+		</tr>
+	</table>
+
+	<p>
+		Each method can also accept an optional exception argument:
+	</p>
+
+	<pre><code class="java">try {
+    <var>someCode()</var>;
+} catch (Exception ex) {
+    Log.e("error4", "something went wrong", <strong>ex</strong>);
+}
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

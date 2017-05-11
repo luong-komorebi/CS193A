@@ -1,0 +1,663 @@
+<html>
+	<head>
+		<title>CS 193A - Widgets</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>GUI Widgets</p>
+</section>
+
+<section>
+	<h1>Android widgets</h1>
+	
+	<table class="columns5">
+		<tr>
+			<td><img src="images/widget-analogclock.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-analogclock.png" alt="widget" /></td>
+			<td><img src="images/widget-button.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-button.png" alt="widget" /></td>
+			<td><img src="images/widget-checkbox.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-checkbox.png" alt="widget" /></td>
+			<td><img src="images/widget-datepicker.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-datepicker.png" alt="widget" /></td>
+			<td><img src="images/widget-digitalclock.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-digitalclock.png" alt="widget" /></td>
+		</tr>
+
+		<tr>
+			<td><code class="androidapi" data-class="android.widget.AnalogClock">AnalogClock</code></td>
+			<td><code class="androidapi" data-class="android.widget.Button">Button</code></td>
+			<td><code class="androidapi" data-class="android.widget.CheckBox">CheckBox</code></td>
+			<td><code class="androidapi" data-class="android.widget.DatePicker">DatePicker</code></td>
+			<td><code class="androidapi" data-class="android.widget.DigitalClock" style="margin-left: 0.5em">DigitalClock</code></td>
+		</tr>
+
+		<tr>
+			<td><img src="images/widget-edittext.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-edittext.png" alt="widget" /></td>
+			<td><img src="images/widget-gallery.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-gallery.png" alt="widget" /></td>
+			<td><img src="images/widget-imageview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-imageview.png" alt="widget" />
+				<img src="images/widget-imagebutton.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-imagebutton.png" alt="widget" /></td>
+			<td><img src="images/widget-mapview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-mapview.png" alt="widget" /></td>
+			<td><img src="images/widget-progressbar.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-progressbar.png" alt="widget" /></td>
+		</tr>
+
+		<tr>
+			<td><code class="androidapi" data-class="android.widget.EditText">EditText</code></td>
+			<td><code class="androidapi" data-class="android.widget.Gallery">Gallery</code></td>
+			<td><code class="androidapi" data-class="android.widget.ImageView">ImageView</code>/<code class="androidapi" data-class="android.widget.Button">Button</code></td>
+			<td><a class="popup" href="javascript:if(confirm(%27https://developers.google.com/android/reference/com/google/android/gms/maps/MapView  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?%27))window.location=%27https://developers.google.com/android/reference/com/google/android/gms/maps/MapView%27" tppabs="https://developers.google.com/android/reference/com/google/android/gms/maps/MapView"><code data-class="android.gms.maps.MapView">MapView</code></a></td>
+			<td><code class="androidapi" data-class="android.widget.ProgressBar">ProgressBar</code></td>
+		</tr>
+
+		<tr>
+			<td><img src="images/widget-radiobutton.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-radiobutton.png" alt="widget" /></td>
+			<td><img src="images/spinner.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/spinner.png" alt="widget" /></td>
+			<td><img src="images/widget-textview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-textview.png" alt="widget" /></td>
+			<td><img src="images/widget-timepicker.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-timepicker.png" alt="widget" /></td>
+			<td><img src="images/widget-webview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-webview.png" alt="widget" /></td>
+		</tr>
+
+		<tr>
+			<td><code class="androidapi" data-class="android.widget.RadioButton">RadioButton</code></td>
+			<td><code class="androidapi" data-class="android.widget.Spinner">Spinner</code></td>
+			<td><code class="androidapi" data-class="android.widget.TextView">TextView</code></td>
+			<td><code class="androidapi" data-class="android.widget.TimePicker">TimePicker</code></td>
+			<td><code class="androidapi" data-class="android.webkit.WebView">WebView</code></td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		Button (<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/topics/ui/controls/button.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/topics/ui/controls/button.html%27" tppabs="http://developer.android.com/guide/topics/ui/controls/button.html">link</a>)
+
+		<span class="figuresright">
+			<img src="images/widget-button.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-button.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		A clickable widget with a text label
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:clickable="<var>bool</var>"</code></td>
+			<td>set to <code>false</code> to disable the button</td>
+		</tr>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:onClick="<var>function</var>"</code></td>
+			<td>function to call in activity when clicked <br />
+				(must be <code>public</code>, <code>void</code>, and take a <code>View</code> arg)</td>
+		</tr>
+		<tr>
+			<td><code>android:text="<var>text</var>"</code></td>
+			<td>text to put in the button</td>
+		</tr>
+	</table>
+
+	<pre><code class="java">
+// represented by Button class in Java code
+Button b = (Button) findViewById(R.id.<var>theID</var>);
+...	
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		TextView
+
+		<span class="figuresright">
+			<img src="images/widget-textview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-textview.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		Displays non-editable text
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:text="<var>string</var>"</code></td>
+			<td>text to display</td>
+		</tr>
+	</table>
+
+	<pre><code class="java">
+// to change the visible text in Java code
+TextView myTextView = (TextView) findViewById(R.id.<var>theID</var>);
+myTextView.setText("<var>text</var>");
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		ScrollView
+
+		<span class="figuresright">
+			<img src="images/widget-scrollview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-scrollview.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		A container with scrollbars around another widget or container
+	</p>
+	
+<pre><code class="xml">
+&lt;LinearLayout ...&gt;
+	...
+	&lt;ScrollView
+			android:layout_width=&quot;wrap_content&quot;
+			android:layout_height=&quot;wrap_content&quot;&gt;
+		&lt;TextView ... android:id=&quot;@+id/turtle_info&quot; /&gt;
+	&lt;/ScrollView&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		EditText
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/reference/android/widget/EditText.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/reference/android/widget/EditText.html%27" tppabs="http://developer.android.com/reference/android/widget/EditText.html">link</a>)
+
+		<span class="figuresright">
+			<img src="images/widget-edittext.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-edittext.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		An editable text input box
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML <br />
+					(other attributes: 
+					capitalize, digits, fontFamily, letterSpacing, lineSpacingExtra, minLines, numeric, password,
+					phoneNumber, singleLine, textAllCaps, textColor, typeface)
+
+		</caption>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:hint="<var>text</var>"</code></td>
+			<td>
+				gray placeholder text shown before user types
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:inputType="<var>type</var>"</code></td>
+			<td>
+				what kind of input is being typed;
+				<code>number</code>, <code>phone</code>, <code>date</code>,<code>time</code>, ...
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:lines="<var>int</var>"</code></td>
+			<td>
+				number of visible lines (rows) of input
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:maxLines="<var>int</var>"</code></td>
+			<td>
+				max lines to allow user to type in the box
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:text="<var>text</var>"</code></td>
+			<td>
+				initial text to put in box (default empty)
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:textSize="<var>size</var>"</code></td>
+			<td>
+				size of font to use (e.g. "20dp")
+			</td>
+		</tr>
+	</table>
+
+	<pre><code class="java">
+// to get the user's text in Java code
+EditText myEditText = (EditText) findViewById(R.id.<var>theID</var>);
+String text = myEditText.getText().toString();
+...
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		ImageView
+
+		<span class="figuresright">
+			<img src="images/widget-imageview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-imageview.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		Displays an image without being clickable
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:src="@drawable/<var>img</var>"</code></td>
+			<td>image to put in the view <br />
+				(must correspond to an image resource)
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:tag="<var>string</var>"</code></td>
+			<td>a text tag to associate with the image</td>
+		</tr>
+		<tr>
+			<td><code>android:scaleType="<var>type</var>"</code></td>
+			<td>causes the image to grow/shrink; can be <code>"center"</code>, <code>"centerCrop"</code>, <code>"fitCenter"</code>, <code>"matrix"</code>, ...</td>
+		</tr>
+	</table>
+
+	<pre><code class="java">
+// to change the visible image in Java code
+ImageView myImageView = (ImageView) findViewById(R.id.<var>theID</var>);
+myImageView.setImageResource(R.drawable.<var>filename</var>);
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		ImageButton
+
+		<span class="figuresright">
+			<img src="images/widget-imagebutton.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-imagebutton.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		A clickable widget with an image label
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:clickable="<var>bool</var>"</code></td>
+			<td>set to <code>false</code> to disable the button</td>
+		</tr>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:onClick="<var>function</var>"</code></td>
+			<td>function to call in activity when clicked <br />
+				(must be <code>public</code>, <code>void</code>, and take a <code>View</code> arg)</td>
+		</tr>
+		<tr>
+			<td><code>android:src="@drawable/<var>img</var>"</code></td>
+			<td>image to put in the button <br />
+				(must correspond to an image resource)
+			</td>
+		</tr>
+	</table>
+
+	<ul>
+		<li>to set up an image resource:
+			<ul>
+				<li>put image file in project folder <span class="filename">app/src/main/res/drawable</span></li>
+				<li class="subbullet">(use <span class="filename">app/src/main/res/drawable-xxhdpi</span> if image is very large)</li>
+				<li>use <code>@drawable/<var>foo</var></code> to refer to <span class="filename"><var>foo</var>.png</span></li>
+				<li>use simple file names with only letters and numbers</li>
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Resources</h1>
+	
+	<div class="figuresright">
+		<img src="images/pikachu.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/pikachu.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>In the project directory structure:
+			<ul>
+				<li><code>res/<var>type</var>/<var>name</var>.<var>extension</var></code></li>
+				<li>example: <code>res/drawable/pikachu.png</code></li>
+				<li>(on disk: <span class="filename">AndroidStudioProjects/<var>ProjectName</var>/app/src/main/res/<var>type</var>/<var>name</var></span>)
+			</ul>
+		</li>
+		
+		<li>Referring to a resource, in the XML:
+			<ul>
+				<li><code>@<var>type</var>/<var>name</var></code></li>
+				<li>example: <code>@drawable/pikachu</code></li>
+			</ul>
+		</li>
+		
+		<li>Referring to a resource ID, in the Java code:
+			<ul>
+				<li><code>R.<var>type</var>.<var>name</var></code></li>
+				<li>example: <code>R.drawable.pikachu</code></li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Converting resource IDs</h1>
+	
+	<ul>
+		<li>
+			If you have a resource name and want its ID:
+		</li>
+		<li>
+			<pre><code class="java">
+// set pikaID to the integer value of R.drawable.pikachu
+int pikaID = getResources().getIdentifier(
+		"pikachu", "drawable", getPackageName());
+</code></pre>
+		</li>
+
+		<li>
+			If you have a resource ID and want its name:
+		</li>
+		<li>
+			<pre><code class="java">
+// set pika to "pikachu"
+String pika = getResources().getResourceEntryName(
+		R.drawable.pikachu);
+
+// set full to "R.drawable.pikachu"
+String full = getResources().getResourceName(
+		R.drawable.pikachu);
+</code></pre>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		CheckBox
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/topics/ui/controls/checkbox.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/topics/ui/controls/checkbox.html%27" tppabs="http://developer.android.com/guide/topics/ui/controls/checkbox.html">link</a>)
+
+		<span class="figuresright">
+			<img src="images/widget-checkbox.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-checkbox.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		An individual toggleable boolean on/off check box
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:checked="<var>bool</var>"</code></td>
+			<td>
+				whether box is initially checked (default <code>false</code>)
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:clickable="<var>bool</var>"</code></td>
+			<td>
+				set <code>false</code> to disable the checkbox
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:onClick="<var>function</var>"</code></td>
+			<td>
+				function to call in activity when clicked <br />
+				(must be <code>public</code>, <code>void</code>, and take a <code>View</code> arg)
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:text="<var>text</var>"</code></td>
+			<td>
+				text to put next to the checkbox
+			</td>
+		</tr>
+	</table>
+
+	<pre><code class="java">
+// to manipulate a CheckBox in Java code
+CheckBox cb = (CheckBox) findViewById(R.id.<var>theID</var>);
+cb.toggle();
+cb.setChecked(true);
+cb.performClick();
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Switch
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/topics/ui/controls/switch.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/topics/ui/controls/switch.html%27" tppabs="http://developer.android.com/guide/topics/ui/controls/switch.html">link</a>)
+
+		<span class="figuresright">
+			<img src="images/widget-switch.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-switch.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		An individual toggleable boolean on/off switch
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:textOn="<var>text</var>"</code></td>
+			<td>
+				text to show next to "on" (right) side
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:textOff="<var>text</var>"</code></td>
+			<td>
+				text to show next to "off" (left) side
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:showText="<var>bool</var>"</code></td>
+			<td>
+				whether to show text on L/R sides (default <code>false</code>)
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:onClick="<var>function</var>"</code></td>
+			<td>
+				function to call in activity when clicked
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:text="<var>text</var>"</code></td>
+			<td>
+				text to put on left side next to the switch
+			</td>
+		</tr>
+	</table>
+
+	<pre><code class="java">
+// to interact with a Switch in Java code
+Switch sw = (Switch) findViewById(R.id.<var>theID</var>);
+if (sw.isChecked()) { ... }
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		RadioButton
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/guide/topics/ui/controls/radiobutton.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/guide/topics/ui/controls/radiobutton.html%27" tppabs="http://developer.android.com/guide/topics/ui/controls/radiobutton.html">link</a>)
+
+		<span class="figuresright">
+			<img src="images/widget-radiobutton.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-radiobutton.png" alt="figure" />
+		</span>
+	</h1>
+
+	<p class="caption">
+		A toggleable on/off switch; part of a group
+	</p>
+	
+	<table class="methodtable boxedtable">
+		<caption>key attributes in XML</caption>
+		<tr>
+			<td><code>android:id="@+id/<var>theID</var>"</code></td>
+			<td>unique ID for use in Java code</td>
+		</tr>
+		<tr>
+			<td><code>android:checked="<var>bool</var>"</code></td>
+			<td>
+				whether button is initially checked (default <code>false</code>)
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:clickable="<var>bool</var>"</code></td>
+			<td>
+				set to <code>false</code> to disable the button
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:onClick="<var>function</var>"</code></td>
+			<td>
+				function to call in activity when clicked
+			</td>
+		</tr>
+		<tr>
+			<td><code>android:text="<var>text</var>"</code></td>
+			<td>
+				text to put next to the button
+			</td>
+		</tr>
+	</table>
+
+	<ul>
+		<li>
+			need to be nested inside a <code>RadioGroup</code> tag in XML so that only one can be selected at a time
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>RadioGroup example</h1>
+	
+	<pre class="longcode"><code class="xml">
+&lt;LinearLayout ...
+		android:orientation=&quot;vertical&quot;
+		android:gravity=&quot;center|top&quot;&gt;
+	<em>&lt;RadioGroup</em> ...
+			android:orientation=&quot;horizontal&quot;&gt;
+		&lt;RadioButton ... android:id=&quot;@+id/lions&quot;  android:text=&quot;Lions&quot;
+						 <em>android:onClick=&quot;radioClick&quot;</em> /&gt;
+		&lt;RadioButton ... android:id=&quot;@+id/tigers&quot; android:text=&quot;Tigers&quot; 
+						 android:checked=&quot;true&quot;
+						 <em>android:onClick=&quot;radioClick&quot;</em> /&gt;
+		&lt;RadioButton ... android:id=&quot;@+id/bears&quot;  android:text=&quot;Bears, oh my!&quot;
+						 <em>android:onClick=&quot;radioClick&quot;</em> /&gt;
+	<em>&lt;/RadioGroup&gt;</em>
+&lt;/LinearLayout&gt;
+</code></pre>
+
+	<div class="">
+		<img src="images/radiobuttons-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/radiobuttons-1.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Reusing onClick handler</h1>
+	
+	<pre class="longcode"><code class="java">
+// in MainActivity.java
+public class MainActivity extends Activity {
+
+	public void radioClick(View view) {
+		// check which radio button was clicked
+		if (view.getId() == R.id.lions) {
+			// ...
+		} else if (view.getId() == R.id.tigers) {
+			// ...
+		} else {
+			// bears ...
+		}
+	}
+</code></pre>
+
+	<div class="">
+		<img src="images/radiobuttons-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/radiobuttons-1.png" alt="figure" />
+	</div>
+</section>
+
+
+<section>
+	<h1>List</h1>
+	
+	<div class="figuresright">
+		<img src="images/widget-listview.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-listview.png" alt="figure" />
+	</div>
+	
+	<p class="caption">
+		A visible menu of selectable choices
+	</p>
+	
+	<ul>
+		<li>
+			lists are more complicated, so we'll cover them later ...
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>TMNT app exercise</h1>
+	
+	<p>
+		Write an app to select TMNT characters from a spinner.
+	</p>
+	
+	<div class="figuresright">
+		<img src="images/tmnt-app-raphael.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/tmnt-app-raphael.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li>When a character is selected, an image about that character and other information is presented to the user.</li>
+		<li>Assume that relevant image files are already available for each character.</li>
+	</ul>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

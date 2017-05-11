@@ -1,0 +1,674 @@
+<html>
+	<head>
+		<title>CS 193A - Layout</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Layout</p>
+</section>
+
+<section>
+	<h1>Sizing and positioning</h1>
+
+	<p>	
+		How does the programmer specify where each component appears, how big each component should be, etc.?
+	</p>
+
+	<ul>
+		<li><strong>Absolute positioning</strong> (C++, C#, others):
+			<ul>
+				<li>Programmer specifies exact pixel coordinates of every component.</li>
+				<li>"Put this button at (x=15, y=75) and make it 70x31 px in size."</li>
+			</ul>
+		</li>
+		
+		<li><strong>Layout managers</strong> (Java, Android):
+			<ul>
+				<li>Objects that decide where to position each component based on some general rules or criteria.</li>
+				<li>"Put these four buttons into a 2x2 grid and put these text boxes in a horizontal flow in the south part of the app."</li>
+				<li>More flexible and general; works better with a variety of devices.</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>ViewGroup as layout</h1>
+	
+	<ul>
+		<li><strong><code>ViewGroup</code></strong> superclass represents containers of views
+			<ul>
+				<li>layouts are described in <strong>XML</strong> and mirrored in Java code</li>
+				<li>Android provides several pre-existing layout managers;
+				you can define your own <strong>custom layouts</strong> if needed</li>
+				<li>layouts can be <strong>nested</strong> to achieve combinations of features</li>
+			</ul>
+		</li>
+		
+		<li>in the Java code and XML:
+			<ul>
+				<li>an <strong><code>Activity</code></strong> is a <code>ViewGroup</code></li>
+				<li>various <code>Layout</code> classes are also <code>ViewGroup</code>s</li>
+				<li>widgets can be added to a <code>ViewGroup</code>, which will then
+				manage that widget's position/size behavior</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>XML, in brief</h1>
+	
+	<ul>
+		<li><strong>XML</strong>: a language for describing hierarchical text data.
+			<ul>
+				<li>Uses tags that consist of elements and attributes.  Tags can be nested.</li>
+				<li>Some tags are opened and closed;  others self-close.</li>
+			</ul>
+		</li>
+	</ul>
+
+	<pre><code class="xml">
+&lt;<var>element</var> <var>attr</var>=&quot;<var>value</var>&quot; <var>attr</var>=&quot;<var>value</var>&quot;&gt;  ...  &lt;/<var>element</var>&gt;
+&lt;<var>element</var> <var>attr</var>=&quot;<var>value</var>&quot; <var>attr</var>=&quot;<var>value</var>&quot; /&gt;    (self-closing)
+</code></pre>
+
+	<p>Example: (case-sensitive)</p>
+
+	<pre><code class="xml">
+&lt;!-- this is a comment --&gt;
+&lt;course name=&quot;CS 193A&quot; quarter=&quot;16wi&quot;&gt;
+	&lt;instructor&gt;Marty Stepp&lt;/instructor&gt;
+	&lt;ta&gt;none&lt;/ta&gt;
+&lt;/course&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Changing layouts</h1>
+	
+	<ul>
+		<li>go to the <strong>Text</strong> view for your layout XML file</li>
+		<li>change open/close tags to new layout type, e.g. <code>LinearLayout</code></li>
+		<li>now go back to <strong>Design</strong> view and add widgets</li>
+	</ul>
+	
+	<div class="">
+		<img src="images/androidstudio-change-layout.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/androidstudio-change-layout.png" alt="screenshot" />
+	</div>
+</section>
+
+<section>
+	<h1>LinearLayout</h1>
+	
+	<ul>
+		<li>lays out widgets/views in a single line</li>
+		<li><strong>orientation</strong> of horizontal or vertical</li>
+		<li>items do not wrap if they reach edge of screen!</li>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/linearlayout-horizontal.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/linearlayout-horizontal.png" alt="figure" />
+		<img src="images/linearlayout-vertical.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/linearlayout-vertical.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>LinearLayout example 1</h1>
+	
+	<div class="figuresright">
+		<img src="images/linearlayout-horizontal-4buttons-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/linearlayout-horizontal-4buttons-1.png" alt="figure" />
+	</div>
+	
+<pre><code class="xml">
+&lt;LinearLayout ...
+		android:orientation=&quot;<em>horizontal</em>&quot;
+		tools:context=&quot;.MainActivity&quot;&gt;
+	&lt;Button ... android:text=&quot;Button 1&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 2 Hooray&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 3&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 4
+						Very Long Text&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+
+	<ul>
+		<li>In our examples, we'll use ... when omitting boilerplate
+		code that is auto-generated by Android Studio and not
+		relevant to the specific example at hand.</li>
+	</ul>
+</section>
+
+<section>
+	<h1>LinearLayout example 2</h1>
+	
+	<div class="figuresright">
+		<img src="images/linearlayout-vertical-4buttons-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/linearlayout-vertical-4buttons-1.png" alt="figure" />
+	</div>
+	
+<pre><code class="xml">
+&lt;LinearLayout ...
+		android:orientation=&quot;<em>vertical</em>&quot;
+		tools:context=&quot;.MainActivity&quot;&gt;
+	&lt;Button ... android:text=&quot;Button 1&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 2 Hooray&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 3&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 4
+						Very Long Text&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Gravity</h1>
+
+	<div class="figuresright">
+		<img src="images/gravity.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/gravity.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>gravity: alignment direction that widgets are pulled
+			<ul>
+				<li><code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>, <code>center</code></li>
+				<li>combine multiple with <code>|</code></li>
+				<li>set <code>gravity</code> on the layout to adjust all widgets;
+				set <code>layout_gravity</code> on an individual widget</li>
+			</ul>
+		</li>
+	</ul>
+
+	<pre><code class="xml">
+&lt;LinearLayout ...
+		android:orientation=&quot;vertical&quot;
+		android:gravity=&quot;<em>center|right</em>&quot;&gt;
+	&lt;Button ... android:text=&quot;Button 1&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 2 Hooray&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 3&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 4 Long Text&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 5&quot;
+				<em>android:layout_gravity=&quot;left&quot;</em> /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Weight</h1>
+	
+	<div class="figuresright">
+		<img src="images/weight.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/weight.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>weight</strong>: relative element sizes by integers
+			<ul>
+				<li>widget with weight <em>K</em> gets <em>K</em>/total fraction of total size</li>
+				<li>cooking analogy: "2 parts flour, 1 part water, ..."</li>
+			</ul>
+		</li>
+	</ul>
+
+	<pre><code class="xml">
+&lt;LinearLayout ...
+		android:orientation=&quot;vertical&quot;&gt;
+	&lt;Button ... android:text=&quot;B1&quot;
+				<em>android:layout_weight=&quot;1&quot;</em> /&gt;
+	&lt;Button ... android:text=&quot;B2&quot;
+				<em>android:layout_weight=&quot;3&quot;</em> /&gt;
+	&lt;Button ... android:text=&quot;B3&quot;
+				<em>android:layout_weight=&quot;1&quot;</em> /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Widget box model</h1>
+	
+	<ul>
+		<li><strong>content</strong>: size of widget itself</li>
+		<li><strong>padding</strong>: artificial increase to widget size outside of content</li>
+		<li><strong>border</strong>: outside padding, a line around edge of widget</li>
+		<li><strong>margin</strong>: invisible separation from neighboring widgets</li>
+	</ul>
+
+	<div class="">
+		<img src="images/box-model.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/box-model.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Sizing an individual widget</h1>
+	
+	<ul>
+		<li><strong>width</strong> and <strong>height</strong> of a widget can be:
+			<ul>
+				<li><code>wrap_content</code>: exactly large enough to fit the widget's content</li>
+				<li><code>match_parent</code>: as wide or tall as 100% of the screen or layout</li>
+				<li>a specific fixed width such as <code>64dp</code>  (not usually recommended)
+					<ul>
+						<li>dp = device pixels;    dip = device-independent pixels;    sp = scaling pixels</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+
+	<pre><code class="xml">
+&lt;Button ...
+		android:layout_width=&quot;match_parent&quot;
+		android:layout_height=&quot;wrap_content&quot; /&gt;
+</code></pre>
+
+	<div class="">
+		<img src="images/widget-width-height-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/widget-width-height-1.png" alt="figure" />
+	</div>
+</section>
+
+<section data-transition="fade-out">
+	<h1>Padding</h1>
+	
+	<div class="figuresright">
+		<img src="images/padding.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/padding.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>padding</strong>: extra space inside widget
+			<ul>
+				<li>set <code>padding</code> to adjust all sides; <br />
+				<code>paddingTop</code>, <code>Bottom</code>, <code>Left</code>, <code>Right</code> for one side</li>
+				<li>usually set to specific values like 10dp
+				(some widgets have a default value ~16dp)</li>
+			</ul>
+		</li>
+	</ul>
+
+<pre><code class="xml">
+&lt;LinearLayout ...
+		android:orientation=&quot;vertical&quot;&gt;
+	&lt;Button ... android:text=&quot;Button 1&quot;
+				<em>android:padding=&quot;50dp&quot;</em> /&gt;
+	&lt;Button ... android:text=&quot;Button 2 Hooray&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 3&quot;
+				<em>android:paddingLeft=&quot;20dp&quot;</em>
+				<em>android:paddingBottom=&quot;40dp&quot;</em> /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section data-transition="fade-in">
+	<h1>Margin</h1>
+	
+	<div class="figuresright">
+		<img src="images/margin.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/margin.png" alt="figure" />
+	</div>
+	<ul>
+		<li><strong>margin</strong>: extra blank space outside widget
+			<ul>
+				<li>set <code>layout_margin</code> to adjust all sides; <br />
+				<code>layout_marginTop</code>, <code>Bottom</code>, <code>Left</code>, <code>Right</code></li>
+				<li>usually set to specific values like 10dp
+				(set defaults in <span class="filename">res/values/dimens.xml</span>)</li>
+			</ul>
+		</li>
+	</ul>
+
+	<pre><code class="xml">
+&lt;LinearLayout ...
+		android:orientation=&quot;vertical&quot;&gt;
+	&lt;Button ... android:text=&quot;Button 1&quot;
+				<em>android:layout_margin=&quot;50dp&quot;</em> /&gt;
+	&lt;Button ... android:text=&quot;Button 2 Hooray&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 3&quot;
+				<em>android:layout_marginLeft=&quot;30dp&quot;</em>
+				<em>android:layout_marginTop=&quot;40dp&quot;</em> /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>GridLayout</h1>
+	
+	<p>
+		lays out widgets/views in lines of rows and columns
+	</p>
+	
+	<div class="figuresright">
+		<img src="images/gridlayout.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/gridlayout.png" alt="figure" />
+		<p class="caption">
+			grid of 4 rows, 3 columns
+		</p>
+	</div>
+
+	<ul>
+		<li><strong><code>orientation</code></strong> attribute defines row/column-major order</li>
+		<li>introduced in Android 4;  replaces older <code>TableLayout</code></li>
+		<li>each widget placed into "next" available row/column unless given a <code>layout_row</code> and <code>layout_column</code> attribute</li>
+	</ul>
+</section>
+
+<section data-transition="fade-out">
+	<h1>GridLayout example 1</h1>
+
+	<div class="figuresright">
+		<img src="images/gridlayout-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/gridlayout-1.png" alt="figure" />
+	</div>
+
+	<pre><code class="xmp">
+&lt;GridLayout ...
+		<em>android:rowCount=&quot;2&quot;</em>
+		<em>android:columnCount=&quot;3&quot;</em>
+		tools:context=&quot;.MainActivity&quot;&gt;
+	&lt;Button ... android:text=&quot;Button 1&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button Two&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 3&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button Four&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 5&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button Six&quot; /&gt;
+&lt;/GridLayout&gt;
+</code></pre>
+</section>
+
+<section data-transition="fade-in fade-out">
+	<h1>GridLayout example 2</h1>
+
+	<div class="figuresright">
+		<img src="images/gridlayout-2.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/gridlayout-2.png" alt="figure" />
+	</div>
+
+	<pre><code class="xmp">
+&lt;GridLayout ...
+		android:rowCount=&quot;2&quot;
+		android:columnCount=&quot;3&quot;
+		<em>android:orientation=&quot;vertical&quot;&gt;</em>
+	&lt;Button ... android:text=&quot;Button 1&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button Two&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 3&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button Four&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 5&quot;
+				<em>android:layout_row=&quot;1&quot;</em>
+				<em>android:layout_column=&quot;2&quot;</em> /&gt;
+	&lt;Button ... android:text=&quot;Button Six&quot;
+				<em>android:layout_row=&quot;0&quot;</em>
+				<em>android:layout_column=&quot;2&quot;</em> /&gt;
+&lt;/RelativeLayout&gt;
+</code></pre>
+</section>
+
+<section data-transition="fade-in">
+	<h1>GridLayout example 3</h1>
+
+	<div class="figuresright">
+		<img src="images/gridlayout-3.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/gridlayout-3.png" alt="figure" />
+	</div>
+
+	<pre><code class="xmp">
+&lt;GridLayout ...
+		android:rowCount=&quot;2&quot;
+		android:columnCount=&quot;3&quot;&gt;
+	&lt;Button ... android:text=&quot;B1&quot; /&gt;
+	&lt;Button ... android:text=&quot;B2&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button Number 3!&quot; /&gt;
+	&lt;Button ... android:text=&quot;B4&quot;
+	   <em>android:layout_columnSpan=&quot;2&quot;</em>
+	   <em>android:layout_gravity=&quot;center&quot;</em> /&gt;
+	&lt;Button ... android:text=&quot;B5&quot; /&gt;
+	&lt;Button ... android:text=&quot;B6&quot; 
+	   <em>android:layout_paddingTop=&quot;40dp&quot;</em>
+	   <em>android:layout_paddingBottom=&quot;40dp&quot;</em> /&gt;
+	&lt;Button ... android:text=&quot;B7&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button #8&quot;
+	   <em>android:layout_gravity=&quot;right&quot;</em> /&gt;
+&lt;/RelativeLayout&gt;
+</code></pre>
+</section>
+
+<section data-transition="fade-in">
+	<h1>TableLayout</h1>
+
+	<p>
+		Similar to <code>GridLayout</code>, but each widget must be put into a row
+	</p>
+
+	<div class="figuresright">
+		<img src="images/gridlayout-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/gridlayout-1.png" alt="figure" />
+	</div>
+
+	<pre><code class="xmp">
+&lt;TableLayout ...
+		tools:context=&quot;.MainActivity&quot;&gt;
+  &lt;TableRow&gt;
+	&lt;Button ... android:text=&quot;Button 1&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button Two&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 3&quot; /&gt;
+  &lt;/TableRow&gt;
+
+  &lt;TableRow&gt;
+	&lt;Button ... android:text=&quot;Button Four&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button 5&quot; /&gt;
+	&lt;Button ... android:text=&quot;Button Six&quot; /&gt;
+  &lt;/TableRow&gt;
+&lt;/GridLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Nested layout</h1>
+	
+	<div class="figuresright">
+		<img src="images/layout-nested.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/layout-nested.jpg" alt="figure" />
+	</div>
+	
+	<ul>
+		<li><strong>nested layout</strong>: layouts inside other layouts
+			<ul>
+				<li>useful to produce more complicated appearance</li>
+			</ul>
+		</li>
+	</ul>
+
+	<pre><code class="xml">
+&lt;<var>OuterLayout</var> ...&gt;
+	&lt;<var>InnerLayout</var> ...&gt;
+		&lt;<var>Widget</var> ... /&gt;
+		&lt;<var>Widget</var> ... /&gt;
+	&lt;/<var>InnerLayout</var>&gt;
+
+	&lt;<var>InnerLayout</var> ...&gt;
+		&lt;<var>Widget</var> ... /&gt;
+		&lt;<var>Widget</var> ... /&gt;
+	&lt;/<var>InnerLayout</var>&gt;
+&lt;/<var>OuterLayout</var>&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Nested layout exercise</h1>
+	
+	<div class="figuresright">
+		<img src="images/nested-layout-exercise.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/nested-layout-exercise.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>Write the layout XML necessary to create the following app UI.
+			<ul>
+				<li>How many overall layouts are needed?</li>
+				<li>Which widgets go into which layouts?</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h1>Nested layout solution</h1>
+
+	<div class="figuresright">
+		<img src="images/nested-layout-exercise.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/nested-layout-exercise.png" alt="figure" />
+	</div>
+
+	<pre class="longcode"><code class="xml">
+&lt;LinearLayout ...
+		android:orientation=&quot;vertical&quot;
+		android:gravity=&quot;center|top&quot;&gt;
+	&lt;Button ... android:text=&quot;B1&quot; /&gt;
+	&lt;LinearLayout ...
+			android:layout_width=&quot;match_parent&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:orientation=&quot;horizontal&quot;
+			android:gravity=&quot;center|top&quot;&gt;
+		&lt;Button ... android:text=&quot;B2&quot; /&gt;
+		&lt;Button ... android:text=&quot;Button Number 3&quot; /&gt;
+		&lt;Button ... android:text=&quot;B4&quot; /&gt;
+	&lt;/LinearLayout&gt;
+	&lt;Button ... android:text=&quot;B5&quot; /&gt;
+	&lt;Button ... android:text=&quot;B6&quot;
+				android:layout_gravity=&quot;left&quot; /&gt;
+	&lt;LinearLayout ...
+			android:layout_width=&quot;match_parent&quot;
+			android:layout_height=&quot;wrap_content&quot;
+			android:orientation=&quot;horizontal&quot;
+			android:gravity=&quot;center|top&quot;&gt;
+		&lt;Button ... android:text=&quot;B7&quot; /&gt;
+		&lt;Button ... android:text=&quot;Button Number 8&quot; /&gt;
+	&lt;/LinearLayout&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>RelativeLayout</h1>
+	
+	<p>
+		intended to reduce the need for nested layouts
+	</p>
+	
+	<ul>
+		<li>each widget's position and size are relative to other views
+			<ul>
+				<li>relative to "parent" (the activity itself)</li>
+				<li>relative to other widgets/views</li>
+				<li>x-positions of reference: left, right, center</li>
+				<li>y-positions of reference: top, bottom, center</li>
+			</ul>
+		</li>
+	</ul>
+	
+	<div class="">
+		<img src="images/relativelayout.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/relativelayout.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Relative anchor points</h1>
+	
+	<ul>
+		<li>properties for x/y relative to another widget:
+			<ul>
+				<li><code>layout_below</code>,  <code>above</code>,  <code>toLeftOf</code>,  <code>toRightOf</code>
+					<ul>
+						<li>set these to the ID of another widget in the format <code>"@id/<var>theID</var>"</code>
+						(the given widget must have an ID for this to work)</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		
+		<li>properties for x/y relative to layout container (the activity):
+			<ul>
+				<li><code>layout_alignParentTop</code>,  <code>Bottom</code>,  <code>Left</code>,  <code>Right</code>
+					<ul>
+						<li>set these flags to a boolean value of <code>"true"</code> to enable them</li>
+					</ul>
+				</li>
+				<li><code>layout_centerHorizontal</code>,  <code>Vertical</code>,  <code>InParent</code>
+					<ul>
+						<li>set these flags to <code>"true"</code> to center the control within its parent in a dimension</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		
+	</ul>
+</section>
+
+<section>
+	<h1>RelativeLayout example 1</h1>
+
+	<div class="figuresright">
+		<img src="images/relativelayout-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/relativelayout-1.png" alt="figure" />
+	</div>
+
+	<pre class="longcode"><code class="xml">
+&lt;RelativeLayout ... &gt;
+	&lt;Button ... android:id=&quot;@+id/b1&quot; android:text=&quot;B1&quot;
+		android:layout_alignParentTop=&quot;true&quot;
+		android:layout_centerHorizontal=&quot;true&quot; /&gt;
+	&lt;Button ... android:id=&quot;@+id/b2&quot; android:text=&quot;B2&quot;
+		android:layout_alignParentLeft=&quot;true&quot;
+		android:layout_below=&quot;@+id/b1&quot; /&gt;
+	&lt;Button ... android:id=&quot;@+id/b3&quot; android:text=&quot;B3&quot;
+		android:layout_centerHorizontal=&quot;true&quot;
+		android:layout_below=&quot;@+id/b2&quot; /&gt;
+	&lt;Button ... android:id=&quot;@+id/b4&quot; android:text=&quot;B4&quot;
+		android:layout_alignParentRight=&quot;true&quot;
+		android:layout_below=&quot;@+id/b2&quot; /&gt;
+	&lt;TextView ... android:id=&quot;@+id/tv1&quot;
+		android:text=&quot;I'm a TextView!&quot;
+		android:layout_centerInParent=&quot;true&quot; /&gt;
+	&lt;Button ... android:id=&quot;@+id/b5&quot; android:text=&quot;B5&quot;
+		android:padding=&quot;50dp&quot;
+		android:layout_centerHorizontal=&quot;true&quot;
+		android:layout_alignParentBottom=&quot;true&quot;
+		android:layout_marginBottom=&quot;50dp&quot; /&gt;
+	&lt;/RelativeLayout&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>FrameLayout</h1>
+	
+	<ul>
+		<li>meant to hold only a single widget inside,
+		which occupies the entirety of the activity
+			<ul>
+				<li>most commonly used with layout fragments (seen later)</li>
+				<li>less useful for more complex layouts
+				(can put in multiple items and move them to "front" in Z-order)</li>
+			</ul>
+		</li>
+	</ul>
+
+	<div class="figuresright">
+		<img src="images/framelayout-1.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/framelayout-1.jpg" alt="figure" />
+	</div>
+
+	<pre><code class="xml">
+&lt;FrameLayout ... &gt;
+	&lt;ImageView
+	 android:src=&quot;@drawable/jellybean&quot;
+	 ... /&gt;
+&lt;/FrameLayout&gt;
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

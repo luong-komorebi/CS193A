@@ -1,0 +1,738 @@
+<html>
+	<head>
+		<title>CS 193A - Activity Lifecycle</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>The Activity Lifecycle</p>
+</section>
+
+<section>
+	<h1>Activity state</h1>
+	
+	<ul>
+		<li>An activity can be thought of as being in one of several states:
+			<ul>
+				<li><strong>starting</strong>: In process of loading up, but not fully loaded.
+				<li><strong>running</strong>: Done loading and now visible on the screen.
+				<li><strong>paused</strong>: Partially obscured or out of focus, but not shut down.
+				<li><strong>stopped</strong>: No longer active, but still in the device's active memory.
+				<li><strong>destroyed</strong>: Shut down and no longer currently loaded in memory.
+			</ul>
+		
+		<li>Transitions between these states are represented by events that you can listen to in your activity code.
+			<ul>
+				<li><code>onCreate</code>, <code>onPause</code>, <code>onResume</code>, <code>onStop</code>, <code>onDestroy</code>, ...
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Activity lifecycle</h1>
+	
+	<div class="figurelarge">
+		<img src="images/activity-lifecycle-diagram-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-lifecycle-diagram-1.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Activity state transitions</h1>
+	
+	<ul>
+		<li>jump between activities in the same app:  <code>onPause</code>/<code>onResume</code>
+		<li class="subbullet"><img src="images/activity-state-transitions-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-state-transitions-1.png" alt="figure" style="max-height: 6em" />
+
+		<li>jump between two apps that are in memory:  <code>onStop</code>/<code>onStart</code>
+		<li class="subbullet"><img src="images/activity-state-transitions-2.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-state-transitions-2.png" alt="figure" style="max-height: 5em" />
+
+		<li>app loaded/unloaded from memory:  <code>onDestroy</code>/<code>onCreate</code>
+	</ul>
+</section>
+
+<section>
+	<h1>Activity instance state</h1>
+	
+	<div class="figuresright">
+		<img src="images/activity-state.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-state.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li><strong>instance state</strong>: Current state of an activity.
+			<ul>
+				<li>Which boxes are checked
+				<li>Any text typed into text boxes
+				<li>Values of any private fields
+				<li>...
+			</ul>
+		
+		<li>Example: In the app at right, the instance state is that the Don checkbox is checked, and the Don image is showing.
+	</ul>
+</section>
+
+<section>
+	<h1>Lost activity state</h1>
+	
+	<ul>
+		<li>Several actions can cause your activity's state to be lost:
+			<ul>
+				<li>When you go from one <strong>activity</strong> to another and back, within same app
+				<li>When you launch another <strong>app</strong> and then come back
+				<li>When you rotate the device's <strong>orientation</strong> from portrait to landscape
+				<li>...
+			</ul>
+	</ul>
+	
+	<div class="figure">
+		<img src="images/activity-state-lost.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-state-lost.png" alt="figure" style="height: inherit;" />
+	</div>
+</section>
+
+<section>
+	<h1>Simulate state change in AVD</h1>
+	
+	<ul>
+		<li>Testing orientation change: press <strong>Ctrl-F11</strong>
+		<li>Testing activity shutdown (<code>onDestroy</code>):
+			<ul>
+				<li>Settings &rarr; Developer options &rarr; Don't keep activities
+				<li>Developer options &rarr; Background process limit &rarr; No bg processes
+			</ul>
+	</ul>
+	
+	<div class="figureshorizontal">
+		<img src="images/android-avd-rotate-2.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-avd-rotate-2.png" alt="figure" />
+		<img src="images/developer-options-dont-keep-activities.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/developer-options-dont-keep-activities.png" alt="figure" />
+	</div>
+</section>
+
+<section>
+	<h1>Handling rotation</h1>
+	
+	<ul>
+		<li>A quick way to retain your activity's GUI state on rotation is to set the <code>configChanges</code> attribute of the activity in <span class="filename">AndroidManifest.xml</span>.
+		<li>This doesn't solve the other cases like loading other apps/activities.
+	</ul>
+	
+	<pre><code class="xml">
+&lt;!-- AndroidManifest.xml --&gt;
+&lt;activity android:name=&quot;.MainActivity&quot;
+	<em>android:configChanges=&quot;orientation|screenSize&quot;</em>
+	...&gt;
+</code></pre>
+
+	<div class="figureshorizontal">
+		<img src="images/activity-state-lost-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-state-lost-1.png" alt="figure" />
+		<img src="images/activity-state-lost-6.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-state-lost-6.png" alt="figure" />
+	</div>
+</section>
+
+<section data-transition="fade-in fade-out">
+	<h1>The onCreate method</h1>
+	
+	<div class="figuresright">
+		<img src="images/activity-lifecycle-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-lifecycle-1.png" alt="figure" style="max-height: 10em" />
+	</div>
+	
+	<ul>
+		<li><strong><code>onCreate</code></strong>: Called as activity is being initialized.
+			<ul>
+				<li>creates and sets up the activity object
+				<li>load any static resources like images, layouts, set up menus etc.
+				<li>after it runs, the Activity object exists
+				<li>think of this as the "constructor" of the activity
+				<li>(don't actually write a constructor; things will break)
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public class FooActivity extends Activity {
+	...
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);      // always call super
+		setContentView(R.layout.activity_foo);   // set up layout
+		<var>any other initialization code</var>;           // anything else
+	}
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-in fade-out">
+	<h1>The onPause method</h1>
+	
+	<div class="figuresright">
+		<img src="images/activity-lifecycle-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-lifecycle-1.png" alt="figure" style="max-height: 10em" />
+	</div>
+	
+	<ul>
+		<li><strong><code>onPause</code></strong>: Called when another activity in same app pops up over your current activity.
+		<li>may be temporary, or on way to termination
+			<ul>
+				<li>stop animations or other actions that consume CPU
+				<li>commit unsaved changes (e.g. draft email)
+				<li>release system resources that affect battery life
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public void onPause() {
+	super.onPause();             // always call super
+	if (myConnection != null) {
+		myConnection.close();    // release resources
+		myConnection = null;
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Testing activity states</h1>
+	
+	<ul>
+		<li>Use the LogCat system for logging messages when your app changes states:
+			<ul>
+				<li>analogous to <code>println</code> debugging for Android apps
+				<li>appears in the <strong>LogCat</strong> console in Android Studio
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public void onPause() {
+	super.onPause();
+	<em>Log.v("testing", "onPause was called!");</em>
+}
+</code></pre>
+
+	<div class="figure">
+		<img src="images/logcat-exception.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/logcat-exception.png" alt="figure" />
+	</div>
+</section>
+
+<section data-transition="fade-in fade-out">
+	<h1>The onResume method</h1>
+	
+	<div class="figuresright">
+		<img src="images/activity-lifecycle-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-lifecycle-1.png" alt="figure" style="max-height: 10em" />
+	</div>
+	
+	<ul>
+		<li><strong><code>onResume</code></strong>: Called when activity starts and when it comes back from having been paused.
+			<ul>
+				<li>initialize resources that you will release in <code>onPause</code>
+				<li>start/resume animations or other ongoing actions that should only run when activity is visible on screen
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public void onResume() {
+	super.onResume();                          // always call super
+	beginAnimation();
+	if (myConnection == null) {
+		myConnection = new ExampleConnect();  // init resources
+		myConnection.connect();
+	}
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-in fade-out">
+	<h1>The onStop method</h1>
+	
+	<div class="figuresright">
+		<img src="images/activity-lifecycle-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-lifecycle-1.png" alt="figure" style="max-height: 10em" />
+	</div>
+	
+	<ul>
+		<li><strong><code>onStop</code></strong>: Called when activity is no longer running.
+			<ul>
+				<li>User chose another app from Recent Apps window.
+				<li>User starts a different activity in your app.
+				<li>User receives a phone call while in your app.
+			</ul>
+		<li><code>onPause</code> is always called before <code>onStop</code>.
+		<li><code>onStop</code> performs heavy-duty shutdown tasks like writing to a database.
+	</ul>
+	
+	<pre><code class="java">
+public void onStop() {
+	super.onStop();           // always call super
+	...
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-in fade-out">
+	<h1>The onStart and onRestart method</h1>
+	
+	<div class="figuresright">
+		<img src="images/activity-lifecycle-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-lifecycle-1.png" alt="figure" style="max-height: 10em" />
+	</div>
+	
+	<ul>
+		<li><strong><code>onStart</code></strong>: Called every time the activity begins.
+		<li><strong><code>onRestart</code></strong>: Called when activity was stopped but is started again later (all but the first start).
+			<ul>
+				<li>Not as commonly used; favor <code>onResume</code>.
+				<li>Re-open any resources that <code>onStop</code> closed.
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public void onStart() {
+	super.onStart();           // always call super
+	...
+}
+public void onRestart() {
+	super.onRestart();         // always call super
+	...
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-in fade-out">
+	<h1>The onDestroy method</h1>
+	
+	<div class="figuresright">
+		<img src="images/activity-lifecycle-1.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/activity-lifecycle-1.png" alt="figure" style="max-height: 10em" />
+	</div>
+	
+	<ul>
+		<li><strong><code>onDestroy</code></strong>: Called when your entire app is being shut down and unloaded from memory.
+			<ul>
+				<li>Unpredictable exactly when/if it will be called.
+				<li>Can be called whenever the system wants to reclaim the memory used by your app.
+				<li>Generally favor <code>onPause</code> or <code>onStop</code> because they are called in a predictable and timely manner.
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public void onDestroy() {
+	super.onDestroy();           // always call super
+	...
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-out">
+	<h1>onSaveInstanceStace method</h1>
+	
+	<div class="figuresright">
+		<img src="images/bundle-saveinstancestate.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/bundle-saveinstancestate.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>When an activity is being destroyed, <code>onSaveInstanceState</code> is also called.
+			<ul>
+				<li><strong>non-persistent state</strong>: Stays for now, but lost on shutdown/reboot.
+			</ul>
+		<li>Accepts a <code class="androidapi" data-class="android.os.Bundle">Bundle</code> parameter storing key/value pairs.
+			<ul>
+				<li>Bundle is passed back to activity if it is recreated later.
+				<li>Superclass version saves state of any Views <em>that have an ID</em>.
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public void onSaveInstanceState(Bundle outState) {
+	super.onSaveInstanceState(outState);
+	outState.putInt("<var>name</var>", <var>value</var>);      // save an int
+	outState.putString("<var>name</var>", <var>value</var>);   // save a string
+	...
+}
+</code></pre>
+</section>
+
+<section data-transition="fade-in">
+	<h1>onRestoreInstanceStace method</h1>
+	
+	<div class="figuresright">
+		<img src="images/bundle-saveinstancestate.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/bundle-saveinstancestate.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>When an activity is recreated later, <code>onRestoreInstanceState</code> is called. *
+			<ul>
+				<li><code class="androidapi" data-class="android.os.Bundle">Bundle</code> from <code>onSaveInstanceState</code> is passed back in with same data in it.
+				<li class="aside">older versions of Android put this code in <code>onCreate</code>;  don't do that any more
+			</ul>
+	</ul>
+	
+	<pre><code class="java">
+public void onRestoreInstanceState(Bundle inState) {
+	super.onRestoreInstanceState(inState);
+	int <var>name</var> = inState.getInt("<var>name</var>");         // restore an int
+	String <var>name</var> = inState.getString("<var>name</var>");   // restore a string
+	...
+}
+</code></pre>
+</section>
+
+<section>
+	<h1><code class="androidapi" data-class="android.os.Bundle">Bundle</code> methods</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>clear();</code></td>
+			<td>removes all stored data</td>
+		</tr>
+		<tr>
+			<td><code>containsKey("<var>name</var>")</code></td>
+			<td><code>true</code> if stored data exists with given name</td>
+		</tr>
+		<tr>
+			<td><code>get("<var>name</var>")</code></td>
+			<td>return stored data for given key name</td>
+		</tr>
+		<tr>
+			<td style="font-size: 0.5em; width: 50%"><code>getBooleanArray("<var>name</var>")</code>, <code>getBoolean("<var>name</var>")</code>, <code>getByte("<var>name</var>")</code>, <code>getByte("<var>name</var>")</code>, <code>getCharArray("<var>name</var>")</code>, <code>getChar("<var>name</var>")</code>, <code>getDoubleArray("<var>name</var>")</code>, <code>getDouble("<var>name</var>")</code>, <code> getFloatArray("<var>name</var>")</code>, <code>getFloat("<var>name</var>")</code>, <code>getIntArray("<var>name</var>")</code>, <code>getInt("<var>name</var>")</code>, <code>getIntegerArrayList("<var>name</var>")</code>, <code>getLongArray("<var>name</var>")</code>, <code>getLong("<var>name</var>")</code>, <code>getParcelableArray("<var>name</var>")</code>, <code>getParcelable("<var>name</var>")</code>, <code>getParcelableArray("<var>name</var>")</code>, <code>getSerializable("<var>name</var>")</code>, <code>getStringArray("<var>name</var>")</code>, <code>getStringArrayList("<var>name</var>")</code>, <code>getString("<var>name</var>")</code></td>
+			<td>return stored data for given key name, cast to the appropriate type</td>
+		</tr>
+		<tr>
+			<td><code>isEmpty()</code></td>
+			<td>returns <code>true</code> if no data is stored</td>
+		</tr>
+		<tr>
+			<td><code>putBoolean("<var>name</var>", <var>value</var>);</code> <br />
+				... <br />
+				<code>putString("<var>name</var>", <var>value</var>);</code>
+			</td>
+			<td>stores data with given key name
+				<small>(there is a <code>putXxx</code> for every <code>getXxx</code> method listed above)</small>
+			</td>
+		</tr>
+		<tr>
+			<td><code>putAll(<var>bundle</var>);</code></td>
+			<td>merge another bundle's data with this one</td>
+		</tr>
+		<tr>
+			<td><code>remove("<var>name</var>");</code></td>
+			<td>delete the given stored data</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>Saving your own classes</h1>
+	
+	<ul>
+		<li>By default, your own classes can't be put into a <code>Bundle</code>.
+		<li>You can make a class able to be saved by implementing the (methodless)  <code class="javaapi">java.io.Serializable</code> interface.
+	</ul>
+
+	<pre><code class="java">
+public class Date <em>implements Serializable</em> { ... }
+
+public class MainActivity extends Activity {
+	public void onSaveInstanceState(Bundle bundle) {
+		Date d = new Date(2015, 1, 25);
+		<em>bundle.putSerializable</em>("today", d);
+	}
+	public void onRestoreInstanceState(Bundle bundle) {
+		Date d = (Date) <em>bundle.getSerializable</em>("today");
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Lib: Activity state
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td>setTraceLifecycle(<var>bool</var>);</td>
+			<td>if true, prints a log message on every lifecycle change</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// useful for learning about when lifecycle methods are called
+public class MyActivity extends SimpleActivity {
+	...
+	protected void onCreate(Bundle b) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_my);
+		<em>setTraceLifecycle(true);</em>
+	}
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Activity instance state
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>saveAllFields(<var>bundle</var>);</code></td>
+			<td>store all fields' values into bundle</td>
+		</tr>
+		
+		<tr>
+			<td><code>restoreAllFields(<var>bundle</var>);</code></td>
+			<td>load all fields' values from bundle</td>
+		</tr>
+		
+		<tr>
+			<td><code>@AutoSaveFields</code></td>
+			<td>annotation on top of class to automatically save/restore fields' values when activity is loaded</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// easily save/load all private instance variables (of basic types)
+@Override
+protected void onRestoreInstanceState(Bundle bundle) {
+	super.onRestoreInstanceState(savedInstanceState);
+	restoreAllFields(bundle);
+}
+...
+// or, just put this on top of your class
+@AutoSaveFields
+public Class MyActivity extends SimpleActivity { ...
+</code></pre>
+</section>
+
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Preferences</p>
+</section>
+
+<section>
+	<h1>Preferences</h1>
+	
+	<div class="figuresright">
+		<img src="images/shared-preferences.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/shared-preferences.png" alt="figure" />
+	</div>
+
+	<ul>
+		<li><code class="androidapi" data-class="android.content.SharedPreferences">SharedPreferences</code> object can store permanent settings and data for your app.
+			<ul>
+				<li>stores key/value pairs similar to a <code class="androidapi" data-class="android.os.Bundle">Bundle</code> or <code class="androidapi" data-class="android.content.Intent">Intent</code>
+				<li>pairs added to <code>SharedPreferences</code> persist after shutdown/reboot (unlike <code>savedInstanceState</code> bundles)
+			</ul>
+		<li>Two ways to use it:
+			<ul>
+				<li>per-activity (<code>getPreferences</code>)
+				<li>per-app (<code>getSharedPreferences</code>)
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>SharedPreferences example</h1>
+	
+	<ul>
+		<li>Saving preferences for the activity (in <code>onPause</code>, <code>onStop</code>):
+	</ul>
+	
+	<pre><code class="java">
+SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+SharedPreferences.Editor prefsEditor = prefs.edit();
+prefsEditor.putInt("<var>name</var>", <var>value</var>);
+prefsEditor.putString("<var>name</var>", <var>value</var>);
+...
+prefsEditor.apply();   // or commit();
+</code></pre>
+
+	<ul>
+		<li>Loading preferences later (e.g. in <code>onCreate</code>):
+	</ul>
+	
+	<pre><code class="java">
+SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+int i = prefs.getInt("<var>name</var>", <var>defaultValue</var>);
+String s = prefs.getString("<var>name</var>", "<var>defaultValue</var>");
+...
+</code></pre>
+</section>
+
+<section>
+	<h1>Multiple pref files</h1>
+	
+	<ul>
+		<li>You can call <code>getSharedPreferences</code> and supply a file name if you want to have multiple pref. files for the same activity:
+		<ul>
+			<li class="aside">(Note: Usually you don't want this form.
+				It is rare that one activity needs multiple preference files.
+				The existing <code>getPreferences</code> can store many different preferences in it.)
+		</ul>
+	</ul>
+	
+	<pre><code class="java">
+<strike>SharedPreferences prefs = getPreferences(MODE_PRIVATE);</strike>
+SharedPreferences prefs = <em>getSharedPreferences</em>(
+		"<var>filename</var>", MODE_PRIVATE);
+SharedPreferences.Editor prefsEditor = prefs.edit();
+prefsEditor.putInt("<var>name</var>", <var>value</var>);
+prefsEditor.putString("<var>name</var>", <var>value</var>);
+...
+prefsEditor.commit();
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Lib: SimplePreferences
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>with(<var>activity</var>)</code></td>
+			<td>returns a <code>SimplePreferences</code> instance</td>
+		</tr>
+		
+		<tr>
+			<td><code>set("<var>name</var>", <var>value</var>);</code></td>
+			<td>sets an app preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getBoolean("<var>name</var>")</code></td>
+			<td>returns an app preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getDouble("<var>name</var>")</code></td>
+			<td>returns an app preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getInt("<var>name</var>")</code></td>
+			<td>returns an app preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getLong("<var>name</var>")</code></td>
+			<td>returns an app preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getString("<var>name</var>")</code></td>
+			<td>returns an app preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>contains("<var>name</var>")</code> <br />
+				<code>has("<var>name</var>")</code></td>
+			<td>true if given preference is set</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// easier version of SharedPreferences object
+SimplePreferences.with(this)
+	.set("username", "stepp");
+...
+String username = SimplePreferences.with(this)
+	.getString("username");
+</code></pre>
+</section>
+
+<section>
+	<h1>
+		Lib: Shared preferences
+		<img class="stanfordliblogo" src="images/stanford-logo-icon.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/stanford-logo-icon.png" alt="figure" />
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>setShared("<var>filename</var>", "<var>name</var>", <var>value</var>);</code></td>
+			<td>sets a shared preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getSharedBoolean("<var>filename</var>", "<var>name</var>")</code></td>
+			<td>returns a preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getSharedDouble("<var>filename</var>", "<var>name</var>")</code></td>
+			<td>returns a preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getSharedInt("<var>filename</var>", "<var>name</var>")</code></td>
+			<td>returns a preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getSharedLong("<var>filename</var>", "<var>name</var>")</code></td>
+			<td>returns a preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>getSharedString("<var>filename</var>", "<var>name</var>")</code></td>
+			<td>returns a preference</td>
+		</tr>
+		
+		<tr>
+			<td><code>containsShared("<var>name</var>")</code> <br />
+				<code>hasShared("<var>name</var>")</code></td>
+			<td>true if given shared preference is set</td>
+		</tr>
+	</table>
+	
+	<pre><code class="java">
+// easier version of SharedPreferences object
+SimplePreferences.with(this)
+	.setShared("myfile", "username", "stepp");
+...
+String username = SimplePreferences.with(this)
+	.getSharedString("myfile", "username");
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>

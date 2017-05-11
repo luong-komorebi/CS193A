@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:layout_weight="1"
+        android:id="@+id/frag_pokedex"
+        android:name="cs193a.stanford.edu.pokedex.PokedexFragment"
+        tools:layout="@layout/fragment_pokedex"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <fragment
+        android:layout_weight="1"
+        android:id="@+id/frag_details"
+        android:name="cs193a.stanford.edu.pokedex.DetailsFragment"
+        tools:layout="@layout/fragment_details"
+        android:layout_marginLeft="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

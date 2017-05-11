@@ -1,0 +1,390 @@
+<html>
+	<head>
+		<title>CS 193A - Files and Storage</title>
+		<link rel="stylesheet" href="highlightjs/styles/default.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/styles/default.css">
+		<link rel="stylesheet" href="reveal/css/reveal.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/reveal.css">
+		<link rel="stylesheet" href="reveal/css/theme/white.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/css/theme/white.css">
+		<link rel="stylesheet" href="cs193a-slides.css" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- BEGIN SLIDES AREA -->
+
+<section class="titleslide">
+	<h1>CS 193A</h1>
+
+	<p>Files and Storage</p>
+</section>
+
+<section>
+	<h1>Android Storage</h1>
+	
+	<div class="figuresright">
+		<img src="images/internal-storage-phone.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/internal-storage-phone.jpg" alt="figure" />
+		<img src="images/internal-storage.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/internal-storage.png" alt="figure" />
+	</div>
+	
+	<p>
+		Android can read/write files from two locations:
+		<strong>internal</strong> and <strong>external</strong> storage.
+		Both are <strong>persistent</strong>;  data remains after power-off / reboot.
+	</p>
+	
+	<ul>
+		<li><strong>internal storage</strong>: Built into the device.
+		<li><strong>external storage</strong>: An SD card or other drive attached to device.
+	</ul>
+	
+	<ul>
+		<li>An app can typically be installed into either area.
+	</ul>
+</section>
+
+<section>
+	<h1>Internal Storage</h1>
+	
+	<div class="figuresright">
+		<img src="images/android-internal-storage-surgery.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/android-internal-storage-surgery.jpg" alt="figure" />
+	</div>
+
+	<p>
+		<strong>internal storage</strong>: Built into the device.
+	</p>
+	
+	<ul>
+		<li>guaranteed to be present
+		<li>typically smaller (~4-8 gb)
+		<li>can't be expanded or removed
+		<li>specific and private to each app
+		<li>wiped out when the app is uninstalled
+		<li>more secure; visible only to a given app and user
+	</ul>
+	
+	<ul>
+		<li>To put an input file into your app's internal storage,
+			place it in the <span class="filename">res/raw</span> folder.
+	</ul>
+</section>
+
+<section>
+	<h1>External Storage</h1>
+	
+	<div class="figuresright">
+		<img src="images/external-storage.jpg" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/external-storage.jpg" alt="figure" />
+	</div>
+
+	<p>
+		<strong>external storage</strong>: An SD card or other drive attached to device.
+	</p>
+	
+	<ul>
+		<li>may not be present, depending on the device
+		<li>can be removed or transferred to another device if needed
+		<li>visible to other apps and users
+		<li>read/writable by other apps and users; not private to your app
+		<li>not wiped when the app is uninstalled, except in certain cases
+	</ul>
+</section>
+
+<section>
+	<h1>Files and Streams</h1>
+	
+	<ul>
+		<li><code class="api" data-class="java.io.File">File</code></a> - Objects that represent a file or directory.
+			<ul>
+				<li>methods: canRead, canWrite, create, delete, exists, getName, getParent, getPath, isFile, isDirectory, lastModified, length, listFiles, mkdir, mkdirs, renameTo
+			</ul>
+		
+		<li><code class="api" data-class="java.io.InputStream">InputStream</code></a>,
+			<code class="api" data-class="java.io.OutputStream">OutputStream</code></a> - flows of data bytes from/to a source or destination
+			<ul>
+				<li>Could come from a file, network, database, memory, ...
+				<li>Normally not directly used; they only include low-level methods for reading/writing a byte (character) at a time from the input.
+				<li>Instead, a stream is often passed as parameter to other objects like a Scanner, java.io.BufferedReader, java.io.PrintStream to do the actual reading / writing.
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>
+		<code class="javaapi" data-class="java.util.Scanner">Scanner</code> methods
+	</h1>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		
+		<tr>
+			<td><code>new&nbsp;Scanner(<var>InputStream</var>) <br />
+new Scanner(<var>File</var>) <br />
+new Scanner(<var>String</var>)	</code></td>
+			<td>open a scanner to read from a stream, file, or to tokenize the words of a string</td>
+		</tr>
+		
+		<tr>
+			<td><code>close()</code></td>
+			<td>shuts down scanner and stops reading</td>
+		</tr>
+		
+		<tr>
+			<td><code>hasNext()</code></td>
+			<td>true if there are more tokens</td>
+		</tr>
+		
+		<tr>
+			<td><code>hasNextDouble()</code></td>
+			<td>true if there is a next token and it's a double</td>
+		</tr>
+		
+		<tr>
+			<td><code>hasNextInt()</code></td>
+			<td>true if there is a next token and it's an int</td>
+		</tr>
+		
+		<tr>
+			<td><code>hasNextLine()</code></td>
+			<td>true if there are more lines</td>
+		</tr>
+		
+		<tr>
+			<td><code>String next()</code></td>
+			<td>returns next word (whitespace-separated)</td>
+		</tr>
+		
+		<tr>
+			<td><code>nextDouble()</code></td>
+			<td>returns next token as a double</td>
+		</tr>
+		
+		<tr>
+			<td><code>nextInt()</code></td>
+			<td>returns next token as an int</td>
+		</tr>
+		
+		<tr>
+			<td><code>nextLine()</code></td>
+			<td>returns next line (up to but excluding \n)</td>
+		</tr>
+		
+		<tr>
+			<td><code>useDelimiter("<var>str</var>")</code></td>
+			<td>uses given string as separator for tokenizing</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>
+		Using internal storage
+		(<a class="popup" href="javascript:if(confirm(%27http://developer.android.com/training/basics/data-storage/files.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://developer.android.com/training/basics/data-storage/files.html%27" tppabs="http://developer.android.com/training/basics/data-storage/files.html">link</a>)
+	</h1>
+	
+	<p>
+		An activity has methods you can call to read/write files:
+	</p>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>getResources().openRawResource(R.raw.<var>id</var>)</code></td>
+			<td>read an input file from <span class="filename">res/raw/</span></td>
+		</tr>
+		<tr>
+			<td><code>getFilesDir()</code></td>
+			<td>returns internal directory for your app</td>
+		</tr>
+		<tr>
+			<td><code>getCacheDir()</code></td>
+			<td>returns a "temp" directory for scrap files</td>
+		</tr>
+		<tr>
+			<td><code>openFileInput("<var>name</var>", <var>mode</var>)</code></td>
+			<td>opens a file for reading</td>
+		</tr>
+		<tr>
+			<td><code>openFileOutput("<var>name</var>", <var>mode</var>)</code></td>
+			<td>opens a file for writing</td>
+		</tr>
+	</table>
+	
+	<ul>
+		<li>You can use these to read/write files on the device.
+			<ul>
+				<li>many methods return standard <code class="javaapi" data-class="java.io.File">File</code> objects
+				<li>some return <code class="javaapi" data-class="java.io.InputStream">InputStream</code> or <code class="javaapi" data-class="java.io.OutputStream">OutputStream</code> objects, which can be used with standard classes like <code class="javaapi" data-class="java.util.Scanner">Scanner</code>, <code class="javaapi" data-class="java.io.BufferedReader">BufferedReader</code>, and <code class="javaapi" data-class="java.io.PrintStream">PrintStream</code> to read/write files
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>Read an existing file</h1>
+	
+	<pre><code class="java">
+// read a file, and put its contents into a TextView
+// (assumes hello.txt file exists in res/raw/ directory)
+Scanner scan = new Scanner(
+		<strong>getResources().openRawResource</strong>(R.raw.hello));
+
+// read entire file
+String allText = &quot;&quot;;
+while (scan.hasNextLine()) {
+	String line = scan.nextLine();
+	allText += line;
+}
+scan.close();
+
+myTextView.setText(allText);
+</code></pre>
+</section>
+
+<section>
+	<h1>Write a new file</h1>
+	
+	<pre><code class="java">
+// write a short text file to the internal storage
+PrintStream output = new PrintStream(
+		<em>openFileOutput</em>(&quot;out.txt&quot;, MODE_PRIVATE));
+output.println(&quot;Hello, world!&quot;);
+output.println(&quot;How are you?&quot;);
+output.close();
+...
+// read the same file, and put its contents into a TextView
+Scanner scan = new Scanner(
+		<em>openFileInput</em>(&quot;out.txt&quot;, MODE_PRIVATE));
+String allText = &quot;&quot;;   // read entire file
+while (scan.hasNextLine()) {
+	String line = scan.nextLine();
+	allText += line;
+}
+myTextView.setText(allText);
+scan.close();
+</code></pre>
+</section>
+
+<section>
+	<h1>External storage permission</h1>
+	
+	<div class="figuresright">
+		<img src="images/permissions-approve-dialog.png" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/images/permissions-approve-dialog.png" alt="figure" />
+	</div>
+	
+	<ul>
+		<li>If your app needs to read/write the device's external storage, you must explicitly request
+			permission to do so in your app's <span class="filename">AndroidManifest.xml</span> file.
+			<ul>
+				<li>On install, the user will be prompted to confirm your app permissions.
+			</ul>
+	</ul>
+	
+	<pre><code class="xml">
+&lt;manifest ...&gt;
+	&lt;uses-permission
+	 android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot; /&gt;
+	&lt;uses-permission
+	 android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
+	...
+&lt;/manifest&gt;
+</code></pre>
+</section>
+
+<section>
+	<h1>Using external storage</h1>
+	
+	<p>
+		Methods to read/write external storage:
+	</p>
+	
+	<table class="methodtable">
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>getExternalFilesDir("<var>name</var>")</code></td>
+			<td>returns a "private" external directory for your app with the given name</td>
+		</tr>
+		<tr>
+			<td><code>Environment. getExternalStoragePublicDirectory(<var>name</var>)</code></td>
+			<td>
+				returns a public directory for common files like photos, music, etc.
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<ul>
+					<li>pass constants for <code><var>name</var></code> such as Environment.DIRECTORY_ALARMS, DIRECTORY_DCIM, DIRECTORY_DOWNLOADS, DIRECTORY_MOVIES, DIRECTORY_MUSIC, DIRECTORY_NOTIFICATIONS, DIRECTORY_PICTURES, DIRECTORY_PODCASTS, DIRECTORY_RINGTONES
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<ul>
+		<li>You can use these to write files on the ext.storage.
+			<ul>
+				<li>the above methods return standard <code class="javaapi" data-class="java.io.File">File</code> objects
+				<li>can be used with standard classes like <code class="javaapi" data-class="java.util.Scanner">Scanner</code>, <code class="javaapi" data-class="java.io.BufferedReader">BufferedReader</code>, and <code class="javaapi" data-class="java.io.PrintStream">PrintStream</code> to read/write files
+			</ul>
+	</ul>
+</section>
+
+<section>
+	<h1>External storage example</h1>
+	
+	<pre><code class="java">
+// write short data to app-specific external storage
+File outDir = getExternalFilesDir(null);   // root dir
+File outFile = new File(outDir, "example.txt");
+PrintStream output = new PrintStream(outFile);
+output.println("Hello, world!");
+output.close();
+
+// read list of pictures in external storage
+File picsDir = 
+		Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_PICTURES);
+for (File file : picsDir.listFiles()) {
+	...
+}
+</code></pre>
+</section>
+
+<section>
+	<h1>Check if storage available</h1>
+	
+	<pre><code class="java">
+/* Checks if external storage is available
+ * for reading and writing */
+public boolean isExternalStorageWritable() {
+	return Environment.MEDIA_MOUNTED.equals(
+			Environment.getExternalStorageState());
+}
+
+/* Checks if external storage is available
+ * for reading */
+public boolean isExternalStorageReadable() {
+	return isExternalStorageWritable() ||
+			Environment.MEDIA_MOUNTED_READ_ONLY.equals(
+					Environment.getExternalStorageState());
+}
+</code></pre>
+</section>
+
+<!-- END SLIDES AREA -->
+			</div>
+		</div>
+
+		<script src="highlightjs/highlight.pack.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/highlightjs/highlight.pack.js"></script>
+		<script src="cs193a-slides.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/cs193a-slides.js"></script>
+		<script src="reveal/js/reveal.js" tppabs="http://web.stanford.edu/class/cs193a/lectures/slides/reveal/js/reveal.js"></script>
+		<script>
+			initializeSlides();
+		</script>
+	</body>
+</html>
